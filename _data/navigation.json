@@ -24,8 +24,12 @@
     "title": "Command Reference",
     "submenu": [
       {
-        "title": "Overview",
-        "url": "/command-ref"
+        "title": "MCIX Command Shell",
+        "url": "/command-ref/command-shell"
+      },
+      {
+        "title": "MCIX Asset-Analysis Console",
+        "url": "/command-ref/asset-analysis-console"
       },
       {
         "title": "Asset-Analysis Namespace",
