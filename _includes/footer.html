@@ -1,0 +1,22 @@
+<footer class="cj--footer cds--css-grid">
+  <div class="cds--sm:col-span-4 cds--md:col-span-8 cds--lg:col-span-16">
+    <div class="cds--subgrid">
+      <div class="cds--sm:col-span-4 cds--md:col-span-8 cds--lg:col-span-4">
+        <div class="cj--footer__title">{{ site.title }}</div>
+        Last updated: {{ site.time | date: "%Y-%m-%d" }}
+      </div>
+      {% for group in site.data.footer %}
+      <div class="cds--sm:col-span-4 cds--md:col-span-4 cds--lg:col-span-4">
+        <div class="cj--footer__title">{{ group.title }}</div>
+        <ul>
+          {% for item in group.items %}
+          <li>
+            <a href="{{ item.url }}"> {{ item.title }} </a>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</footer>

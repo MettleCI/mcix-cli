@@ -1,0 +1,42 @@
+@charset "UTF-8";
+
+body {
+  background-color: var(--cds-background);
+  color: var(--cds-text-primary);
+}
+
+c4d-masthead-logo::part(link) {
+  text-decoration: none;
+  font-size: var(--cds-heading-02-font-size);
+  font-weight: var(--cds-heading-02-font-weight);
+  line-height: var(--cds-heading-02-line-height);
+  color: var(--cds-text-primary);
+}
+
+.cj--markdown-content h2[name] {
+  transform: none;
+}
+
+.cj--footer {
+  font-size: var(--cds-body-02-font-size);
+  font-weight: var(--cds-body-02-font-weight);
+  line-height: var(--cds-body-02-line-height);
+  margin-block: var(--cds-spacing-08);
+  padding-block: var(--cds-spacing-08);
+  border-block-start: 0.0625rem solid var(--cds-border-subtle);
+}
+
+.cj--footer__title {
+  font-size: var(--cds-heading-02-font-size);
+  font-weight: var(--cds-heading-02-font-weight);
+  line-height: var(--cds-heading-02-line-height);
+  margin-block-start: var(--cds-spacing-07);
+}
+
+.cj--footer a {
+  color: var(--cds-link-primary);
+}
+
+.cj--footer a:hover {
+  color: var(--cds-link-primary-hover);
+}

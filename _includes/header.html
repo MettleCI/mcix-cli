@@ -1,0 +1,47 @@
+<header>
+  <c4d-masthead-container
+    has-profile="false"
+    has-contact="false"
+    has-search="false"
+  ></c4d-masthead-container>
+
+  <script type="module">
+    await window.customElements.whenDefined("c4d-masthead-container");
+    const masthead = document.querySelector("c4d-masthead-container");
+
+    // prefix all urls starting with `/` with site.baseurl
+    // to account for non-root level hosting
+    function prefixRelativeUrls(items) {
+      return items.map((item) => {
+        const transformed = item;
+
+        if (item.url) {
+          transformed.url = item.url.startsWith("/")
+            ? `{{ site.baseurl }}${item.url?.replace(/\/index$/, "")}`
+            : item.url;
+        }
+
+        // if this menu item has submenu items, recursively
+        // transform/prefix those as well
+        if (item.submenu && Array.isArray(item.submenu)) {
+          transformed.submenu = prefixRelativeUrls(transformed.submenu);
+        }
+
+        return transformed;
+      });
+    }
+
+    if (masthead) {
+      const structure = `{{ site.data.navigation | jsonify }}`;
+      const json = prefixRelativeUrls(JSON.parse(structure));
+
+      masthead.l0Data = json;
+      masthead.logoData = {
+        svg: "{{ site.title }}",
+        denylist: [],
+        allowlist: [],
+        href: "{{ site.baseurl | default: '/' }}",
+      };
+    }
+  </script>
+</header>

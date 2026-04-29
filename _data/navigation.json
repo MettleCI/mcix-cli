@@ -1,0 +1,23 @@
+[
+  {
+    "title": "Getting started",
+    "submenu": [
+      {
+        "title": "Overview",
+        "url": "/getting-started"
+      },
+      {
+        "title": "Local development",
+        "url": "/getting-started/local-development"
+      }
+    ]
+  },
+  {
+    "title": "Markdown demo",
+    "url": "/md-demo"
+  },
+  {
+    "title": "Engineering excellence",
+    "url": "/engx"
+  }
+]

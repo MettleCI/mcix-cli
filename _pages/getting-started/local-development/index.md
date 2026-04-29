@@ -1,23 +1,8 @@
-# Carbon Jekyll template prototype
+---
+title: Local development
+---
 
-![Screen capture of the home page of the Carbon Jekyll template](homepage.png)
-
-This is a draft for a Carbon for IBM.com template on Jekyll.
-Jekyll is integrated by default on GitHub Pages, so it enables a publishing
-without any user build step to https://pages.github.ibm.com.
-
-The mid-term goal would be to release this as a Jekyll theme for anyone to write
-internal and external websites easily, with plain markup or more advanced Carbon
-web components.
-
-To get this to run, you can either just fork this project and start editing one
-of the `.md` files on the `gh-pages` branch, commit and push the changes. It
-will get visible under `https://pages.github.ibm.com/[username]/[projectname]`
-in around 30 seconds.
-
-## Development
-
-### Set up environment
+## Set up environment
 
 This repository uses [dev containers](http://containers.dev/) to avoid version
 conflicts between the base system and the repository's dependencies (ruby,
@@ -43,7 +28,7 @@ be fast.
 **Please note:** Rancher Desktop must be running in order for you to connect to
 the dev container.
 
-### Run locally
+## Run locally
 
 In your [dev container](#set-up-environment), running the following command will
 serve the page locally at [localhost:4000](http://localhost:4000):
@@ -55,7 +40,7 @@ jekyll serve --livereload
 **Please note:** After any modification to `_config.yml`, you must stop the dev
 server and run above command again.
 
-### Build locally
+## Build locally
 
 In your [dev container](#set-up-environment), running the following command will
 build all pages and produce the static `_site` directory.
@@ -63,14 +48,3 @@ build all pages and produce the static `_site` directory.
 ```console
 jekyll build
 ```
-
-## Feedback
-
-For comments or questions, please contact Stephane Rodet on Slack.
-
-### Resources
-
-- Jekyll: https://jekyllrb.com
-- Carbon for IBM.com: https://www.ibm.com/standards/carbon/
-- Carbon for IBM.com Storybook:
-  https://www.ibm.com/standards/carbon/web-components/?path=/docs/overview-getting-started--page

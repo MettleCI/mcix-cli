@@ -1,0 +1,49 @@
+[
+  {
+    "title": "Connect",
+    "items": [
+      {
+        "title": "GitHub repository",
+        "url": "https://github.ibm.com/RODET/jekyll-carbon"
+      },
+      {
+        "title": "#carbon-jekyll",
+        "url": "https://ibm.enterprise.slack.com/archives/C073FRMKQAH"
+      }
+    ]
+  },
+  {
+    "title": "w3",
+    "items": [
+      {
+        "title": "About w3",
+        "url": "https://w3.ibm.com/w3publisher/about-w3"
+      },
+      {
+        "title": "Terms of use",
+        "url": "https://w3.ibm.com/#/info_terms_of_use"
+      },
+      {
+        "title": "Privacy policy",
+        "url": "https://w3.ibm.com/w3-privacy-notice"
+      }
+    ]
+  },
+  {
+    "title": " ",
+    "items": [
+      {
+        "title": "Careers",
+        "url": "https://yourlearning.ibm.com/yourcareeratibm/welcome"
+      },
+      {
+        "title": "IBM organizations",
+        "url": "https://w3.ibm.com/w3publisher/ibm-organizations"
+      },
+      {
+        "title": "Business conduct guidelines",
+        "url": "https://w3.ibm.com/w3publisher/trust-compliance/bcgs"
+      }
+    ]
+  }
+]

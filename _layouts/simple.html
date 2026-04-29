@@ -1,0 +1,46 @@
+---
+layout: root
+---
+
+<c4d-leadspace
+  type="left"
+  size="medium"
+  {% if page.banner_src == nil or page.banner_fade == false %}
+    gradient-style-scheme
+  {% endif %}
+>
+  <c4d-leadspace-heading>{{ page.title }}</c4d-leadspace-heading>
+
+  {{ page.description }}
+
+  <c4d-background-media
+    slot="image"
+    opacity="100"
+    {% assign default_banner_src = site.baseurl | append: "/assets/img/magentabg.svg" %}
+    default-src="{{ page.banner_src | default: default_banner_src }}"
+    alt="{{ page.banner_alt | default: '' }}"
+  >
+  </c4d-background-media>
+</c4d-leadspace>
+
+<div class="cds--css-grid">
+  <div class="cds--sm:col-span-4 cds--md:col-span-8 cds--lg:col-span-16">
+    <div class="cds--tableofcontents__contents">
+      <c4d-table-of-contents>
+        <c4d-content-block-mixed class="cds--no-gutter cj--markdown-content">
+          {{ content }}
+        </c4d-content-block-mixed>
+      </c4d-table-of-contents>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+  const headings = document.querySelectorAll(".cj--markdown-content h2");
+
+  if (headings) {
+    for (const heading of headings) {
+      heading.setAttribute("name", heading.getAttribute("id"));
+    }
+  }
+</script>
