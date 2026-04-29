@@ -1,5 +1,5 @@
 ---
-title: Carbon Jekyll theme
+title: MettleCI MCIX Command Line Interface
 ---
 
 <script type="module" src="https://1.www.s81c.com/common/carbon-for-ibm-dotcom/version/v2.8.0/card-group.min.js"></script>
@@ -10,26 +10,26 @@ title: Carbon Jekyll theme
 <c4d-link-list type="default" slot="complementary">
   <c4d-link-list-heading>Resources</c4d-link-list-heading>
   <c4d-link-list-item
-    href="https://www.ibm.com/standards/carbon/"
+    href="https://docs.mettleci.com/"
     cta-type="local"
   >
-    Carbon for IBM.com
+    MettleCI Documentation
   </c4d-link-list-item>
   <c4d-link-list-item
-    href="https://jekyllrb.com"
+    href="https://github.com/mettleci/mcix"
     cta-type="external"
   >
-    Jekyll
+    MCIX GitHub Actions
   </c4d-link-list-item>
 </c4d-link-list>
 
 ## Get started
 
-Start by cloning this repository.
+Start by seeing the [repository releases](https://github.com/mettleci/mcix-cli/releases) for the latest version of the MettleCI MCIX Command Line Interface.
 
 ## Pages
 
-Browse some of the demo
+Browse the topics covered in this documentation.
 
 <c4d-card-group>
   {% for page in site.pages %}
