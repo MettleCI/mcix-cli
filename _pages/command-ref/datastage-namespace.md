@@ -49,42 +49,48 @@ Compiles a DataStage Job producing a JUnit-compatible testing output that can be
 
 #### Examples 
 
-=== "Command Line"
-    ```shell
-    mcix datastage compile \
-      -api-key XXXXXXXXXXXXXXXXXXXXXXXX \
-      -url https://cp4d.datamigrators.io \
-      -user isadmin \
-      -report mettleci_compilation.xml \
-      -project dstage1 \
-      -include-asset-in-test-name
-    ``` 
 
-=== "GitHub Action"
-    ```yaml
-    - name: DataStage Compile using mcix datastage compile action
-      uses: mettleci/mcix/datastage/compile@latest
-      id: mcix-datastage-compile
-      with:
-        api-key: ${{ secrets.CP4DKEY }}
-        url: ${{ vars.CP4DHOSTNAME }}
-        user: ${{ vars.CP4DUSERNAME }}
-        project: ${{ env.DatastageProject }}         
-    ```
+<details>
+  <summary>Command Line</summary>
+  ```shell
+  mcix datastage compile \
+    -api-key XXXXXXXXXXXXXXXXXXXXXXXX \
+    -url https://cp4d.datamigrators.io \
+    -user isadmin \
+    -report mettleci_compilation.xml \
+    -project dstage1 \
+    -include-asset-in-test-name
+  ``` 
+</details>
+<details>
+  <summary>GitHub Action</summary>
+  ```yaml
+  - name: DataStage Compile using mcix datastage compile action
+    uses: mettleci/mcix/datastage/compile@latest
+    id: mcix-datastage-compile
+    with:
+      api-key: ${{ secrets.CP4DKEY }}
+      url: ${{ vars.CP4DHOSTNAME }}
+      user: ${{ vars.CP4DUSERNAME }}
+      project: ${{ env.DatastageProject }}         
+  ```
+</details>
+<details>
+  <summary>Azure DevOps Tasks</summary>
+  ```yaml
+  - task: mcixDatastageCompile@1
+    inputs:
+      url: ${{ parameters.CP4DHostName }}
+      user: ${{ parameters.CP4DUsername }}
+      apiKey: ${{ parameters.CP4DKey }}
+      project: ${{ parameters.DatastageProject }}
+      report: '$(Build.SourcesDirectory)/log/compile/compilation_results.xml'
+      includeAssetInTestName: true
+      imageName: 'mettleci.azurecr.io/mettleci/mcix'
+    displayName: 'Compile DataStage Assets'
+  ```
+</details>
 
-=== "Azure DevOps Tasks"
-    ```yaml
-    - task: mcixDatastageCompile@1
-      inputs:
-        url: ${{ parameters.CP4DHostName }}
-        user: ${{ parameters.CP4DUsername }}
-        apiKey: ${{ parameters.CP4DKey }}
-        project: ${{ parameters.DatastageProject }}
-        report: '$(Build.SourcesDirectory)/log/compile/compilation_results.xml'
-        includeAssetInTestName: true
-        imageName: 'mettleci.azurecr.io/mettleci/mcix'
-      displayName: 'Compile DataStage Assets'
-    ```
 
 ---
 
