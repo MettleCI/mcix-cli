@@ -1,13 +1,8 @@
 ---
-status: reviewed #Status can be draft, reviewed or published. 
-owner: John McKeever
-tags:
-  - Pipeline
-  - CLI
-  - Asset Analysis
-  - Tags
+title: MCIX Asset Analysis Console
 ---
-# asset-analysis console
+
+# MCIX Asset Analysis Console
 
 ## Purpose
 

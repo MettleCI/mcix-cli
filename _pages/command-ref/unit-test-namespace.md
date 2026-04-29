@@ -9,7 +9,7 @@ tags:
 
 ## unit-test generate
 
-![unittest generate syntax](../railroads/svgs/unit-test-generate.svg "unittest generate syntax")
+![unittest generate syntax](img/unit-test-generate.svg "unittest generate syntax")
 
 Generates a DataStage test case for one or more specified DataStage flows.
 
@@ -39,7 +39,7 @@ The optional `-check-row-count-only` flag will cause the generation of a test ca
 
 ## unit-test execute
 
-![unittest test syntax](../railroads/svgs/unit-test-execute.svg "unittest test syntax")
+![unittest test syntax](img/unit-test-execute.svg "unittest test syntax")
 
 
 Run one or more MettleCI Unit Tests against one or more DataStage jobs.

@@ -1,10 +1,7 @@
 ---
-status: reviewed
-owner: John McKeever
-tags:
-  - DataStage
-  - Running Tests
+title: MCIX Command Shell
 ---
+
 # MettleCI Command Shell
 
 The DataStage NextGen MettleCI Command Line Interface (referred to as **MCIX**) is available from either your Windows command line or Unix shell.  It provides one way of accessing MettleCI's build and deployment functions, and supports two different modes of operation: console or command line.  MettleCI commands accept various parameters which can optionally be sourced from a command file.
