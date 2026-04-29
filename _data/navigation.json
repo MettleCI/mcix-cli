@@ -22,6 +22,35 @@
   },
   {
     "title": "Command Reference",
-    "url": "/command-ref"
+    "submenu": [
+      {
+        "title": "Overview",
+        "url": "/command-ref"
+      },
+      {
+        "title": "Asset-Analysis Namespace",
+        "url": "/command-ref/asset-analysis-namespace"
+      },
+      {
+        "title": "DataStage Namespace",
+        "url": "/command-ref/datastage-namespace"
+      },
+      {
+        "title": "Fabrication Namespace",
+        "url": "/command-ref/fabrication-namespace"
+      },
+      {
+        "title": "Overlay Namespace",
+        "url": "/command-ref/overlay-namespace"
+      },
+      {
+        "title": "System Namespace",
+        "url": "/command-ref/system-namespace"
+      },
+      {
+        "title": "Unit-Test Namespace",
+        "url": "/command-ref/unit-test-namespace"
+      }
+    ]
   }
 ]
