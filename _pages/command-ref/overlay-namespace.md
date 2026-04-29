@@ -11,7 +11,7 @@ The `overlay` namespace contains commands wich enable you to define and apply ch
 
 ## overlay apply
 
-![overlay apply](../railroads/svgs/overlay-apply.svg "overlay apply syntax")
+![overlay apply](img/overlay-apply.svg "overlay apply syntax")
 
 This command applies changes - defined in a [json5-formatted](https://json5.org/) overlay file - to one or more specified DataStage assets supplied in a directory or `.zip` file.
 

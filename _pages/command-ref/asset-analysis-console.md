@@ -14,7 +14,7 @@ The Asset Analysis Console is a [REPL](https://en.wikipedia.org/wiki/Read%E2%80%
 
 ## Syntax
 
-![asset-analysis console](../railroads/svgs/asset-analysis-console.svg "asset-analysis console syntax")
+![asset-analysis console](img/asset-analysis-console.svg "asset-analysis console syntax")
 
 Blah ...
 

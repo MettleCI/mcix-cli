@@ -12,7 +12,7 @@ The datastage namespace contains commands for working with IBM Cloud Pak for Dat
 
 ## datastage compile
 
-![datastage compile syntax](../railroads/svgs/datastage-compile.svg "datastage compile syntax")
+![datastage compile syntax](img/datastage-compile.svg "datastage compile syntax")
 
 Compiles a DataStage Job producing a JUnit-compatible testing output that can be utilised by built tools orchestrating a CI/CD pipeline.  This command produces a [JUnit-compatible](https://junit.org/) XML file called `mettleci_compilation.xml` which reports each individual job’s compilation result.
 
@@ -90,7 +90,7 @@ Compiles a DataStage Job producing a JUnit-compatible testing output that can be
 
 ## datastage export
 
-![datastage export syntax](../railroads/svgs/datastage-export.svg "datastage export syntax")
+![datastage export syntax](img/datastage-export.svg "datastage export syntax")
 
 Exports DataStage assets from a DataStage CP4D/CP4DaaS project to a destination zip file.
 
@@ -167,7 +167,7 @@ Exports DataStage assets from a DataStage CP4D/CP4DaaS project to a destination 
 
 ## datastage import
 
-![datastage import syntax](../railroads/svgs/datastage-import.svg "datastage import syntax")
+![datastage import syntax](img/datastage-import.svg "datastage import syntax")
 
 Imports DataStage assets from a DataStage export zip file or directory into a CP4D/CP4DaaS project.  This command produces a [JUnit-compatible](https://junit.org/) XML file called `mettleci_import.xml` which reports each individual asset’s import result.
 

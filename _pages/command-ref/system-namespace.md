@@ -11,7 +11,7 @@ The `system` namespace contains commands for understanding, diagnosing, and cust
 
 ## system version
 
-![system version](../railroads/svgs/system-version.svg "system version syntax")
+![system version](img/system-version.svg "system version syntax")
 
 This command displays:
 

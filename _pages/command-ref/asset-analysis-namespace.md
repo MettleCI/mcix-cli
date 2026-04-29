@@ -19,7 +19,7 @@ The `asset-analysis` namespace contains commands for running MettleCI Asset Anal
 
     If you're looking for the **Asset Analysis Rules** returned by DataStage flow analysis then see the [asset-analysis test](#asset-analysis-test) Command.
 
-![asset-analysis query syntax](../railroads/svgs/asset-analysis-query.svg "asset-analysis query syntax")
+![asset-analysis query syntax](img/asset-analysis-query.svg "asset-analysis query syntax")
 
 The command line implementation of the Asset Analysis Query functionality exposes the low-level mechanism to produce a report listing the results of the specified Asset Queries.
 
@@ -83,7 +83,7 @@ The command line implementation of the Asset Analysis Query functionality expose
 
     If you're looking for the **Asset Queries** typically used in a MettleCI Report Card then please see the [asset-analysis query](#asset-analysis-query) Command.
 
-![compliance test syntax](../railroads/svgs/compliance-test.svg "compliance test syntax")
+![compliance test syntax](img/compliance-test.svg "compliance test syntax")
 
 The command line implementation of the Compliance Test functionality enables the production of a Compliance Results report of the specified assets against the specified set of MettleCI Compliance Rules.
 
@@ -117,10 +117,6 @@ The command line implementation of the Compliance Test functionality enables the
   * **-project**
 
     Project Name
-
-  * **-project-cache**
-
-    Project cache directory, enables incremental testing ([Read more](../project-cache-directory))
 
   * **-report** *(requried)*
 

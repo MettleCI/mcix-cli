@@ -9,7 +9,7 @@ tags:
 
 ## fabrication list
 
-![fabrication list syntax](../railroads/svgs/fabrication-list.svg "fabrication list syntax")
+![fabrication list syntax](img/fabrication-list.svg "fabrication list syntax")
 
 This command lists all the MettleCI data fabrication generators available in either…
 
@@ -128,7 +128,7 @@ $>
 
 ## fabrication test
 
-![fabrication test syntax](../../railroads/svgs//fabrication-test.svg "fabrication test syntax")
+![fabrication test syntax](img/fabrication-test.svg "fabrication test syntax")
 
 This command invokes a specific test data fabrication generator, from either…
 
