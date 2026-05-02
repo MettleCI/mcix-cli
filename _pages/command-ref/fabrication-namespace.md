@@ -18,31 +18,15 @@ This command lists all the MettleCI data fabrication generators available in eit
 
 #### Parameters
 
-  * **-P, -parameters**
-
-    Generator parameters<br>
-    Syntax: `-Pkey=value`
-
-  * **-generator** *(Required)*
-
-    The generator to test
-  
-  * **-rowcount**
-
-    Number of rows to generate
-
-  * **-path**
-
-    The path to either a folder full of generators or a single `<generator>.json` file
-  
-  * **-include-internal**
-
-    Include pre-existing generators from MettleCI's internal libraries
-
+| Name                  | Required | Default  | Description |
+| :-------              | :------- | :------- | :-------    |
+| **P, -parameters**   | -        | -        | Generator parameters<br/>Syntax: `-Pkey=value` |
+| **generator**        | Yes      | -        | The generator to test |
+| **rowcount**         | -        | -        | Number of rows to generate |
+| **path**             | -        | -        | The path to either a folder full of generators or a single `<generator>.json` file |
+| **include-internal** | -        | -        | Include pre-existing generators from MettleCI's internal libraries |
 
 #### Examples
-
-=== "Command Line"
 
 This example shows how to list the tags of a directory of Compliance Rules in both tabulated and CSV formats:
 
@@ -112,17 +96,9 @@ star_wars.wookiee_word
 $>
 ```
 
-=== "GitHub Action"
+**Note**:
 
-    ???+ info "This command is not available as a GitHub Actions native action"
-
-        This command is not available as a CI/CD native task/plugin as there is no identified need for this functionality within the context of a CI/CD pipeline. If you require this functionality within your CI/CD pipeline then you can invoke the command line directly using a command line pipeline task.
-
-=== "Azure DevOps Task"
-
-    ???+ info "This command is not available as an Azure DevOps native task"
-
-        This command is not available as a CI/CD native task/plugin as there is no identified need for this functionality within the context of a CI/CD pipeline. If you require this functionality within your CI/CD pipeline then you can invoke the command line directly using a command line pipeline task.
+This command is not available as a CI/CD native GitHib Actions or Azure DevOps task/plugin as there is no identified need for this functionality within the context of a CI/CD pipeline. If you require this functionality within your CI/CD pipeline then you can invoke the command line directly using a command line pipeline task.
 
 ---
 
@@ -137,95 +113,73 @@ This command invokes a specific test data fabrication generator, from either…
 
 #### Parameters
 
-  * **-P, -parameters**
-
-    Generator parameters<br>
-    Syntax: `-Pkey=value`
-
-  * **-generator** *(Required)*
-
-    The generator to test
-  
-  * **-rowcount**
-
-    Number of rows to generate<br>
-    Default: 5
-
-  * **-path**
-
-    The path to either a folder containing generators or a single `<generator>.json` file
-  
-  * **-include-internal**
-
-    Include pre-existing generators from our internal libraries<br>
-    Default: false
-
+| Name                  | Required | Default  | Description |
+| :-------              | :------- | :------- | :-------    |
+| **P, -parameters**   | -        | -        | Generator parameters<br/>Syntax: `-Pkey=value` |
+| **generator**        | Yes      | -        | The generator to test |  
+| **rowcount**         | -        | 5        | Number of rows to generate |
+| **path**             | -        | -        | The path to either a folder containing generators or a single `<generator>.json` file |  
+| **include-internal** | -        | False    | Include pre-existing generators from our internal libraries |
 
 #### Examples
 
-=== "Command Line"
-    This example shows how to list the tags of a directory of Compliance Rules in both tabulated and CSV formats:
-    ```shell
-    # Command usage
-    $> mettleci fabrication test
-    MettleCI Command Line (build 221)
-    (C) 2018-2022 Data Migrators Pty Ltd
-    The following option is required: [-generator]
-    Usage: fabrication test [options]
-      Options:
-      * -generator
-          the generator to test
-        -include-internal
-          include pre-existing generators from our internal libraries
-          Default: false
-        -P, -parameters
-          generator parameters
-          Syntax: -Pkey=value
-          Default: {}
-        -path
-          the path to either a folder full of generators or a single <generator>.json file
-        -rowcount
-          number of rows to generate
-          Default: 5
-    Command failed.
+This example shows how to list the tags of a directory of Compliance Rules in both tabulated and CSV formats:
 
-    # A test with the no parameters specified (which defaults to providing a quote from any Star Wars character)
-    $> mettleci fabrication test \
-          -path . \
-          -generator star_wars.quote
-    MettleCI Command Line (build 221)
-    (C) 2018-2022 Data Migrators Pty Ltd
-    fabrication test (v1.0-SNAPSHOT)
-    I will start my operations here, and pull the rebels apart piece by piece.
-    Twice the pride, double the fall.
-    Show me again, grandfather, and I will finish what you started.
-    You will remove these restraints and leave this cell with the door open.
-    You're smarter than a tree, aren't you?
+```shell
+# Command usage
+$> mettleci fabrication test
+MettleCI Command Line (build 221)
+(C) 2018-2022 Data Migrators Pty Ltd
+The following option is required: [-generator]
+Usage: fabrication test [options]
+  Options:
+  * -generator
+      the generator to test
+    -include-internal
+      include pre-existing generators from our internal libraries
+      Default: false
+    -P, -parameters
+      generator parameters
+      Syntax: -Pkey=value
+      Default: {}
+    -path
+      the path to either a folder full of generators or a single <generator>.json file
+    -rowcount
+      number of rows to generate
+      Default: 5
+Command failed.
 
-    # A test with the nullable 'character' parameter specified as 'darth_vader'
-    $> mettleci fabrication test \
-          -path . \
-          -generator star_wars.quote \
-          -Pcharacter="darth_vader"
-    MettleCI Command Line (build 221)
-    (C) 2018-2022 Data Migrators Pty Ltd
-    fabrication test (v1.0-SNAPSHOT)
-    I find your lack of faith disturbing.
-    I hope so for your sake, the Emperor is not as forgiving as I am
-    You are a member of the rebel alliance, and a traitor.
-    I hope so for your sake, the Emperor is not as forgiving as I am
-    Impressive. Most impressive. Obi-Wan has taught you well.
-    $>
-    ``` 
+# A test with the no parameters specified (which defaults to providing a quote from any Star Wars character)
+$> mettleci fabrication test \
+      -path . \
+      -generator star_wars.quote
+MettleCI Command Line (build 221)
+(C) 2018-2022 Data Migrators Pty Ltd
+fabrication test (v1.0-SNAPSHOT)
+I will start my operations here, and pull the rebels apart piece by piece.
+Twice the pride, double the fall.
+Show me again, grandfather, and I will finish what you started.
+You will remove these restraints and leave this cell with the door open.
+You're smarter than a tree, aren't you?
 
-=== "GitHub Action"
-    ???+ info "This command is not available as a GitHub Actions native action"
+# A test with the nullable 'character' parameter specified as 'darth_vader'
+$> mettleci fabrication test \
+      -path . \
+      -generator star_wars.quote \
+      -Pcharacter="darth_vader"
+MettleCI Command Line (build 221)
+(C) 2018-2022 Data Migrators Pty Ltd
+fabrication test (v1.0-SNAPSHOT)
+I find your lack of faith disturbing.
+I hope so for your sake, the Emperor is not as forgiving as I am
+You are a member of the rebel alliance, and a traitor.
+I hope so for your sake, the Emperor is not as forgiving as I am
+Impressive. Most impressive. Obi-Wan has taught you well.
+$>
+```
 
-        This command is not available as a CI/CD native task/plugin as there is no identified need for this functionality within the context of a CI/CD pipeline. If you require this functionality within your CI/CD pipeline then you can invoke the command line directly using a command line pipeline task.
+**Note**:
 
-=== "Azure DevOps Task"
-    ???+ info "This command is not available as an Azure DevOps native task"
-
-        This command is not available as a CI/CD native task/plugin as there is no identified need for this functionality within the context of a CI/CD pipeline. If you require this functionality within your CI/CD pipeline then you can invoke the command line directly using a command line pipeline task.
+This command is not available as a CI/CD native GitHib Actions or Azure DevOps task/plugin as there is no identified need for this functionality within the context of a CI/CD pipeline. If you require this functionality within your CI/CD pipeline then you can invoke the command line directly using a command line pipeline task.
 
 ---

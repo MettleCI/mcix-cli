@@ -4,11 +4,11 @@ title: MCIX Command Shell
 
 # MettleCI Command Shell
 
-The DataStage NextGen MettleCI Command Line Interface (referred to as **MCIX**) is available from either your Windows command line or Unix shell.  It provides one way of accessing MettleCI's build and deployment functions, and supports two different modes of operation: console or command line.  MettleCI commands accept various parameters which can optionally be sourced from a command file.
+The DataStage NextGen MettleCI Command Line Interface (referred to as **MCIX**) is available for the Unix (x86), Microsoft Windows, or Apple macOS (Apple Silicon) command line environments. It provides one way of accessing MettleCI's build and deployment functions, and supports two different modes of operation: **console mode** or **command mode**.  MettleCI commands accept various parameters which can optionally be sourced from a *command file*.
 
-???+ info "Note"
+**Note:**
 
-    Note that the `mcix` command is the CPD-compatible equivalent to the [Classic MettleCI Command Line Interface](https://docs.mettleci.io/cli) for DataStage v11.x which is invoked with `mettleci` (UNIX) or `mettleci.cmd` (Windows).  The `mettleci` command is not available in DataStage NextGen, and so the `mcix` command should be used instead.
+The `mcix` command is the CPD-compatible equivalent to the [Classic MettleCI Command Line Interface](https://docs.mettleci.io/cli) for DataStage v11.x which is invoked with `mettleci` (UNIX) or `mettleci.cmd` (Windows).  The `mettleci` command is not available in DataStage NextGen, and so the `mcix` command should be used instead.
 
 ## Console Mode
 
@@ -60,7 +60,7 @@ $>
 
 Note that MettleCI Command Line namespaces, commands, and options are all case sensitive. 
 
-## Use a password containing special characters
+## Use passwords containing special characters
 
 If the password contains special characters, you will need to wrap it with single or double quote or by using escape characters.
 
@@ -74,7 +74,7 @@ If the password contains special characters, you will need to wrap it with singl
 
 ## Using external command files with the MettleCI CLI
 
-MettleCI allows you to define a MettleCI command in a text-based ‘command file’ and pass the file as parameter to the MettleCI command.  This is accomplished using the '@' command syntax: 
+MettleCI allows you to define a MettleCI command in a text-based *command file* and pass the file as parameter to the MettleCI command.  This is accomplished using the `@{filename}` command syntax: 
 
 ```shell
 # Here's a typical command file
@@ -96,11 +96,11 @@ dstage1
 $> mcix @mycommand.txt
 ```
 
-Note:
+**Note:**
 
-* Each element of a command file needs to be on an individual line (i.e. separated by your operating system’s newline ASCII character combination)
+* Each element of a command file needs to be on an individual line. i.e. separated by your operating system’s newline ASCII character combination (CR/LF, for example )
 * A command file can only contain the definition of a single MettleCI command
-* You can run the MettleCI Command Line with multiple commands by invoking it with individual command files from a shell script with one command per line. E.g.
+* You can run the MettleCI Command Line with multiple commands by invoking it with individual command files from a shell script with one command per line. e.g.
 
 ```shell
 #!/usr/bin/env bash

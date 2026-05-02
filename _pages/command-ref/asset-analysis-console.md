@@ -16,16 +16,11 @@ The Asset Analysis Console is a [REPL](https://en.wikipedia.org/wiki/Read%E2%80%
 
 ![asset-analysis console](img/asset-analysis-console.svg "asset-analysis console syntax")
 
-Blah ...
-
 ## Parameters
 
-- **-assets** *(Required)*
-
-    Path to DataStage export zip file or directory
-
-
-
+| Name        | Required | Default  | Description |
+| :-------    | :------- | :------- | :-------    |
+| **-assets** | Yes      | -        | Path to DataStage export zip file or directory
 
 ## Using the Console
 
