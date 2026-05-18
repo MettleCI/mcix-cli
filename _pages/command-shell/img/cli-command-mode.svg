@@ -1,0 +1,52 @@
+<svg class="railroad-diagram" height="191" viewBox="0 0 753.0 191" width="753.0" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g>
+<style>/* <![CDATA[ */
+	svg.railroad-diagram {
+		background-color: white;
+	}
+	svg.railroad-diagram path {
+		stroke-width:2;
+		stroke:black;
+		fill: rgba(255, 255, 255, 1.0);
+	}
+	svg.railroad-diagram text {
+		font:bold 14px monospace;
+		text-anchor:middle;
+	}
+	svg.railroad-diagram text.arrow {
+		font:bold 24px monospace;
+		text-anchor:middle;
+	}
+	svg.railroad-diagram text.label{
+		text-anchor:start;
+	}
+	svg.railroad-diagram text.comment{
+		font:italic 12px monospace;
+	}
+	svg.railroad-diagram rect{
+		stroke-width:2;
+		stroke:black;
+		fill:white;
+	}
+
+/* ]]> */
+</style><g>
+<path d="M20 21v20m10 -20v20m-10 -10h20"></path></g><path d="M40 31h10"></path><g class="non-terminal">
+<path d="M50 31h0"></path><path d="M104.0 31h0.0"></path><rect height="22" width="54.0" x="50" y="20"></rect><text x="77.0" y="35">mcix</text></g><path d="M104.0 31h10"></path><g>
+<path d="M114.0 31h0"></path><path d="M713.0 31h0.0"></path><path d="M114.0 31h20"></path><g class="terminal">
+<path d="M134.0 31h0"></path><path d="M188.0 31h505.0"></path><rect height="22" rx="10" ry="10" width="54.0" x="134.0" y="20"></rect><text x="161.0" y="35">help</text></g><path d="M693.0 31h20"></path><path d="M114.0 31a10 10 0 0 1 10 10v10a10 10 0 0 0 10 10"></path><g>
+<path d="M134.0 61h0"></path><path d="M693.0 61h0.0"></path><g class="non-terminal">
+<path d="M134.0 61h0"></path><path d="M247.5 61h0.0"></path><rect height="22" width="113.5" x="134.0" y="50"></rect><text x="190.75" y="65">{namespace}</text></g><path d="M247.5 61h10"></path><g>
+<path d="M257.5 61h0"></path><path d="M693.0 61h0.0"></path><path d="M257.5 61h20"></path><g class="terminal">
+<path d="M277.5 61h0"></path><path d="M331.5 61h341.5"></path><rect height="22" rx="10" ry="10" width="54.0" x="277.5" y="50"></rect><text x="304.5" y="65">help</text></g><path d="M673.0 61h20"></path><path d="M257.5 61a10 10 0 0 1 10 10v10a10 10 0 0 0 10 10"></path><g>
+<path d="M277.5 91h0"></path><path d="M673.0 91h0.0"></path><g class="non-terminal">
+<path d="M277.5 91h0"></path><path d="M374.0 91h0.0"></path><rect height="22" width="96.5" x="277.5" y="80"></rect><text x="325.75" y="95">{command}</text></g><path d="M374.0 91h10"></path><g>
+<path d="M384.0 91h0"></path><path d="M673.0 91h0.0"></path><path d="M384.0 91h20"></path><g class="terminal">
+<path d="M404.0 91h0"></path><path d="M458.0 91h195.0"></path><rect height="22" rx="10" ry="10" width="54.0" x="404.0" y="80"></rect><text x="431.0" y="95">help</text></g><path d="M653.0 91h20"></path><path d="M384.0 91a10 10 0 0 1 10 10v0a10 10 0 0 0 10 10"></path><g>
+<path d="M404.0 111h249.0"></path></g><path d="M653.0 111a10 10 0 0 0 10 -10v0a10 10 0 0 1 10 -10"></path><path d="M384.0 91a10 10 0 0 1 10 10v19a10 10 0 0 0 10 10"></path><g>
+<path d="M404.0 130h0"></path><path d="M653.0 130h0.0"></path><path d="M434.0 130h10"></path><g class="non-terminal">
+<path d="M444.0 130h0"></path><path d="M523.5 130h99.5"></path><rect height="22" width="79.5" x="444.0" y="119"></rect><text x="483.75" y="134">-option</text></g><path d="M623.0 130h10"></path><path d="M434.0 130v20a10 10 0 0 0 10 10"></path><g>
+<path d="M444.0 160h0"></path><path d="M623.0 160h0.0"></path><g class="non-terminal">
+<path d="M444.0 160h0"></path><path d="M523.5 160h0.0"></path><rect height="22" width="79.5" x="444.0" y="149"></rect><text x="483.75" y="164">-option</text></g><path d="M523.5 160h10"></path><path d="M533.5 160h10"></path><g class="terminal">
+<path d="M543.5 160h0"></path><path d="M623.0 160h0.0"></path><rect height="22" rx="10" ry="10" width="79.5" x="543.5" y="149"></rect><text x="583.25" y="164">{value}</text></g></g><path d="M623.0 160a10 10 0 0 0 10 -10v-10"></path><g class="diagram-text">
+<title>take one or more branches, once each, in any order</title><path class="diagram-text" d="M 434.0 120 h -26 a 4 4 0 0 0 -4 4 v 12 a 4 4 0 0 0 4 4 h 26 z"></path><text class="diagram-text" x="419.0" y="134">1+</text><path class="diagram-text" d="M 633.0 120 h 16 a 4 4 0 0 1 4 4 v 12 a 4 4 0 0 1 -4 4 h -16 z"></path><text class="diagram-arrow" x="643.0" y="134">↺</text></g></g><path d="M653.0 130a10 10 0 0 0 10 -10v-19a10 10 0 0 1 10 -10"></path></g></g><path d="M673.0 91a10 10 0 0 0 10 -10v-10a10 10 0 0 1 10 -10"></path></g></g><path d="M693.0 61a10 10 0 0 0 10 -10v-10a10 10 0 0 1 10 -10"></path></g><path d="M 713.0 31 h 20 m -10 -10 v 20 m 10 -20 v 20"></path></g></svg>

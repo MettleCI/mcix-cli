@@ -1,0 +1,77 @@
+name: Publish mcix binary release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version without leading v, e.g. 1.2.3"
+        required: true
+      artifact_url:
+        description: "URL to zip/tar containing prebuilt mcix binaries"
+        required: true
+
+permissions:
+  contents: write
+  id-token: write
+  attestations: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment: release
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download supplied binaries
+        run: |
+          set -euo pipefail
+          mkdir -p incoming dist
+
+          curl -L \
+            --fail \
+            --output incoming/mcix-release-input.zip \
+            "${{ inputs.artifact_url }}"
+
+          unzip incoming/mcix-release-input.zip -d incoming
+
+      - name: Validate expected assets
+        run: |
+          set -euo pipefail
+
+          required=(
+            mcix_darwin_arm64
+            mcix_linux_amd64
+            mcix_windows_amd64.exe
+          )
+
+          for file in "${required[@]}"; do
+            test -f "incoming/$file" || {
+              echo "Missing required binary: $file"
+              exit 1
+            }
+          done
+
+          cp incoming/mcix_* dist/
+          chmod +x dist/mcix_* || true
+
+      - name: Generate checksums
+        run: |
+          cd dist
+          sha256sum mcix_* > checksums.txt
+
+      - name: Attest supplied binaries
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: dist/mcix_*
+
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="v${{ inputs.version }}"
+
+          gh release create "$TAG" \
+            dist/* \
+            --title "${{ inputs.version }}" \
+            --notes "mcix ${{ inputs.version }}"

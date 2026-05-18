@@ -4,7 +4,8 @@
     "items": [
       {
         "title": "GitHub repository",
-        "url": "https://github.ibm.com/RODET/jekyll-carbon"
+        "url": "https://github.com/mettleci/mcix-cli",
+        "target": "_blank"
       },
       {
         "title": "#carbon-jekyll",
@@ -16,8 +17,8 @@
     "title": "w3",
     "items": [
       {
-        "title": "About w3",
-        "url": "https://w3.ibm.com/w3publisher/about-w3"
+        "title": "Software licenses",
+        "url": "https://docs.datamigrators.com/"
       },
       {
         "title": "Terms of use",
@@ -30,7 +31,7 @@
     ]
   },
   {
-    "title": " ",
+    "title": "MettleCI",
     "items": [
       {
         "title": "Data Migrators",

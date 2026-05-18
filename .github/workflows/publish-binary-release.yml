@@ -1,0 +1,101 @@
+name: Publish binary release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version without leading v, e.g. 1.2.3"
+        required: true
+      staging_tag:
+        description: "Draft/staging release tag containing input ZIP"
+        required: true
+        default: "staging-v1.2.3"
+      input_zip:
+        description: "Name of uploaded ZIP asset"
+        required: true
+        default: "mcix-release-input-v1.2.3.zip"
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment: release
+
+    steps:
+      - name: Download staged input ZIP
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+
+          mkdir -p incoming dist
+
+          gh release download "${{ inputs.staging_tag }}" \
+            --pattern "${{ inputs.input_zip }}" \
+            --dir incoming
+
+          unzip "incoming/${{ inputs.input_zip }}" -d incoming/unpacked
+
+      - name: Locate unpacked binaries
+        run: |
+          set -euo pipefail
+
+          ROOT="$(find incoming/unpacked -type f -name 'mcix_linux_amd64' -exec dirname {} \; | head -n 1)"
+
+          if [ -z "$ROOT" ]; then
+            echo "Could not locate unpacked mcix binaries"
+            exit 1
+          fi
+
+          echo "BINARY_ROOT=$ROOT" >> "$GITHUB_ENV"
+
+      - name: Validate supplied binaries
+        run: |
+          set -euo pipefail
+
+          required=(
+            mcix_darwin_arm64
+            mcix_linux_amd64
+            mcix_windows_amd64.exe
+          )
+
+          for file in "${required[@]}"; do
+            if [ ! -f "$BINARY_ROOT/$file" ]; then
+              echo "Missing required binary: $file"
+              exit 1
+            fi
+          done
+
+          cp "$BINARY_ROOT"/mcix_* dist/
+          chmod +x dist/mcix_* || true
+
+      - name: Smoke test Linux binary
+        run: |
+          set -euo pipefail
+
+          ./dist/mcix_linux_amd64 --version || {
+            echo "mcix_linux_amd64 --version failed"
+            exit 1
+          }
+
+      - name: Generate checksums
+        run: |
+          set -euo pipefail
+
+          cd dist
+          sha256sum mcix_* > checksums.txt
+
+      - name: Create final GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+
+          TAG="v${{ inputs.version }}"
+
+          gh release create "$TAG" \
+            dist/* \
+            --title "${{ inputs.version }}" \
+            --notes "mcix ${{ inputs.version }}"

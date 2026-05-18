@@ -1,6 +1,9 @@
 ---
+title: DataStage Namespace
+description: Providing interaction with IBM DataStage NextGen
 status: reviewed #Status can be draft, reviewed or published. 
 owner: John McKeever
+type: namespace
 tags:
   - CLI
   - Pipelines
@@ -14,7 +17,7 @@ The datastage namespace contains commands for working with IBM Cloud Pak for Dat
 
 ![datastage compile syntax](img/datastage-compile.svg "datastage compile syntax")
 
-Compiles a DataStage Job producing a JUnit-compatible testing output that can be utilised by built tools orchestrating a CI/CD pipeline.  This command produces a [JUnit-compatible](https://junit.org/) XML file called `mettleci_compilation.xml` which reports each individual job’s compilation result.
+Compiles a DataStage Job, producing a [JUnit-compatible](../command-shell/junit-output) test output XML file which reports each individual job’s compilation result.
 
 #### Parameters
 
@@ -82,8 +85,8 @@ Exports DataStage assets from a DataStage CP4D/CP4DaaS project to a destination 
 | **url**           | Yes | - | Base url of CP4D/CP4DaaS |
 | **user**          | Yes | - | CP4D/CP4DaaS username |
 | **export-path**   | Yes    | - | Path to DataStage export zip file or directory |
-| **project**       | Yes<br/>*(when `-project-id` not specified)* | - | Name of target project |
-| **project-id**    | Yes<br/>*(when `-project` not specified)*    | - | Id of target project |
+| **project**       | Yes<br/>*(when `project-id` not specified)* | - | Name of target project |
+| **project-id**    | Yes<br/>*(when `project` not specified)*    | - | Id of target project |
 | **include-binaries** | -   | False | Whether to include executable binaries in the export |
 
 #### Examples
@@ -133,7 +136,8 @@ mcix datastage export \
 
 ![datastage import syntax](img/datastage-import.svg "datastage import syntax")
 
-Imports DataStage assets from a DataStage export zip file or directory into a CP4D/CP4DaaS project.  This command produces a [JUnit-compatible](https://junit.org/) XML file called `mettleci_import.xml` which reports each individual asset’s import result.
+Imports DataStage assets from a DataStage export zip file or directory into a CP4D/CP4DaaS project.  This command produces a [JUnit-compatible](../command-shell/junit-output) test output XML file which reports each individual job’s import status.
+
 
 #### Parameters
 
@@ -143,8 +147,8 @@ Imports DataStage assets from a DataStage export zip file or directory into a CP
 | **url**           | Yes      | -        | Base url of CP4D/CP4DaaS |
 | **user**          | Yes      | -        | CP4D/CP4DaaS username |
 | **assets**        | Yes      | -        | Path to DataStage export zip file or directory |
-| **project**       | Yes<br/>*(when `-project-id` not specified)* | - | Name of target project |
-| **project-id**    | Yes<br/>*(when `-project` not specified)* | - | Id of target project | 
+| **project**       | Yes<br/>*(when `project-id` not specified)* | - | Name of target project |
+| **project-id**    | Yes<br/>*(when `project` not specified)* | - | Id of target project | 
 
 #### Examples
 

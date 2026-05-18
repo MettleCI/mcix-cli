@@ -1,0 +1,14 @@
+{
+  "name": "jekyll",
+  "image": "mcr.microsoft.com/devcontainers/ruby:1-3.3-bullseye",
+  "postCreateCommand": "bundle install",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "esbenp.prettier-vscode",
+        "GenAITools.wca-at-ibm",
+        "IBM.wca-core"
+      ]
+    }
+  }
+}

@@ -1,5 +1,7 @@
 ---
-title: MettleCI MCIX Command Line Interface
+title: MCIX Command Line Interface
+description: Modern software delivery for IBM DataStage NextGen
+banner_src: ../../assets/img/banner.jpeg
 ---
 
 <script type="module" src="https://1.www.s81c.com/common/carbon-for-ibm-dotcom/version/v2.8.0/card-group.min.js"></script>
@@ -10,33 +12,65 @@ title: MettleCI MCIX Command Line Interface
 <c4d-link-list type="default" slot="complementary">
   <c4d-link-list-heading>Resources</c4d-link-list-heading>
   <c4d-link-list-item
-    href="https://docs.mettleci.com/"
+    href="https://github.com/mettleci/mcix-cli/releases"
+    target="mcix-releases"
+    cta-type="local"
+  >
+    MCIX Releases
+  </c4d-link-list-item>
+  <c4d-link-list-item
+    href="http://nextgen.mettleci.io/"
+    target="mcix-docs"
     cta-type="local"
   >
     MettleCI Documentation
   </c4d-link-list-item>
+
   <c4d-link-list-item
     href="https://github.com/mettleci/mcix"
+    target="mcix-github"
     cta-type="external"
   >
     MCIX GitHub Actions
   </c4d-link-list-item>
+
+  <c4d-link-list-item
+    href="https://dev.azure.com/mettleci/mcix"
+    target="mcix-azure"
+    cta-type="external"
+  >
+    MCIX Azure DevOps Tasks
+  </c4d-link-list-item>
 </c4d-link-list>
 
-## Get started
+## Welcome to MCIX
 
-Start by seeing the [repository releases](https://github.com/mettleci/mcix-cli/releases) for the latest version of the MettleCI MCIX Command Line Interface.
+This documentation provides an introduction to the MCIX Command Line Interface for IBM DataStage NextGen.  It is compatible with DataStage NextGen running on both self-hosted and Software-as-a-Service instances. 
 
-## Pages
+The MCIX CLI tool is available for **Linux (x86)**, **Windows (x86)**, and **macOS (ARM64)**. The information presented on this site represents the latest version of the tool which can be downloaded  [here](https://github.com/mettleci/mcix-cli/releases/latest){:target="_blank" rel="noopener"}. 
 
-Browse the topics covered in this documentation.
+## Start here
 
+{% assign intro_pages = site.pages | where: "type", "introduction" | sort: "order" %}
 <c4d-card-group>
-  {% for page in site.pages %}
+  {% for page in intro_pages %}
     <c4d-card-group-item cta-type="local" href="{{ site.baseurl }}{{ page.url }}">
       <c4d-card-heading>{{ page.title }}</c4d-card-heading>
-      <p>{{ page.excerpt | strip_html | truncatewords: 10 }}</p>
-      <c4d-card-footer> </c4d-card-footer>
+      <p>{{ page.description | strip_html | truncatewords: 10 }}</p>
+      <c4d-card-footer></c4d-card-footer>
+    </c4d-card-group-item>
+  {% endfor %}
+</c4d-card-group>
+
+## Command reference
+
+{% assign namespace_pages = site.pages | where: "type", "namespace" %}
+<c4d-card-group>
+  {% for page in namespace_pages %}
+    <c4d-card-group-item cta-type="local" href="{{ site.baseurl }}{{ page.url }}">
+      <c4d-card-heading>{{ page.title }}</c4d-card-heading>
+      <p>{{ page.description | strip_html | truncatewords: 10 }}</p>
+      <c4d-card-footer></c4d-card-footer>
     </c4d-card-group-item>
   {% endfor %}
 </c4d-card-group>

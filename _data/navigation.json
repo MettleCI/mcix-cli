@@ -3,38 +3,39 @@
     "title": "Getting started",
     "submenu": [
       {
-        "title": "Overview",
+        "title": "Engineering excellence",
+        "url": "/engx/engx"
+      },
+      {
+        "title": "Introduction",
         "url": "/getting-started"
       },
       {
-        "title": "Local development",
-        "url": "/getting-started/local-development"
+        "title": "Native CI/CD tasks",
+        "url": "/getting-started/native-tasks"
       }
     ]
   },
   {
-    "title": "Markdown demo",
-    "url": "/md-demo"
-  },
-  {
-    "title": "Engineering excellence",
-    "url": "/engx"
+    "title": "Command Shell",
+    "submenu": [
+      {
+        "title": "Command shell",
+        "url": "/command-shell/command-shell"
+      },
+      {
+        "title": "CLI plugins",
+        "url": "/command-shell/cli-plugins"
+      },
+      {
+        "title": "JUnit output",
+        "url": "/command-shell/junit-output"
+      }
+    ]
   },
   {
     "title": "Command Reference",
     "submenu": [
-      {
-        "title": "MCIX Command Shell",
-        "url": "/command-ref/command-shell"
-      },
-      {
-        "title": "MCIX Asset-Analysis Console",
-        "url": "/command-ref/asset-analysis-console"
-      },
-      {
-        "title": "Asset-Analysis Namespace",
-        "url": "/command-ref/asset-analysis-namespace"
-      },
       {
         "title": "DataStage Namespace",
         "url": "/command-ref/datastage-namespace"

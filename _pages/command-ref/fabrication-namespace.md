@@ -1,6 +1,9 @@
 ---
+title: Fabrication Namespace
+description: Supporting the creation and execution of synthetic test data
 status: reviewed #Status can be draft, reviewed or published. 
 owner: John McKeever
+type: namespace
 tags:
   - DataStage
   - Data Fabrication
@@ -20,15 +23,13 @@ This command lists all the MettleCI data fabrication generators available in eit
 
 | Name                  | Required | Default  | Description |
 | :-------              | :------- | :------- | :-------    |
-| **P, -parameters**   | -        | -        | Generator parameters<br/>Syntax: `-Pkey=value` |
-| **generator**        | Yes      | -        | The generator to test |
-| **rowcount**         | -        | -        | Number of rows to generate |
-| **path**             | -        | -        | The path to either a folder full of generators or a single `<generator>.json` file |
-| **include-internal** | -        | -        | Include pre-existing generators from MettleCI's internal libraries |
+| **include-internal**  | Yes<br/>*(when path not specified)*              | - | Use pre-existing generators from MettleCI's internal libraries |
+| **path**              | Yes<br/>*(when include-internal not specified)*  | - | The path to either a folder full of generators or a single `<generator>.json` file |
+| **include-params**  | -        | -        |  Display parameters for each generator |
 
 #### Examples
 
-This example shows how to list the tags of a directory of Compliance Rules in both tabulated and CSV formats:
+This example shows how to list the data fanbrication gneerators in a supplied user-created `.json` bundle file:
 
 ```shell
 # Command usage
@@ -47,7 +48,8 @@ Usage: fabrication list [options]
     -path
       the path for any custom generators to be tested
 Command failed.
-
+```
+```shell
 # Listing the capabilities of custom 'Star Wars' generator
 $> mettleci fabrication list -path star_wars.json
 MettleCI Command Line (build 221)
@@ -69,7 +71,8 @@ star_wars.vehicle
     Description: Generates a random Star Wars vehicle name
 star_wars.wookiee_word
     Description: Generates a random Wookiee word
-
+```
+```shell
 # Showing generator parameters
 $> mettleci fabrication list -path star_wars.json -include-params
 MettleCI Command Line (build 221)
@@ -98,7 +101,7 @@ $>
 
 **Note**:
 
-This command is not available as a CI/CD native GitHib Actions or Azure DevOps task/plugin as there is no identified need for this functionality within the context of a CI/CD pipeline. If you require this functionality within your CI/CD pipeline then you can invoke the command line directly using a command line pipeline task.
+This command is not available as a CI/CD native GitHub Actions or Azure DevOps task/plugin as there is no identified need for this functionality within the context of a CI/CD pipeline. If you require this functionality within your CI/CD pipeline then you can invoke the command line directly using a command line pipeline task.
 
 ---
 
@@ -148,7 +151,8 @@ Usage: fabrication test [options]
       number of rows to generate
       Default: 5
 Command failed.
-
+```
+```shell
 # A test with the no parameters specified (which defaults to providing a quote from any Star Wars character)
 $> mettleci fabrication test \
       -path . \
@@ -161,7 +165,8 @@ Twice the pride, double the fall.
 Show me again, grandfather, and I will finish what you started.
 You will remove these restraints and leave this cell with the door open.
 You're smarter than a tree, aren't you?
-
+```
+```shell
 # A test with the nullable 'character' parameter specified as 'darth_vader'
 $> mettleci fabrication test \
       -path . \
@@ -178,8 +183,6 @@ Impressive. Most impressive. Obi-Wan has taught you well.
 $>
 ```
 
-**Note**:
-
-This command is not available as a CI/CD native GitHib Actions or Azure DevOps task/plugin as there is no identified need for this functionality within the context of a CI/CD pipeline. If you require this functionality within your CI/CD pipeline then you can invoke the command line directly using a command line pipeline task.
+**Note**: This command is not available as a CI/CD native GitHub Action or Azure DevOps extension as there is no identified need for this functionality within the context of a CI/CD pipeline. If you require this functionality within your CI/CD pipeline then you can invoke the command line directly using a command line pipeline task.
 
 ---

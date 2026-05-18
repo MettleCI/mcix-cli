@@ -1,0 +1,42 @@
+<svg class="railroad-diagram" height="122" viewBox="0 0 394.5 122" width="394.5" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g>
+<style>/* <![CDATA[ */
+	svg.railroad-diagram {
+		background-color: white;
+	}
+	svg.railroad-diagram path {
+		stroke-width:2;
+		stroke:black;
+		fill: rgba(255, 255, 255, 1.0);
+	}
+	svg.railroad-diagram text {
+		font:bold 14px monospace;
+		text-anchor:middle;
+	}
+	svg.railroad-diagram text.arrow {
+		font:bold 24px monospace;
+		text-anchor:middle;
+	}
+	svg.railroad-diagram text.label{
+		text-anchor:start;
+	}
+	svg.railroad-diagram text.comment{
+		font:italic 12px monospace;
+	}
+	svg.railroad-diagram rect{
+		stroke-width:2;
+		stroke:black;
+		fill:white;
+	}
+
+/* ]]> */
+</style><g>
+<path d="M20 21v20m10 -20v20m-10 -10h20"></path></g><path d="M40 31h10"></path><g class="non-terminal">
+<path d="M50 31h0"></path><path d="M104.0 31h0.0"></path><rect height="22" width="54.0" x="50" y="20"></rect><text x="77.0" y="35">mcix</text></g><path d="M104.0 31h10"></path><g>
+<path d="M114.0 31h0"></path><path d="M354.5 31h0.0"></path><path d="M114.0 31h20"></path><g class="terminal">
+<path d="M134.0 31h0"></path><path d="M188.0 31h146.5"></path><rect height="22" rx="10" ry="10" width="54.0" x="134.0" y="20"></rect><text x="161.0" y="35">help</text></g><path d="M334.5 31h20"></path><path d="M114.0 31a10 10 0 0 1 10 10v10a10 10 0 0 0 10 10"></path><g>
+<path d="M134.0 61h0"></path><path d="M334.5 61h0.0"></path><g class="non-terminal">
+<path d="M134.0 61h0"></path><path d="M205.0 61h0.0"></path><rect height="22" width="71.0" x="134.0" y="50"></rect><text x="169.5" y="65">system</text></g><path d="M205.0 61h10"></path><g>
+<path d="M215.0 61h0"></path><path d="M334.5 61h0.0"></path><path d="M215.0 61h20"></path><g class="terminal">
+<path d="M235.0 61h0"></path><path d="M289.0 61h25.5"></path><rect height="22" rx="10" ry="10" width="54.0" x="235.0" y="50"></rect><text x="262.0" y="65">help</text></g><path d="M314.5 61h20"></path><path d="M215.0 61a10 10 0 0 1 10 10v10a10 10 0 0 0 10 10"></path><g class="non-terminal">
+<path d="M235.0 91h0"></path><path d="M314.5 91h0.0"></path><rect height="22" width="79.5" x="235.0" y="80"></rect><text x="274.75" y="95">version</text></g><path d="M314.5 91a10 10 0 0 0 10 -10v-10a10 10 0 0 1 10 -10"></path></g></g><path d="M334.5 61a10 10 0 0 0 10 -10v-10a10 10 0 0 1 10 -10"></path></g><path d="M 354.5 31 h 20 m -10 -10 v 20 m 10 -20 v 20"></path></g></svg>

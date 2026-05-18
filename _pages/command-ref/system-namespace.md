@@ -1,6 +1,9 @@
 ---
+title: System Namespace
+description: Diagnostic information about your MCIX CLI environment
 status: reviewed #Status can be draft, reviewed or published. 
 owner: John McKeever
+type: namespace
 tags:
   - Pipeline
   - CLI

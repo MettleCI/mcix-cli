@@ -1,0 +1,7 @@
+title: Testing Patterns
+nav:
+    - testing-datastage-subflows.md
+    - testing-datastage-surrogate-key-generators.md
+    - testing-datastage-flow-rejects.md
+    - testing-datastage-stored-procedures.md
+    - testing-flows-using-datetime-references.md

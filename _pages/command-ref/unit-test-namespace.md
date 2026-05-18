@@ -1,6 +1,9 @@
 ---
+title: Unit Test Namespace
+description: Performing MettleCI Unit Tesst operations
 status: reviewed #Status can be draft, reviewed or published. 
 owner: John McKeever
+type: namespace
 tags:
   - DataStage
   - Running Tests
@@ -35,7 +38,7 @@ mcix unittest generate \
 
 **Note**:
 
-This command is not available as a CI/CD native GitHib Actions or Azure DevOps task/plugin as there is no identified need for this functionality within the context of a CI/CD pipeline. If you require this functionality within your CI/CD pipeline then you can invoke the command line directly using a command line pipeline task.
+This command is not available as a CI/CD native GitHub Actions or Azure DevOps task/plugin as there is no identified need for this functionality within the context of a CI/CD pipeline. If you require this functionality within your CI/CD pipeline then you can invoke the command line directly using a command line pipeline task.
 
 ---
 
@@ -67,20 +70,21 @@ See [Repeatable DataStage Project Deployments]() for more details on how the -pr
 
 ### The 'ignore-test-failures' option
 
-MettleCI unit tests can be executed in two ways: 
+MettleCI unit tests can be invoked in a number of ways: 
 
 1. Manually, using the Cloud Pak interface, or
-2. From the command line using the `mcix unit-test execute` command.
+2. From the command line using the `mcix unit-test execute` command, or
+3. Using a native CI/CD task/action in a supported platform (currently GitHub and Azure DevOps)
 
 When using the MettleCI command line to execute unit tests from within a build orchestration system (Jenkins, GitHub Actions, Bamboo, etc.) it’s important to understand how the `mcix unit-test execute` command and your build system interact.
 
 Calling the `mcix unit-test execute` command has three potential outcomes:
 
-* The command executes successfully and runs a unit test which passes,
-* The command executes successfully and runs a unit test which fails, or
-* The command fails to execute for any reason, and the unit test is never invoked (e.g. due to a misconfigured parameter such as referencing a non-existent unit test)
+* The command executes **successfully** and runs a unit test which **passes**,
+* The command executes **successfully** and runs a unit test which **fails**, or
+* The command **fails to execute** and the unit test is never invoked. e.g., due to a misconfigured parameter such as referencing a non-existent unit test.
 
-Like all shell commands, the `mcix unit-test execute` command returns an [exit code](https://en.wikipedia.org/wiki/Exit_status) informing the host system of the success, or otherwise, of the invoked process - in this case a DataStage test case. By default, the `mcix unit-test execute` command returns a non-zero (failure) result when either the command cannot complete or **when a unit test fails**. For many build orchestration systems this will cause the build to fail instantly and, most importantly, prevent the publication of the failed test’s associated [JUnit XML file](https://junit.org), making the process of diagnosing the test failure difficult.
+Like all shell commands, the `mcix unit-test execute` command returns an [exit code](https://en.wikipedia.org/wiki/Exit_status){:target="_blank" rel="noopener"} informing the host system of the success, or otherwise, of the invoked process - in this case a DataStage test case. By default, the `mcix unit-test execute` command returns a non-zero (failure) result when either the command cannot complete or **when a unit test fails**. For many build orchestration systems this will cause the build to fail instantly and, most importantly, prevent the publication of the failed test’s associated [JUnit XML file](https://junit.org){:target="_blank" rel="noopener"}, making the process of diagnosing the test failure difficult.
 
 The `mcix unit-test execute -ignore-test-failures` option will prevent a failing unit test from being interpreted as a command failure by your build system, and consequently halting your CI/CD pipeline.
 

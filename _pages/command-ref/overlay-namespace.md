@@ -1,6 +1,9 @@
 ---
+title: Overlay Namespace
+description: Enabling the automated adaptation of assets to target environments
 status: reviewed #Status can be draft, reviewed or published. 
 owner: John McKeever
+type: namespace
 tags:
   - Pipeline
   - CLI
@@ -13,7 +16,7 @@ The `overlay` namespace contains commands wich enable you to define and apply ch
 
 ![overlay apply](img/overlay-apply.svg "overlay apply syntax")
 
-This command applies changes - defined in a [json5-formatted](https://json5.org/) overlay file - to one or more specified DataStage assets supplied in a directory or `.zip` file.
+This command applies changes - defined in a [json5-formatted](https://json5.org/){:target="_blank" rel="noopener"} overlay file - to one or more specified DataStage assets supplied in a directory or `.zip` file.
 
 #### Parameters
 
@@ -40,28 +43,28 @@ mcix overlay apply \
 
 ```yaml
 - name: Overlay apply using mcix overlay apply action
-uses: mettleci/mcix/overlay/apply@latest
-id: mcix-overlay-apply
-with:
-    assets: "${{ github.workspace }}/datastage"
-    output: "${{ github.workspace }}/something-something"
-    overlay: "${{ github.workspace }}/overlay-file"
-    properties: "${{ github.workspace }}/peroperties-file"
+  uses: mettleci/mcix/overlay/apply@latest
+  id: mcix-overlay-apply
+  with:
+      assets: "${{ github.workspace }}/datastage"
+      output: "${{ github.workspace }}/something-something"
+      overlay: "${{ github.workspace }}/overlay-file"
+      properties: "${{ github.workspace }}/peroperties-file"
 ```
 
 ##### Azure DevOps Task
 
 ```yaml
 - task: mcixOverlayApply@1
-inputs:
-    assets: 'datastage'
-    overlays: |
-    '$(Build.SourcesDirectory)/overlays/common'
-    '$(Build.SourcesDirectory)/overlays/${{ parameters.EnvironmentID }}'
-    properties: '$(Build.SourcesDirectory)/varfiles/var.${{ parameters.EnvironmentID }}'
-    output: '$(Build.SourcesDirectory)/release.zip'
-    imageName: 'mettleci.azurecr.io/mettleci/mcix'
-displayName: 'Apply Overlays to Assets'
+  displayName: 'Apply Overlays to Assets'
+  inputs:
+      assets: 'datastage'
+      overlays: |
+      '$(Build.SourcesDirectory)/overlays/common'
+      '$(Build.SourcesDirectory)/overlays/${{ parameters.EnvironmentID }}'
+      properties: '$(Build.SourcesDirectory)/varfiles/var.${{ parameters.EnvironmentID }}'
+      output: '$(Build.SourcesDirectory)/release.zip'
+      imageName: 'mettleci.azurecr.io/mettleci/mcix'
 ```
 
 ---

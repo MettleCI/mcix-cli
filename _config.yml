@@ -18,12 +18,12 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 
-title: MettleCI Releases
+title: MCIX CLI
 email: John.McKeever1@ibm.com
 description: >- # this means to ignore newlines until "plugins:"
-  Write an awesome description for your new site here. You can edit this line in
-  _config.yml. It will appear in your document head meta (for Google search
-  results) and in your feed.xml site description.
+  A guide to the MettleCI MCIX Command Line Interface (CLI) tool, which provides a 
+  unified interface for interacting with MettleCI's various services and features in
+  DataStage NextGen.
 
 # Exclude from processing.
 # The following items will not be processed, by default.

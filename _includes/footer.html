@@ -3,7 +3,7 @@
     <div class="cds--subgrid">
       <div class="cds--sm:col-span-4 cds--md:col-span-8 cds--lg:col-span-4">
         <div class="cj--footer__title">{{ site.title }}</div>
-        Last updated: {{ site.time | date: "%Y-%m-%d" }}
+        Last updated on {{ site.time | date: "%Y-%m-%d" }}
       </div>
       {% for group in site.data.footer %}
       <div class="cds--sm:col-span-4 cds--md:col-span-4 cds--lg:col-span-4">
