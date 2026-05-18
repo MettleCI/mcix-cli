@@ -23,7 +23,14 @@ description: Native MCIX tasks for popular CI/CD orchestration tools
     target="mcix-azure"
     cta-type="external"
   >
-    MCIX Azure DevOps Tasks
+    MCIX for Azure DevOps on Visual Studio Marketplace
+  </c4d-link-list-item>
+  <c4d-link-list-item
+    href="https://marketplace.visualstudio.com/items?itemName=MettleCI.mcix"
+    target="mcix-jenkins"
+    cta-type="external"
+  >
+    MCIX Jenkins Custom Tasks on GitHub
   </c4d-link-list-item>
 </c4d-link-list>
 
@@ -33,7 +40,7 @@ As well being available as a terminal command and a Docker container image, the 
 
 When using GitHub as your CI/CD orchestration tool you can take advantage of the **MCIX GitHub Actions** available in the [GitHub Marketplace](https://github.com/marketplace?query=mcix){:target="_blank" rel="noopener"}. These actions provide GitHub-native tasks which are underpinned by the MCIX container image. The GitHub native tasks provide richer deeper integration and richer feedback than terminal commands while also requiring no additional infrastructure, oer the use of remote GitHub runners. For example:
 
-**Command Line**
+#### Command Line Pipeline Task
 
 ```yaml
 jobs:
@@ -50,7 +57,7 @@ jobs:
           -export-path ${EXPORT_PATH}
 ```
 
-**GitHub Actions Native Action**
+#### GitHub Actions Native Action
 
 ```yaml
 jobs:
@@ -134,9 +141,9 @@ jobs:
 
 ## Azure DevOps Task Extension
 
-Like GitHub users, Azure DevOps users can also take advantage of native pipeline tasks. The **MCIX Azure DevOps Task Extension**, available in the [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=MettleCI.mcix){:target="_blank" rel="noopener"} provides a number of native tasks for use in Azure DevOps CI/CD pipelines - again, underpinned by the MCIX container image. For example:
+Like GitHub users, Azure DevOps users (both Server and SaaS) can also take advantage of native pipeline tasks. The **MCIX Azure DevOps Task Extension**, available in the [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=MettleCI.mcix){:target="_blank" rel="noopener"} provides a number of native tasks for use in Azure DevOps CI/CD pipelines - again, underpinned by the MCIX container image which is nosted automtically by your Azure DevOps runner. For example:
 
-**Command Line**
+#### Command Line Pipeline Task
 
 ```yaml
 - stage: Export
@@ -155,7 +162,7 @@ Like GitHub users, Azure DevOps users can also take advantage of native pipeline
           displayName: "Run export command"
 ```
 
-**Azure DevOps Native Task**
+#### Azure DevOps Native Task
 
 ```yaml
 - stage: Export
@@ -243,62 +250,44 @@ Like GitHub users, Azure DevOps users can also take advantage of native pipeline
 
 ## Jenkins Custom Tasks
 
-DataStage users who use Jenkins for their CI/CD pipelines can make use of the MCIX Jenkins Library to provide their pipelines with native MCIX steps.
+Jenkins supports Docker-based tasks primarily through two distinct mechanisms: 
 
-**Command line**
+1. The [Docker Pipeline plugin](https://plugins.jenkins.io/docker-workflow/){:target="_blank" rel="noopener"} enabling inline container usage within Jenkinsfiles. In this approach the stage runs inside the MCIX container. 
+2. The [Docker Plugin](https://plugins.jenkins.io/docker-plugin/){:target="_blank" rel="noopener"} for provisioning dynamic build agents. In this approach the stage runs on a Docker-provisioned Jenkins agent, and your shared-library step launches the MCIX container itself.
+
+#### Command Line Pipeline Task
+
 ```yaml
-stage("Deploy - CI") {
-    agent { label 'mcix-capable' }
-    steps {
-        withCredentials([
-          string(credentialsId: ${CPD_APIKEY_CRED}, variable: 'CP4DAPIKEY')
-        ]) {
-            sh label: 'Export DataStage Assets',
-                script: """#!/bin/bash
-                    ./some-location/mcix datastage export \
-                        -api-key ${CP4DAPIKEY} \
-                        -url ${CPD_URL} \
-                        -user ${CPD_USER} \
-                        -project ${CPD_PROJECT} \
-                        -export-path ${EXPORT_PATH}
-                """
-        }
-    }
-}
+stage("Export) {
+     agent { label 'mcix-capable' }
+      steps {
+          withCredentials([
+     string(credentialsId: ${CPD_APIKEY_CRED}, variable: 'CP4DAPIKEY')
+    ]) {
+              sh label: 'Export DataStage Assets',
+                  script: """#!/bin/bash
+                      ./some-location/mcix datastage export \
+                          -api-key ${CP4DAPIKEY} \
+                          -url ${CPD_URL} \
+                          -user ${CPD_USER} \
+                          -project ${CPD_PROJECT} \
+                          -export-path ${EXPORT_PATH}
+                  """
+          }
+     }
 ```
 
-**Jenkins Custom Task**
+#### Docker Pipeline Plugin
 
-This first example uses a Docker-capable agent.
+In this example the entire stage itself, and all the steps within it, runs inside the MCIX Docker image (available from Jenkins v2.5.0). 
+This is achieved by using the `agent` directive to define a specific Docker image for the individual stage.
+Using the **Docker *Pipeline* plugin** Jenkins schedules the stage on a Docker-capable Jenkins node, then 
+runs the stage steps inside the `ghcr.io/mettleci/mcix:latest` container. 
 
 ```yaml
 @Library('mcix-jenkins-lib') _
 pipeline {
-    stages {
-        stage("Export") {
-  	        agent { label 'docker-capable' }
-            steps {
-                mcixDatastageExport(
-                    registryUrl: "${MCIX_CONTAINER_REG_URL}",
-                    registryCredentialsId: "${MCIX_CONTAINER_REG_CRED}",
-                    image: "${MCIX_CONTAINER_IMAGE}",
-                    url: "${CPD_URL}",
-                    user: "${CPD_USER}",
-                    apiKeyCredentialsId: "${CPD_APIKEY_CRED}",
-                    project: "${CPD_PROJECT}",
-                    assets: "${EXPORT_PATH}",
-                )
-           }
-        }
-    }
-}
-```
-
-This second example uses the MCIX container itself as the execution environment.
-
-```yaml
-@Library('mcix-jenkins-lib') _
-pipeline {
+    agent none
     stages {
         stage("Export") {
             agent {
@@ -318,6 +307,36 @@ pipeline {
                     assets: "${EXPORT_PATH}"
                 )
             }
+        }
+    }
+}
+```
+
+#### Docker Plugin (Agent Provisioning)
+
+In this example Jenkins provisions a Docker-backed agent (identified by label) and the shared-library step (from `mcix-jenkins-lib`) runs on that agent.
+Using the Docker plugin in this example, `mcix-docker-agent` is a Jenkins label mapped to a Docker Plugin agent template. Jenkins provisions a temporary 
+container as the build agent, runs the stage on it, then removes it after the build.
+Note that this approach requires configuring a Docker Cloud in Jenkins with the Docker API URL and Agent Templates (defining labels and images).
+
+```yaml
+@Library('mcix-jenkins-lib') _
+pipeline {
+    stages {
+        stage("Export") {
+  	        agent { label 'docker-capable' }
+            steps {
+                mcixDatastageExport(
+                    registryUrl: "${MCIX_CONTAINER_REG_URL}",
+                    registryCredentialsId: "${MCIX_CONTAINER_REG_CRED}",
+                    image: "${MCIX_CONTAINER_IMAGE}",
+                    url: "${CPD_URL}",
+                    user: "${CPD_USER}",
+                    apiKeyCredentialsId: "${CPD_APIKEY_CRED}",
+                    project: "${CPD_PROJECT}",
+                    assets: "${EXPORT_PATH}",
+                )
+           }
         }
     }
 }
