@@ -10,6 +10,7 @@ tags:
 ---
 # fabrication namespace
 
+---
 ## fabrication list
 
 ![fabrication list syntax](img/fabrication-list.svg "fabrication list syntax")

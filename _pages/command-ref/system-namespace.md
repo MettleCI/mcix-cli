@@ -10,7 +10,9 @@ tags:
 ---
 # system namespace
 
-The `system` namespace contains commands for understanding, diagnosing, and customizing your MettleCI CLI environment.  It can be useful in CI/CD pipelines as a diagnostic step to ensure the MettleCI CLI container environment is correctly configured. 
+The `system` namespace contains commands for understanding, diagnosing, and customizing your MettleCI CLI environment.  It can be useful in CI/CD pipelines as a diagnostic step to ensure the MettleCI CLI environment (terminal or container) is correctly configured. 
+
+---
 
 ## system version
 
@@ -18,18 +20,21 @@ The `system` namespace contains commands for understanding, diagnosing, and cust
 
 This command displays:
 
-- The MettleCI CLI [command shell](../command-shell) version number,
+- The MettleCI CLI [command shell](../command-shell/command-shell) version number,
 - Your O/S version and architecture,
 - Your O/S username and language/locale settings, and
 - A list of MettleCI CLI plugins loaded from your `plugins` folder.
 
+This command takes no parameters.
+
 #### Examples
 
-##### Command Line
-
+<details markdown="1">
+  <summary>Command Line</summary>
 ```shell
+{% raw %}// mcix system version
 mcix system version
-```
+{% endraw %}```
 
 Example output is ...
 
@@ -41,20 +46,23 @@ Mac OS X 26.0 (aarch64)
 johnmckeever, English (Australia)
 
 Loaded plugins:
-* MettleCI CP4D Asset-Analysis Plugin (1.0-SNAPSHOT)
-* MettleCI CP4D Compilation Plugin (1.0-SNAPSHOT)
-* MettleCI CP4D Import Plugin (1.0-SNAPSHOT)
-* MettleCI CP4D Overlays Plugin (1.0-SNAPSHOT)
+* MettleCI CP4D Asset-Analysis Plugin (1.0-123)
+* MettleCI CP4D Compilation Plugin (1.0-456)
+* MettleCI CP4D Import Plugin (1.0-789)
+* MettleCI CP4D Overlays Plugin (1.0-012)
 ```
+</details>
 
-##### GitHub Actions
+<details markdown="1">
+  <summary>GitHub Actions</summary>
 ```yaml
+{% raw %}# mcix system version
 - name: mcix system version action
   uses: mettleci/mcix/system/version@latest
   id: mcix-system-version
-```
+{% endraw %}```
 
-This will produce a step summary of the form...
+This will produce a GitHub Actions step summary of the form...
 
 ```
 MettleCI Command Line (build 1.0-94)
@@ -75,15 +83,17 @@ root, English (United States)
 - **Image compliance information** lists the compliance status of the MettleCI CLI container image,
 - **GitHub execution environment** lists details of the GitHub-hosted runner executing the command, and 
 - **MCIX plugins loaded** lists all MettleCI CLI plugins provided by the `mcix` command.
+</details>
 
-##### Azure DevOps Task
-
+<details markdown="1">
+  <summary>Azure DevOps Task</summary>
 ```yaml
+{% raw %}# mcix system version
 - task: mcixSystemVersion@1
-  inputs:
-    imageName: 'mettleci.azurecr.io/mettleci/mcix'
   displayName: mcix system version action
-```
+  inputs:
+    imageName: 'your.registry.com/namespace/mcix'
+{% endraw %}```
 
 THis will produce a task log output of the form...
 
@@ -117,5 +127,13 @@ Loaded plugins:
 
 The **MCIX plugins loaded** section lists all MettleCI CLI plugins provided by the `mcix` command and the expandable 
 **Image compliance information** section lists the compliance details of the MettleCI CLI container image .
+</details>
 
----
+<details markdown="1">
+  <summary>Jenkins</summary>
+```yaml
+{% raw %}# mcix system version
+mcixSystemVersion()
+{% endraw %}```
+</details>
+

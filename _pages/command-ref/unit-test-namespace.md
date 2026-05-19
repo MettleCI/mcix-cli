@@ -10,6 +10,8 @@ tags:
 ---
 # unit-test namespace
 
+---
+
 ## unit-test generate
 
 ![unittest generate syntax](img/unit-test-generate.svg "unittest generate syntax")
@@ -27,18 +29,22 @@ The optional `-check-row-count-only` flag will cause the generation of a test ca
 | **joblist**  | -        | -        | ... |
 | **check-row-count-only** | - | -   | ... |
 
-#### Example
+#### Examples
 
+
+<details markdown="1">
+  <summary>Command Line</summary>
 ```shell
+{% raw %}// mcix unit-test generate
 mcix unittest generate \
-  -assets /opt/dm/mci/jobs \
-  -joblist ./joblist.txt \
-  -specs /opt/dm/mci/testspecs
-```
+  -assets  /opt/dm/mci/jobs \
+  -joblist joblist.txt \
+  -specs   /opt/dm/mci/testspecs
+{% endraw %}```
+</details>
 
 **Note**:
-
-This command is not available as a CI/CD native GitHub Actions or Azure DevOps task/plugin as there is no identified need for this functionality within the context of a CI/CD pipeline. If you require this functionality within your CI/CD pipeline then you can invoke the command line directly using a command line pipeline task.
+This command is not available as a CI/CD native task/plugin as there is no identified need for this functionality within the context of a CI/CD pipeline. If you require this functionality within your CI/CD pipeline then you can invoke the command line directly using a command line pipeline task.
 
 ---
 
@@ -64,21 +70,12 @@ Run one or more MettleCI Unit Tests against one or more DataStage jobs.
 
 The `reports` option is used to specify the directory into which the JUnit XML files produced by this command will be placed.  Each job tested will produce a separate XML file named after the Job (e.g. Job `MY_JOB_ABC` will produce a JUnit file named `MY_JOB_ABC.xml`)
 
-The `ignore-test-failures` option will prevent a failing Unit Test from being interpreted as a command failure by your build system, and consequently halting your CI/CD pipeline. 
-
-See [Repeatable DataStage Project Deployments]() for more details on how the -project-cache parameter is used to implement incremental tests. For more information on using the `-project-cache` parameter see our detailed explanation.
 
 ### The 'ignore-test-failures' option
 
-MettleCI unit tests can be invoked in a number of ways: 
+The `ignore-test-failures` option will prevent a failing Unit Test from being interpreted as a command failure by your build system, and consequently halting your CI/CD pipeline. 
 
-1. Manually, using the Cloud Pak interface, or
-2. From the command line using the `mcix unit-test execute` command, or
-3. Using a native CI/CD task/action in a supported platform (currently GitHub and Azure DevOps)
-
-When using the MettleCI command line to execute unit tests from within a build orchestration system (Jenkins, GitHub Actions, Bamboo, etc.) it’s important to understand how the `mcix unit-test execute` command and your build system interact.
-
-Calling the `mcix unit-test execute` command has three potential outcomes:
+When using the `mcix unit-test execute` command to execute unit tests from within a build orchestration system (Jenkins, GitHub, Bamboo, GitLab, etc.) it’s important to understand how the command and your build system interact.  Calling the `mcix unit-test execute` command has three potential outcomes:
 
 * The command executes **successfully** and runs a unit test which **passes**,
 * The command executes **successfully** and runs a unit test which **fails**, or
@@ -88,54 +85,75 @@ Like all shell commands, the `mcix unit-test execute` command returns an [exit c
 
 The `mcix unit-test execute -ignore-test-failures` option will prevent a failing unit test from being interpreted as a command failure by your build system, and consequently halting your CI/CD pipeline.
 
-
 #### Examples
 
-##### Command Line
-
+<details markdown="1">
+  <summary>Command Line</summary>
 ```shell
+{% raw %}// mcix unit-test execute
 mcix unit-test execute \
-  -domain services.datamigrators.io:59445 \
-  -server engine.datamigrators.io \
-  -username isadmin \
-  -password my_password \
-  -project my_project \
-  -specs unittest \
-  -reports unittest_reports \
-  -project-cache "/mettleci/cache/engine.datamigrators.io/my_project"
-```
+  -url    '${env.CP4DHOSTNAME}" \
+  -user    '${env.CP4DUSERNAME}" \
+  -api-key "${apikey}" \
+  -project "${env.DATASTAGE_PROJECT}" \
+  -report "reports/unit-test-junit.xml" \
+  -test-suite "MettleCI NextGen Unit Tests" \
+  -include-asset-in-test-name
+{% endraw %}```
+</details>
 
-##### GitHub Actions
-
+<details markdown="1">
+  <summary>GitHub Actions</summary>
 ```yaml
+{% raw %}# mcix unit-test execute
 - name: Invoke 'mcix unit-test execute' action
   uses: mettleci/mcix/unit-test/execute@latest
   id: mcix-unittest-execute
   with:
-    url: "${{ vars.CP4DHOSTNAME }}" 
-    api-key: ${{ secrets.CP4DKEY }}
-    user: ${{ vars.CP4DUSERNAME }}
-    project: ${{ env.DatastageProject }}
-    max-concurrency: "2"
-    test-suite: "MettleCI CP4D Unit Tests - ${{ env.DatastageProject }}"
-    report: "${{ github.workspace }}/unittest-reports/${{ env.DatastageProject }}.xml"
+    url:        ${{ vars.CP4DHOSTNAME }}
+    api-key:    ${{ secrets.CP4DKEY }}
+    user:       ${{ vars.CP4DUSERNAME }}
+    project:    ${{ env.DatastageProject }}
+    test-suite: 'MettleCI CP4D Unit Tests - ${{ env.DatastageProject }}'
+    report:     '${{ github.workspace }}/unittest-reports/${{ env.DatastageProject }}.xml'
     ignore-test-failures: true
-```
+    max-concurrency: '2'
+{% endraw %}```
+</details>
 
-##### Azure DevOps Task
-
+<details markdown="1">
+  <summary>Azure DevOps Task</summary>
 ```yaml
+{% raw %}# mcix unit-test execute
 - task: mcixUnitTestExecute@1
+  displayName: 'Run Unit Tests'
   inputs:
-    url: ${{ parameters.CP4DHostName }}
-    user: ${{ parameters.CP4DUsername }}
-    apiKey: ${{ parameters.CP4DKey }}
-    project: ${{ parameters.DatastageProject }}
-    report: '$(Build.SourcesDirectory)/unittest-reports/${{ parameters.DatastageProject }}.xml'
+    imageName: 'your.registry.com/namespace/mcix'
+    url:       ${{ parameters.CP4DHostName }}
+    user:      ${{ parameters.CP4DUsername }}
+    apiKey:    ${{ parameters.CP4DKey }}
+    project:   ${{ parameters.DatastageProject }}
+    report:    '$(Build.SourcesDirectory)/unittest-reports/${{ parameters.DatastageProject }}.xml'
     testSuite: 'MettleCI CP4D Unit Tests - ${{ parameters.DatastageProject }}'
     ignoreTestFailures: true
-    imageName: 'mettleci.azurecr.io/mettleci/mcix'
-  displayName: 'Run Unit Tests'
-```
+{% endraw %}```
+</details>
 
+<details markdown="1">
+  <summary>Jenkins</summary>
+```yaml
+{% raw %}# mcix unit-test execute
+mcixUnitTestExecute(
+    url: "${env.CP4DHOSTNAME}",
+    user: "${env.CP4DUSERNAME}",
+    apiKeyCredentialsId: "${env.CP4DAPIKEY}",
+    project: "${env.DATASTAGE_PROJECT}",
+    testSuite: 'MettleCI NextGen Unit Tests - ${env.DATASTAGE_PROJECT}',
+    maxConcurrency: 2
+)
+{% endraw %}```
+Where ...
+- `env.DATASTAGE_PROJECT` is the name of your DataStage NextGen project
+
+</details>
 ---

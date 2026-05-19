@@ -1,0 +1,65 @@
+.mcix-code-snippet {
+  position: relative;
+  margin: 1rem 0;
+  background: #f4f4f4;
+}
+
+/* The code scrolls, not the wrapper */
+.mcix-code-snippet pre {
+  margin: 0;
+  overflow-x: auto;
+  padding: 1rem 3rem 1rem 1rem;
+  background: transparent;
+}
+
+/* Carbon-like copy button */
+.mcix-copy-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+
+  width: 3rem;
+  height: 3rem;
+  min-width: 3rem;
+  min-height: 3rem;
+
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  padding: 0 !important;
+  border: 0;
+  background: transparent;
+  color: #525252;
+
+  cursor: pointer;
+  z-index: 2;
+}
+
+/* Carbon hover feel */
+.mcix-copy-button:hover {
+  background: #e0e0e0;
+  color: #161616;
+}
+
+/* Keyboard accessibility */
+.mcix-copy-button:focus {
+  outline: 2px solid #0f62fe;
+  outline-offset: -2px;
+}
+
+/* Copied state */
+.mcix-copy-button--copied {
+  color: #24a148;
+}
+
+/* Force SVG to centre correctly */
+.mcix-copy-icon {
+  display: block !important;
+  width: 1.25rem !important;
+  height: 1.25rem !important;
+  fill: currentColor !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  flex: 0 0 auto;
+}

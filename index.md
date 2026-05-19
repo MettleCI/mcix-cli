@@ -45,6 +45,33 @@ banner_src: ../../assets/img/banner.jpeg
 
 ## Welcome to MCIX
 
+<cds-actionable-notification
+  kind="error"
+  title="Warning"
+  subtitle="This command is made available as a Technical Preview which should not be used for production purposes. Beware that its commmands, options, and features can change or disappear at any time without warning."
+  action-button-label="Acknowledged"
+  close-button-label="Close notification"
+  low-contrast
+  id="overlay-notification1">
+</cds-actionable-notification>
+<cds-actionable-notification
+  kind="info"
+  title="Info"
+  subtitle="Release of the production-ready version is anticipated by the end of 2026 Q2."
+  action-button-label="Acknowledged"
+  close-button-label="Close notification"
+  low-contrast
+  id="overlay-notification2">
+</cds-actionable-notification>
+
+<script>
+  document
+    .getElementById("overlay-notification")
+    .addEventListener("cds-actionable-notification-beingclosed", () => {
+      console.log("Notification closed");
+    });
+</script>
+
 This documentation provides an introduction to the MCIX Command Line Interface for IBM DataStage NextGen.  It is compatible with DataStage NextGen running on both self-hosted and Software-as-a-Service instances. 
 
 The MCIX CLI tool is available for **Linux (x86)**, **Windows (x86)**, and **macOS (ARM64)**. The information presented on this site represents the latest version of the tool which can be downloaded  [here](https://github.com/mettleci/mcix-cli/releases/latest){:target="_blank" rel="noopener"}. 

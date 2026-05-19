@@ -129,7 +129,7 @@ mcix asset-analysis test \
     ignoreTestFailures: true
     includeAssetInTestName: true
     testSuite: ${{ parameters.AssetAnalysisSuite }}
-    imageName: 'mettleci.azurecr.io/mettleci/mcix'
+    imageName: 'your.registry.com/namespace/mcix'
     displayName: 'Run Asset Analysis (${{ parameters.AssetAnalysisSuite }})'
 ```
 

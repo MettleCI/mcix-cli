@@ -9,6 +9,23 @@
       rel="stylesheet"
       href="{{ site.baseurl }}/assets/css/carbon-html.css"
     />
+
+    <!---
+    Added for copy code functionality, which is used in the code snippets in the documentation pages. 
+    The CSS and JS files are located in the assets folder of the project.
+    --->
+    <link rel="stylesheet" href="{{ site.baseurl }}/assets/css/copy-code.css">
+    <script src="{{ site.baseurl }}/assets/js/copy-code.js"></script>
+
+    <!---
+    Added for carbon web components, which are used in the documentation pages. 
+    The JS file is loaded from the IBM CDN.
+    --->
+    <script
+      type="module"
+      src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/notification.min.js">
+    </script>    
+
     {% include carbon-for-ibm-dotcom.html %}
   </head>
 
