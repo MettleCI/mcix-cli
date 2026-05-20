@@ -20,7 +20,7 @@
 
 title: MCIX CLI
 email: John.McKeever1@ibm.com
-description: >- # this means to ignore newlines until "plugins:"
+description: >- # This is the YAML line continuation character
   A guide to the MettleCI MCIX Command Line Interface (CLI) tool, which provides a 
   unified interface for interacting with MettleCI's various services and features in
   DataStage NextGen.

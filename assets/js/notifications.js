@@ -25,3 +25,27 @@ function showToast({
     }, timeout);
   }
 }
+
+function showInlineNotification({
+  kind = "info",
+  title = "Information",
+  subtitle = "",
+  lowContrast = true
+} = {}) {
+
+  const container = document.getElementById(
+    "mcix-inline-notification"
+  );
+
+  if (!container) return;
+
+  container.innerHTML = `
+    <cds-inline-notification
+      kind="${kind}"
+      title="${title}"
+      subtitle="${subtitle}"
+      ${lowContrast ? "low-contrast" : ""}
+      hide-close-button>
+    </cds-inline-notification>
+  `;
+}

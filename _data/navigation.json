@@ -38,23 +38,23 @@
     "submenu": [
       {
         "title": "DataStage Namespace",
-        "url": "/command-ref/datastage-namespace"
+        "url": "/command-ref/datastage/"
       },
       {
-        "title": "Fabrication Namespace",
-        "url": "/command-ref/fabrication-namespace"
+        "title": "Migrate Namespace",
+        "url": "/command-ref/migrate/"
       },
       {
         "title": "Overlay Namespace",
-        "url": "/command-ref/overlay-namespace"
+        "url": "/command-ref/overlay/"
       },
       {
         "title": "System Namespace",
-        "url": "/command-ref/system-namespace"
+        "url": "/command-ref/system/"
       },
       {
         "title": "Unit-Test Namespace",
-        "url": "/command-ref/unit-test-namespace"
+        "url": "/command-ref/unit-test/"
       }
     ]
   }

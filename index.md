@@ -1,6 +1,6 @@
 ---
 title: MCIX Command Line Interface
-description: Modern software delivery for IBM DataStage NextGen
+description: Modern software delivery for <br/>IBM DataStage NextGen
 banner_src: ../../assets/img/banner.jpeg
 ---
 
@@ -45,24 +45,15 @@ banner_src: ../../assets/img/banner.jpeg
 
 ## Welcome to MCIX
 
-<cds-actionable-notification
+<cds-inline-notification
   kind="error"
   title="Warning"
-  subtitle="This command is made available as a Technical Preview which should not be used for production purposes. Beware that its commmands, options, and features can change or disappear at any time without warning."
-  action-button-label="Acknowledged"
-  close-button-label="Close notification"
+  subtitle="The MCIX command is currently a Technical Preview which should not be used for production purposes. 
+  Beware that its commmands, options, and behaviour can change or disappear at any time without warning.
+  Release of the production-ready version is anticipated by the end of 2026 Q2."
   low-contrast
-  id="overlay-notification1">
-</cds-actionable-notification>
-<cds-actionable-notification
-  kind="info"
-  title="Info"
-  subtitle="Release of the production-ready version is anticipated by the end of 2026 Q2."
-  action-button-label="Acknowledged"
-  close-button-label="Close notification"
-  low-contrast
-  id="overlay-notification2">
-</cds-actionable-notification>
+  id="overlay-notification">
+</cds-inline-notification>
 
 <script>
   document
