@@ -9,23 +9,15 @@
       {
         "title": "Introduction",
         "url": "/getting-started"
-      },
-      {
-        "title": "Native CI/CD tasks",
-        "url": "/getting-started/native-tasks"
       }
     ]
   },
   {
-    "title": "Command Shell",
+    "title": "Terminal Command",
     "submenu": [
       {
         "title": "Command shell",
         "url": "/command-shell/command-shell"
-      },
-      {
-        "title": "CLI plugins",
-        "url": "/command-shell/cli-plugins"
       },
       {
         "title": "JUnit output",

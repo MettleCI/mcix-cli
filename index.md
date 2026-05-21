@@ -55,17 +55,9 @@ banner_src: ../../assets/img/banner.jpeg
   id="overlay-notification">
 </cds-inline-notification>
 
-<script>
-  document
-    .getElementById("overlay-notification")
-    .addEventListener("cds-actionable-notification-beingclosed", () => {
-      console.log("Notification closed");
-    });
-</script>
-
 This documentation provides an introduction to the MCIX Command Line Interface for IBM DataStage NextGen.  It is compatible with DataStage NextGen running on both self-hosted and Software-as-a-Service instances. 
 
-The MCIX CLI tool is available for **Linux (x86)**, **Windows (x86)**, and **macOS (ARM64)**. The information presented on this site represents the latest version of the tool which can be downloaded  [here](https://github.com/mettleci/mcix-cli/releases/latest){:target="_blank" rel="noopener"}. 
+The MCIX CLI tool is available for **Unix (x86)**, **Windows (x86)**, and **macOS (ARM64)**. The information presented on this site represents the latest version of the tool which can be downloaded  [here](https://github.com/mettleci/mcix-cli/releases/latest){:target="_blank" rel="noopener"}. 
 
 ## Start here
 

@@ -1,6 +1,6 @@
 ---
 title: JUnit Ouput
-description: A widely accepted standard for reporting test results
+description: The de facto standard for<br/>reporting test results
 # banner_src: ../../assets/img/banner.jpeg
 ---
 
@@ -30,6 +30,12 @@ description: A widely accepted standard for reporting test results
    </testsuite>
 </testsuites>
 ```
+
+## Applications
+
+Some build tools, such as Azure DevOps and Jenkins, have in-built support for parsing JUnit and presenting those results to users and tracking their change over time.  
+
+Others, such as GitHub, have no understanding of JUnit and so it is often left to the user to capture the JUnit file and process them in some fashion. Fortunately, the MCIX [GitHub Custom Actions](../container/github) process the JUnit files for you and present their results as easily digestible GitHub Step Summaries.
 
 ## Schema
 

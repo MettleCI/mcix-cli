@@ -11,7 +11,8 @@
         <ul>
           {% for item in group.items %}
           <li>
-            <a href="{{ item.url }}"> {{ item.title }} </a>
+            <!-- <img src="/assets/img/{{ item.icon }}" width="15" valign="center" alt="External link icon" class="cj--footer__external-link-icon"> -->
+            <a href="{{ item.url }}" target="_blank"> {{ item.title }} </a>
           </li>
           {% endfor %}
         </ul>

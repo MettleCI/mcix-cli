@@ -30,7 +30,7 @@ mcix overlay apply \
 <details markdown="1">
   <summary>GitHub Actions</summary>
 ```yaml
-{% raw %}#mcix overlay apply
+{% raw %}# mcix overlay apply
 - name: mcix overlay apply
   uses: mettleci/mcix/overlay/apply@latest
   id: mcix-overlay-apply

@@ -3,30 +3,35 @@
     "title": "Connect",
     "items": [
       {
+        "icon": "github.svg",
         "title": "GitHub repository",
-        "url": "https://github.com/mettleci/mcix-cli",
-        "target": "_blank"
+        "url": "https://github.com/mettleci/mcix-cli"
       },
       {
-        "title": "#carbon-jekyll",
+        "icon": "slack.png",
+        "title": "#mettleci on Slack",
+        "url": "https://mettleci.slack.com/archives/C9NR8G058"
+      },
+      {
+        "icon": "slack.png",
+        "title": "#mettleci on IBM Slack",
         "url": "https://ibm.enterprise.slack.com/archives/C073FRMKQAH"
       }
     ]
   },
   {
-    "title": "w3",
+    "title": "IBM Legal",
     "items": [
+      
       {
-        "title": "Software licenses",
-        "url": "https://docs.datamigrators.com/"
-      },
-      {
+        "icon":"dm.png",
         "title": "Terms of use",
-        "url": "https://w3.ibm.com/#/info_terms_of_use"
+        "url": "https://www.ibm.com/legal/terms"
       },
       {
+        "icon":"dm.png",
         "title": "Privacy policy",
-        "url": "https://w3.ibm.com/w3-privacy-notice"
+        "url": "https://www.ibm.com/us-en/privacy"
       }
     ]
   },
@@ -34,16 +39,14 @@
     "title": "MettleCI",
     "items": [
       {
+        "icon": "dm.png",
         "title": "Data Migrators",
         "url": "https://datamigrators.com"
       },
       {
+        "icon": "dm.svg",
         "title": "Policies and Software Licenses",
         "url": "https://docs.datamigrators.com"
-      },
-      {
-        "title": "Business COnduct Guidelines",
-        "url": "https://w3.ibm.com/w3publisher/trust-compliance/bcgs"
       }
     ]
   }

@@ -29,7 +29,7 @@ mcix datastage export \
   -user        $CP4DUSERNAME \
   -export-path dstage1.zip \
   -project     dstage1 
-```
+{% endraw %}```
 </details>
 
 <details markdown="1">

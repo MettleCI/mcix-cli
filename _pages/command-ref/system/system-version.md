@@ -117,7 +117,19 @@ The **MCIX plugins loaded** section lists all MettleCI CLI plugins provided by t
   <summary>Jenkins</summary>
 ```yaml
 {% raw %}# mcix system version
-mcixSystemVersion()
+stage("Diagnostics") {
+    agent {
+        docker {
+            registryUrl 'https://ghcr.io'
+            registryCredentialsId 'GHCR'
+            image 'ghcr.io/mettleci/mcix:latest'
+            args "-u root --entrypoint=''"
+        }
+    }
+    steps {
+        mcixSystemVersion()
+    }
+  }
 {% endraw %}```
 </details>
 

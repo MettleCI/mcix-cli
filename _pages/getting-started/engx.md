@@ -1,6 +1,6 @@
 ---
 title: Engineering Excellence
-description: Adopting modern software delivery practices
+description: Adopting modern software<br/>delivery practices
 type: introduction
 order: 2
 # banner_src: ../../assets/img/banner.jpeg
@@ -28,11 +28,13 @@ testing with customer utilization and isolating key defects as early as you can.
 
 The chart below illustrates how the cost of defect fixing grows from
 the point of defect injection to a critical outage in production. 
-This is the primary motivation for the industry mantra 'shift left'.
+This is the primary motivation for the industry mantra [shift left](https://en.wikipedia.org/wiki/Shift-left_testing){:target="_blank" rel="noopener"}.
 
-![The cost of poor quality](./img/why-test-graph.png)
+<a href="./img/cost-of-poor-quality-large.png" target="_blank">
+    <img src="./img/cost-of-poor-quality.png" alt="The cost of poor quality">
+</a>
 
-The DevOps movement encourages development teams to accept collective responsibility for ...
+The [DevOps](https://en.wikipedia.org/wiki/DevOps){:target="_blank" rel="noopener"} movement encourages development teams to accept collective responsibility for ...
 
 - delivering the **right thing**, and 
 - delivering the **thing right**. 
@@ -63,10 +65,12 @@ and value to their customers.
 Getting started can be the hardest part of any journey, and it can be easy to
 get distracted by the complexity of a modern software delivery pipeline. Let's
 take a step back. Software development starts with a code change entering the
-delievry pipeline. The T2 metrics chart below provides a high level snapshot
-what a pipeline does.
+delivery pipeline. The T2 metrics chart below provides a high level snapshot
+of what a delivery pipeline does.
 
-![T2 metrics](./img/t2-metrics-chart.png)
+<a href="./img/t2-metrics-large.png" target="_blank">
+    <img src="./img/t2-metrics.png" alt="T2 Metrics">
+</a>
 
 Let's start by asking some basic questions of our pipeline. For a given code
 change:
@@ -80,29 +84,32 @@ change:
 - How quickly, on average, can I go through the steps to get a build and go
   through all the stages before I can ship my code change to a customer? This
   unit of time is **Time to Quality (T2Q)**.
-- How many steps in the pipeline take a long time, e.g., days (enough time for a
-  skiing holiday)? How many of the steps happen in a few minutes (enough time for
-  a tea break)? What would it take to move the pipeline from Ski to Tea?
+- How many steps in the pipeline take a long time, e.g., days. How many of 
+  the steps happen in a few minutes (enough time for a tea break)? 
+  What would it take to move the pipeline duration from days to minutes?
 
-Spending a few minutes as a team thinking about the T2 metrics can be a really
-useful place to start. It helps visualize what's going on under the covers and
+Spending a few minutes as a team thinking about the T2 metrics can be a useful 
+place to start. It helps visualize what's going on under the covers and
 provides context for the assessment process.
 
-## What is your role in this?
+## What are the roles involved in this?
 
-### → Managers
+The tools provided by the MCIX command give you the opportunity to shine a light 
+on the delivery engine and signpost where investment will drive improvements. 
+The whole team should be as proud of the pipeline that delivers the product as 
+they are of the product itself.  Each team member has a role to play in this.
 
-The manager's role is to understand and advocate for the competitive advantage efficient and automated
-testing will bring to your team and to their product. 
+### Managers
 
-They should understand their team's level of deliery maturity, and appreciate that Just because the engine is running
-they shouldn't assume it's running well.
+The manager's role is to understand and advocate for the competitive advantage 
+efficient and automated testing will bring to your team and to their product. 
+They should understand their team's level of deliery maturity, and appreciate 
+that Just because the engine is running they shouldn't assume it's running well.
 
 Managers should actively support their team by providing them with
 the resources required to implement improvements. 
 
-
-### → Technical leaders
+### Technical leaders
 
 As technical leaders, testing is an integral part of your delivery journey and
 not something to be bolted on as an afterthought. Championing code that's designed
@@ -111,7 +118,7 @@ and autonomous. Avoiding technical debt by removing ineffective process steps
 improves morale, productivity, and allows you to focus more on your primary goal:
 delivering features that delight your users.
 
-### → Developers
+### Developers
 
 As a developer, you understand that untested, or poorly tested, code is risk:
 it's potential for a problem to happen. Small units of change, the ability to
@@ -121,16 +128,11 @@ is and why it matters. Does the pipeline deliver these characteristics? How
 could new features or greater automation in the pipeline improve your confidence
 in delivering great code?
 
-### → QA / Test engineers
+### QA/Test engineers
 
 Test engineers apply deep knowledge and expertise in developing approaches to
 isolate mission critical defects. Often engaged in exploratory testing and test
 architecture, this community are often the first-responders to resolve pipeline
 problems. Left unchecked, an unhealthy pipeline can consume engineering resource
-in serving day-to-day chores. How could new features or greater automation in
-the pipeline support you?
+in serving day-to-day chores. 
 
-Again, the EngX assessments are not here to give you a personal grade, it's your
-opportunity to shine light on the delivery engine and signpost where investment
-will drive improvements. The whole team should be proud of the pipeline that
-delivers the product alongside the product itself.
