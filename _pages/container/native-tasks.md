@@ -51,3 +51,41 @@ Custom tasks are currentl avaialbe for the following platforms:
 - Azure DevOps Task Extension
 - Jenkins Custom Tasks
 
+
+## Composite Tasks
+
+There are some instances where combinations of MCIX commands aere frequently executed in combination with one another.  
+A good example of this is the process of deploying DataStage assets to a target environment:
+
+```mermaid
+  flowchart LR
+
+  %% =========================
+  %% Styles
+  %% =========================
+  classDef registry fill:#333333,stroke:#3b82f6,stroke-width:2px,color:#111;
+  classDef image fill:#eefbf3,stroke:#22c55e,stroke-width:2px,color:#111;
+  classDef runtime fill:#fff7e6,stroke:#f59e0b,stroke-width:2px,color:#111;
+  classDef tooling fill:#f5ecff,stroke:#8b5cf6,stroke-width:2px,color:#111;
+  classDef plugin fill:#ffffff,stroke:#6b7280,stroke-width:1px,color:#111;
+  classDef command fill:#dcfce7,stroke:#16a34a,stroke-width:2px,color:#111;
+
+MCIX_EXPORT["mcix datastage export"]
+      subgraph DEPLOY["Deploy"]
+MCIX_OVERLAY["mcix datastage export"]
+MCIX_IMPORT["mcix datastage import"]
+MCIX_COMPILE["mcix datastage compile"]
+        end
+      end
+
+  GHPIPE --> GHACT
+  GHACT <--> GHA
+  GHA <--> GHCONT
+  ```
+
+```mermaid
+sequenceDiagram
+    Alice->>John: Hello John, how are you?
+    John-->>Alice: Great!
+    Alice-)John: See you later!
+```

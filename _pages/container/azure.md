@@ -82,32 +82,15 @@ Like GitHub users, Azure DevOps users (both Server and SaaS) can also take advan
   classDef command fill:#dcfce7,stroke:#16a34a,stroke-width:2px,color:#111;
 
   %% =========================
-  %% Azure DevOps environment
-  %% =========================
-  subgraph ADO["Azure DevOps Environment"]
-      subgraph ADOREPO["Git Repository"]
-        ADOPIPEDEF["CI/CD Pipeline<br/>Definition"]
-      end
-      subgraph ADORUN["Azure DevOps Runner"]
-        ADOPIPERUN["Azure DevOps<br/>Pipeline"]
-        subgraph ADOT["MCIX Azure DevOps Tasks"]
-          subgraph CONTINST["MCIX Container Instance"]
-            subgraph MCIX["mcix command"]
-              PLUGINS@{ shape: procs, label: "MCIX Plugins"}
-            end
-          end
-        end
-      end
-  end
-  class ADOT tooling
-  class CONTINST runtime
-
-  %% =========================
   %% Registry
   %% =========================
   subgraph REG["Container Registry"]
       %% Image internals
-      IMG["MCIX Container Image"]
+      subgraph IMG["MCIX Container Image"]
+      subgraph MCIX["mcix command"]
+        PLUGINS@{ shape: procs, label: "MCIX Plugins"}
+      end
+      end
       class MCIX command
       class PLUGINS plugin
       class IMG image
@@ -119,14 +102,34 @@ Like GitHub users, Azure DevOps users (both Server and SaaS) can also take advan
   end
 
   %% =========================
+  %% Azure DevOps environment
+  %% =========================
+  subgraph ADO["Azure DevOps Environment"]
+      subgraph ADOREPO["Git Repository"]
+        ADOPIPEDEF["CI/CD Pipeline<br/>Definition"]
+      end
+      subgraph ADORUN["Azure DevOps Runner"]
+        ADOPIPERUN["Azure DevOps<br/>Pipeline"]
+        subgraph ADOT["Azure DevOps Tasks"]
+          ADOCONT["MCIX container instance"]
+        end
+      end
+  end
+  class ADOT tooling
+  class ADOCONT runtime
+
+  %% =========================
   %% Distribution from registry
   %% =========================
-  IMG -. Pull .-> ADOT
+  IMG -. Pull .-> ADOCONT
 
   %% ADO Tooling references
   ADOPIPEDEF --> ADOPIPERUN
   ADOPIPERUN <--> ADOT
-  PLUGINS <--> CPD
+  ADOT <--> ADOCONT
+
+  %% Action/Task links to CPD
+  ADOCONT <--> CPD
 
 ```
 

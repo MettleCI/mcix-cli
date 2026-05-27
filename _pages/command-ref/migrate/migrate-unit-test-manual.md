@@ -1,7 +1,7 @@
 ## migrate unit-test-manual
-![migrate unit-test syntax](img/migrate-unit-test.svg "migrate unit-test syntax")
+![migrate unit-test syntax](img/migrate-unit-test-manual.svg "migrate unit-test syntax")
 
-Migrates a MettleCI unit testfrom DataStage Classic format to DataStage NextGen format .
+Migrates a MettleCI unit test from DataStage Classic format to DataStage NextGen format .
 
 #### Parameters
 
@@ -51,5 +51,5 @@ Usage: datastage migrate-unit-test-manual [options]
   action-button-label="Acknowledged"
   close-button-label="Close notification"
   low-contrast
-  id="overlay-notification2">
+  id="overlay-notification2"> 
 </cds-inline-notification>
