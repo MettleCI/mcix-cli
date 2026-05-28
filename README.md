@@ -19,6 +19,9 @@ A fast, native client that provides all your CI/CD requirements for IBM DataStag
 
 **MettleCI automation for IBM DataStage NextGen and watsonx.data integration.**
 
+> [!CAUTION]
+> This repository is provided as a **technology preview** which may change, break, or disappear at any point and without warning.
+
 MettleCI is IBM's official solution for providing DevOps automation for IBM DataStage teams, helping organisations improve quality, repeatability, and confidence across the software delivery lifecycle.  
 
 MCIX is a command-line toolkit for automating common DataStage NextGen delivery tasks such as analysing assets, applying overlays, importing project content, compiling assets, and producing CI/CD-friendly evidence such as JUnit XML reports.  It is designed to be used from a developer workstation, inside a build agent, or as part of a containerised delivery workflow in any CI/CD platform capable of running command-line tools or Docker containers.
