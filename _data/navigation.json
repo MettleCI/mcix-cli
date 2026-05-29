@@ -26,6 +26,31 @@
     ]
   },
   {
+    "title": "MCIX Container",
+    "submenu": [
+      {
+        "title": "Using the container",
+        "url": "/container/container"
+      },
+      {
+        "title": "Native CI/CD tasks",
+        "url": "/container/native-tasks"
+      },
+      {
+        "title": "Azure DevOps",
+        "url": "/container/azure"
+      },
+      {
+        "title": "GitHub Actions",
+        "url": "/container/github"
+      },
+      {
+        "title": "Jenkins Tasks",
+        "url": "/container/jenkins"
+      }
+    ]
+  },
+  {
     "title": "Command Reference",
     "submenu": [
       {

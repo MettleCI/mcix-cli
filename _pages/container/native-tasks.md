@@ -58,7 +58,7 @@ There are some instances where combinations of MCIX commands aere frequently exe
 A good example of this is the process of deploying DataStage assets to a target environment:
 
 ```mermaid
-  flowchart LR
+  flowchart TD
 
   %% =========================
   %% Styles
@@ -70,22 +70,28 @@ A good example of this is the process of deploying DataStage assets to a target 
   classDef plugin fill:#ffffff,stroke:#6b7280,stroke-width:1px,color:#111;
   classDef command fill:#dcfce7,stroke:#16a34a,stroke-width:2px,color:#111;
 
-MCIX_EXPORT["mcix datastage export"]
-      subgraph DEPLOY["Deploy"]
-MCIX_OVERLAY["mcix datastage export"]
-MCIX_IMPORT["mcix datastage import"]
-MCIX_COMPILE["mcix datastage compile"]
-        end
-      end
+  subgraph HOST["host"]
+    HOSTDIR["Host dir"]
+  end
+  subgraph DEPLOY["Deploy"]
+    DEPLOY_START
+    MCIX_OVERLAY["mcix datastage export"]
+    MCIX_OVERLAY_OUT["overlay out"]
+    MCIX_IMPORT["mcix datastage import"]
+    MCIX_IMPORT_OUT["import out"]
+    MCIX_COMPILE["mcix datastage compile"]
+    MCIX_COMPILE_OUT["compileout"]
+    DEPLOY_END
+  end
+    DEPLOY_START --> MCIX_OVERLAY
+    MCIX_OVERLAY --> MCIX_OVERLAY_OUT
+    MCIX_OVERLAY --> MCIX_IMPORT
+    MCIX_IMPORT --> MCIX_IMPORT_OUT
+    MCIX_IMPORT --> MCIX_COMPILE
+    MCIX_COMPILE --> MCIX_COMPILE_OUT
+    MCIX_COMPILE --> DEPLOY_END
 
-  GHPIPE --> GHACT
-  GHACT <--> GHA
-  GHA <--> GHCONT
-  ```
+  HOST -. Call .-> DEPLOY_START
+  DEPLOY_END -. Return .-> HOST
 
-```mermaid
-sequenceDiagram
-    Alice->>John: Hello John, how are you?
-    John-->>Alice: Great!
-    Alice-)John: See you later!
 ```

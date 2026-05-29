@@ -9,8 +9,8 @@ order: 1
 The MCIX command provides a set of capabilities underpinning the creation of automated CI/CD pipelines for any modern build tool.
 
 | **Migration** | - Providing facilities to migrate MettleCI test assets from DataStage v11.x to DataStage NextGen. |
-| **Deployment operations** | - Importing and exporting assets to/from DataStage NextGen environments<br/> - Compiling assets in DataStage NextGen<br/>- Automatically adapting properties of asset to suit their target environments |
-| **Testing** | - Invoking static asset analysis (the equivalent of [lint](<https://en.wikipedia.org/wiki/Lint_(software)>){:target="_blank" rel="noopener"} for DataStage NextGen assets)<br/>- Fabricating synthetic test data based on custom test data specifications<br/>- Dynamic asset analysis (executing your DataStage NextGenn flows using a restricted sets of test data) |
+| **Deployment operations** | - Importing and exporting assets to/from DataStage NextGen environments<br/> - Compiling assets in DataStage NextGen<br/>- Automatically adapting properties of assets to suit their target environments |
+| **Testing** | - Invoking static asset analysis (the equivalent of [lint](<https://en.wikipedia.org/wiki/Lint_(software)>){:target="_blank" rel="noopener"} for DataStage NextGen assets)<br/>- Fabricating synthetic test data based on custom test data specifications<br/>- Dynamic unit testing (executing your DataStage NextGen flows using a restricted set of test data) |
 
 These capabilities are supplied by the MCIX command which itself is available in various forms:
 
@@ -24,7 +24,7 @@ These capabilities are supplied by the MCIX command which itself is available in
 
 The MCIX CLI terminal command is available for **Unix (x86)**, **Windows (x86)**, and **macOS (ARM64)**, all downloadable from [here](https://github.com/mettleci/mcix-cli/releases/latest){:target="_blank" rel="noopener"}.
 
-While not necessarily being the most _useful_ mode of operation, the MCIX terminal command provides the ability to interactively explore MCIX's capabilities without requiring additional software or infrastructure.
+The MCIX terminal command provides the ability to interactively explore MCIX's capabilities without requiring additional software or infrastructure.
 
 ```mermaid
   %%{init:{'flowchart':{'nodeSpacing': 50, 'rankSpacing': 50}}}%%
