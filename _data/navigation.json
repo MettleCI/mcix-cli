@@ -57,7 +57,7 @@
     "title": "Azure DevOps",
     "submenu": [
       {
-        "title": "Introduction to Azure DevOps",
+        "title": "MCIX Tasks for Azure DevOps",
         "url": "/azure/azure"
       },
       {

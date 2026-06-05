@@ -1,5 +1,5 @@
 ---
-title: Azure DevOps Task Extension 
+title: MCIX Tasks for Azure DevOps 
 description: Native MCIX tasks for Azure DevOps
 # banner_src: ../../assets/img/banner.jpeg
 ---
