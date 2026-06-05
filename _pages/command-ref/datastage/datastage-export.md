@@ -16,8 +16,29 @@ Exports DataStage assets from a DataStage CP4D/CP4DaaS project to a destination 
 | **project-id**    | Yes<br/>*(when `project` not specified)*    | - | Id of target project |
 | **include-binaries** | -   | False | Whether to include executable binaries in the export |
 
-#### Examples
+#### Supported asset types
 
+- Build Stage
+- CFF Schema
+- Connection
+- Custom Stage
+- Data Definition
+- Environment
+- Flows
+- Java Library
+- Job
+- Match Specification
+- Message Handler
+- Orchestration flow (pipeline)
+- Parallel Function
+- Parameter Set
+- Schema Library
+- Standardization Rule
+- Subflow
+- Test Case
+- Wrapped Stage
+
+#### Examples
 
 <details markdown="1">
   <summary>Command Line</summary>

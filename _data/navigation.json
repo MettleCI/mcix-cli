@@ -1,27 +1,26 @@
 [
   {
-    "title": "Getting started",
+    "title": "Introduction",
     "submenu": [
       {
         "title": "Engineering excellence",
         "url": "/getting-started/engx"
       },
       {
-        "title": "Introduction",
+        "title": "Getting started",
         "url": "/getting-started"
-      }
-    ]
-  },
-  {
-    "title": "Terminal Command",
-    "submenu": [
+      },
       {
-        "title": "Command shell",
+        "title": "The MCIX command",
         "url": "/command-shell/command-shell"
       },
       {
         "title": "JUnit output",
         "url": "/command-shell/junit-output"
+      },
+      {
+        "title": "Known issues",
+        "url": "/command-shell/known-issues"
       }
     ]
   },
@@ -47,6 +46,45 @@
       {
         "title": "Jenkins Tasks",
         "url": "/container/jenkins"
+      },
+      {
+        "title": "Specifying your registry",
+        "url": "/container/deploying-to-registry"
+      }
+    ]
+  },
+  {
+    "title": "Azure DevOps",
+    "submenu": [
+      {
+        "title": "Introduction to Azure DevOps",
+        "url": "/azure/azure"
+      },
+      {
+        "title": "Prerequisites",
+        "url": "/azure/azure-prereqs"
+      },
+      {
+        "title": "Tutorial",
+        "url": "/azure/azure-tutorial"
+      }
+    ]
+  },
+  {
+    "title": "GitHub Actions",
+    "submenu": [
+      {
+        "title": "GitHub Actions",
+        "url": "/container/github/"
+      }
+    ]
+  },
+  {
+    "title": "Jenkins Tasks",
+    "submenu": [
+      {
+        "title": "Jenkins Tasks",
+        "url": "/container/jenkins/"
       }
     ]
   },

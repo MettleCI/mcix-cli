@@ -49,12 +49,12 @@ Here's a simple example of how to call `mcix datastage import` inside an instanc
 The `--rm` flag in the docker run command instructs Docker to automatically remove the container and its file system once it exits.
 
 ```
-docker run --rm \
-  ghcr.io/mettleci/mcix:latest \
-  mcix datastage export \
-    -url "https://cpd.example.com" \
-    -user "my-user" \
-    -api-key "my-api-key" \
+docker run --rm                     \
+  ghcr.io/mettleci/mcix:latest      \
+  mcix datastage export             \
+    -url "https://cpd.example.com"  \
+    -user "my-user"                 \
+    -api-key "my-api-key"           \
     -project "My DataStage Project" \
     -assets "/export"
 ```
@@ -66,7 +66,7 @@ lost when the container exits. To preserve files created by MCIX commands, use t
 host directory into the container.  The volume argument takes the form `host_path:container_path`.  Make sure the path you mount in 
 the container is the same directory you specify as the output directory in your MCIX command.
 
-The example below mounts the host user’s `./my_assets` directory into the container at `/export`. The MCIX command then writes exported 
+The example below mounts the host's' `./my_assets` directory into the container at `/export`. The MCIX command then writes exported 
 assets to `/export`, ensuring they remain available in the host’s `./my_assets` directory after the container exits.
 
 ```

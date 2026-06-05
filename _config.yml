@@ -52,3 +52,5 @@ defaults:
       path: ""
     values:
       layout: "simple"
+
+latest_version: "1.0.0" 

@@ -6,6 +6,8 @@ order: 1
 # banner_src: ../../assets/img/banner.jpeg
 ---
 
+# Introduction
+
 The MCIX command provides a set of capabilities underpinning the creation of automated CI/CD pipelines for any modern build tool.
 
 | **Migration** | - Providing facilities to migrate MettleCI test assets from DataStage v11.x to DataStage NextGen. |
@@ -14,17 +16,68 @@ The MCIX command provides a set of capabilities underpinning the creation of aut
 
 These capabilities are supplied by the MCIX command which itself is available in various forms:
 
-- Terminal Command
-- Container Image
-- GitHub Custom Actions
-- Azure DevOps Task Extensions
-- Jenkins Custom Tasks
+- A native **terminal command** (Linux, macOS, or Windows) 
+- A **container image**
+- A set of native CI/CD **build task** (Azure DevOps, GitHub Actions, and Jenkins)
+
+```mermaid
+  %%{init:{'flowchart':{'nodeSpacing': 50, 'rankSpacing': 50}}}%%
+  flowchart TD
+
+  %% =========================
+  %% Styles
+  %% =========================
+  classDef registry fill:#333333,stroke:#3b82f6,stroke-width:2px,color:#111;
+  classDef image fill:#eefbf3,stroke:#22c55e,stroke-width:2px,color:#111;
+  classDef runtime fill:#fff7e6,stroke:#f59e0b,stroke-width:2px,color:#111;
+  classDef tooling fill:#f5ecff,stroke:#8b5cf6,stroke-width:2px,color:#111;
+  classDef plugin fill:#ffffff,stroke:#6b7280,stroke-width:1px,color:#111;
+  classDef command fill:#dcfce7,stroke:#16a34a,stroke-width:2px,color:#111;
+  classDef highlight fill:#f4f4f4,stroke:#0f62fe,stroke-width:4px,color:#161616;
+
+  %% CPD
+  WATSONX["watsonx.data integration"]
+
+  %% Command
+  subgraph HOST["Host"]
+    subgraph SHELL["Operating System"]
+        MCIXCMD["mcix command"]:::highlight
+    end
+  end
+  class MCIXCMD highlight;
+  MCIXCMD <--> WATSONX
+
+  %% Docker
+  subgraph DOCKERHOST["Host"]
+    subgraph DOCKER["Docker"]
+      subgraph MCIX_CNT["Container"]
+          MCIXCMD_CNT["mcix command"]
+      end
+    end
+  end
+  class MCIX_CNT highlight;
+  MCIXCMD_CNT <--> WATSONX
+
+  %% Task
+  subgraph CICD["Azure / GitHub / Jenkins"]
+    subgraph CICD_TASK["Build Tasks"]
+      subgraph MCIX_CNT_CICD["Container"]
+          MCIXCMD_CNT_CICD["mcix command"]
+      end
+    end
+  end
+  class CICD_TASK highlight;
+  MCIXCMD_CNT_CICD <--> WATSONX
+
+```
+
 
 ## Terminal Command
 
-The MCIX CLI terminal command is available for **Unix (x86)**, **Windows (x86)**, and **macOS (ARM64)**, all downloadable from [here](https://github.com/mettleci/mcix-cli/releases/latest){:target="_blank" rel="noopener"}.
+The MCIX CLI terminal command provides the ability to interactively explore MCIX's capabilities without requiring additional software or infrastructure.  It is described in more detail [here](../command-shell/command-shell){:target="_blank" rel="noopener"}.
 
-The MCIX terminal command provides the ability to interactively explore MCIX's capabilities without requiring additional software or infrastructure.
+The command is available for **Unix (x86)**, **Windows (x86)**, and **macOS (ARM64)**, all downloadable from [here](https://github.com/mettleci/mcix-cli/releases/latest){:target="_blank" rel="noopener"}.
+
 
 ```mermaid
   %%{init:{'flowchart':{'nodeSpacing': 50, 'rankSpacing': 50}}}%%
@@ -63,7 +116,7 @@ The MCIX terminal command provides the ability to interactively explore MCIX's c
 
 ## Container Image
 
-MCIX is also available as a Docker container image hosted [here](https://github.com/MettleCI/mcix/pkgs/container/mcix){:target="_blank" rel="noopener"}. This mode of delivery provides the fundamental building block of your automated CI/CD processes for DataStage NextGen.
+The MCIX container provides all the capablities of the MCIX command line with the deployment flexibility of a container.  This form of MCIX provides the fundamental building block of your automated CI/CD processes for watsonx.data integration. It is described in more detail [here](../container/container){:target="_blank" rel="noopener"} and is hosted [here](https://github.com/MettleCI/mcix/pkgs/container/mcix){:target="_blank" rel="noopener"}. 
 
 ```mermaid
   flowchart LR
@@ -126,6 +179,6 @@ MCIX is also available as a Docker container image hosted [here](https://github.
 
 Users of the most popular CI/CD orchestration tools can make use of native pipeline tasks which enable them to reference MCIX operators directory from within their pipeline YAM files. MCIX tasks, introduced [here](../container/native-tasks), are available for ...
 
-- [GitHub](../container/github)
-- [Azure DevOps](../container/azure)
-- [Jenkins](../container/jenkins)
+- [Azure DevOps](../azure/azure)
+- [GitHub](../github/github)
+- [Jenkins](../jenkins/jenkins)

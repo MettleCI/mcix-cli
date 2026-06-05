@@ -6,7 +6,7 @@ order: 3
 # banner_src: ./img/carbon-header.png
 ---
 
-# MCIX Command Shell
+# Introduction
 
 <cds-inline-notification
   kind="info"
