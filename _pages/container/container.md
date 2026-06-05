@@ -43,6 +43,21 @@ within a container instance of the image.
   id="overlay-notification">
 </cds-inline-notification>
 
+<!--
+<cds-inline-notification
+  kind="warning"
+  title="Files created inside the container are temporary"
+  low-contrast="true"
+  hide-close-button="true">
+  <div class="cds--inline-notification__subtitle">
+    <p>Files written inside the container will be lost when the container exits.
+       Mount a host directory using <code>-v host_path:container_path</code>.</p>
+    <p>See the <a href="./running-mcix-in-containers.html">container usage guide</a>
+      for a complete example.</p>
+  </div>
+</cds-inline-notification>
+-->
+
 ## Basic example
 
 Here's a simple example of how to call `mcix datastage import` inside an instance of the MCIX container using `docker run`. 

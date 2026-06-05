@@ -102,8 +102,6 @@ docker login myregistry.azurecr.io
 
 You must have permission to push images to the target registry.
 
----
-
 ## 4. Push the image to the target registry
 
 Push the retagged image:
@@ -113,8 +111,6 @@ docker push myregistry.azurecr.io/example-namespace/mcix:1.2.3
 ```
 
 Once complete, the image is available from the target registry.
-
----
 
 ## 5. Verify the image can be pulled
 
@@ -132,7 +128,18 @@ docker image rm myregistry.azurecr.io/example-namespace/mcix:1.2.3
 docker pull myregistry.azurecr.io/example-namespace/mcix:1.2.3
 ```
 
----
+## 6. Set container references
+
+You'll need to ensure that the native actions/tasks used by your build system uses the correct reference to your newly-depoyed container.
+
+#### Azure DevOps
+
+#### GitHub
+
+#### Jenkins
+
+#### Other container-based systems
+
 
 ## Complete example
 
@@ -153,29 +160,6 @@ docker push "$TARGET_IMAGE"
 
 ## Notes
 
-The target registry name for Azure Container Registry normally uses the form:
+- The tag (e.g. `1.2.3) should usually be preserved when copying between registries.
+- Avoid pushing everything as `latest` unless your organisation has a clear tagging policy. Versioned tags make deployments easier to audit and reproduce.
 
-```text
-<registry-name>.azurecr.io
-```
-
-For example:
-
-```text
-myregistry.azurecr.io
-```
-
-The tag should usually be preserved when copying between registries, for example:
-
-```text
-1.2.3
-```
-
-Avoid pushing everything as `latest` unless your organisation has a clear tagging policy. Versioned tags make deployments easier to audit and reproduce.
-
-## Set container references
-
-Set container reference in your build system
-  - Azure
-  - GitHub
-  - Jenkins
