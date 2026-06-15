@@ -4,28 +4,65 @@
     "submenu": [
       {
         "title": "Engineering excellence",
-        "url": "/getting-started/engx"
+        "url": "/introduction/engx"
       },
       {
         "title": "Getting started",
-        "url": "/getting-started"
+        "url": "/introduction"
       },
       {
-        "title": "The MCIX command",
-        "url": "/command-shell/command-shell"
+        "title": "CI/CD Concepts",
+        "url": "/introduction/cicd-concepts"
       },
       {
-        "title": "JUnit output",
-        "url": "/command-shell/junit-output"
+        "title": "Asset Overlays",
+        "url": "/introduction/overlays"
+      },
+      {
+        "title": "Test results",
+        "url": "/introduction/junit-output"
+      },
+      {
+        "title": "Generic pipeline",
+        "url": "/pipelines/generic-pipeline "
       },
       {
         "title": "Known issues",
-        "url": "/command-shell/known-issues"
+        "url": "/introduction/known-issues"
       }
     ]
   },
   {
-    "title": "MCIX Container",
+    "title": "Command Line",
+    "submenu": [
+      {
+        "title": "The MCIX command",
+        "url": "/command-line/command-shell"
+      },
+      {
+        "title": "Pipeline Tutorial Introduction",
+        "url": "/command-line/pipeline-tutorial-intro"
+      },
+      {
+        "title": "Pipeline Tutorial Prerequisites",
+        "url": "/command-line/pipeline-tutorial-prerequisites"
+      },
+      {
+        "title": "Pipeline Tutorial Steps",
+        "url": "/command-line/pipeline-tutorial-steps"
+      },
+      {
+        "title": "Pipeline Tutorial 2",
+        "url": "/command-line/pipeline-tutorial-steps2"
+      },
+      {
+        "title": "CLI Command Reference",
+        "url": "/command-line/command-reference"
+      },
+    ]
+  },
+  {
+    "title": "Container",
     "submenu": [
       {
         "title": "Using the container",
@@ -36,19 +73,7 @@
         "url": "/container/native-tasks"
       },
       {
-        "title": "Azure DevOps",
-        "url": "/container/azure"
-      },
-      {
-        "title": "GitHub Actions",
-        "url": "/container/github"
-      },
-      {
-        "title": "Jenkins Tasks",
-        "url": "/container/jenkins"
-      },
-      {
-        "title": "Specifying your registry",
+        "title": "Using custom registries",
         "url": "/container/deploying-to-registry"
       }
     ]
@@ -61,18 +86,34 @@
         "url": "/azure/azure"
       },
       {
-        "title": "Prerequisites",
+        "title": "Azure DevOps Prerequisites",
         "url": "/azure/azure-prereqs"
+      },
+      {
+        "title": "Create a template repository",
+        "url": "/azure/template-repository"
       },
       {
         "title": "Tutorial",
         "url": "/azure/azure-tutorial"
+      },
+      {
+        "title": "Azure DevOps Task Reference",
+        "url": "/azure/azure-task-ref"
+      },
+      {
+        "title": "Automating Azure DevOps project creation",
+        "url": "/azure/azure-automating-project-creation"
       }
     ]
   },
   {
-    "title": "GitHub Actions",
+    "title": "GitHub",
     "submenu": [
+      {
+        "title": "Establishing tempalte repository",
+        "url": "/azure/template-repository"
+      },
       {
         "title": "GitHub Actions",
         "url": "/container/github/"
@@ -80,7 +121,7 @@
     ]
   },
   {
-    "title": "Jenkins Tasks",
+    "title": "Jenkins",
     "submenu": [
       {
         "title": "Jenkins Tasks",
@@ -88,29 +129,4 @@
       }
     ]
   },
-  {
-    "title": "Command Reference",
-    "submenu": [
-      {
-        "title": "DataStage Namespace",
-        "url": "/command-ref/datastage/"
-      },
-      {
-        "title": "Migrate Namespace",
-        "url": "/command-ref/migrate/"
-      },
-      {
-        "title": "Overlay Namespace",
-        "url": "/command-ref/overlay/"
-      },
-      {
-        "title": "System Namespace",
-        "url": "/command-ref/system/"
-      },
-      {
-        "title": "Unit-Test Namespace",
-        "url": "/command-ref/unit-test/"
-      }
-    ]
-  }
 ]

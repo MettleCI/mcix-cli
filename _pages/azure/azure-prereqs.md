@@ -92,21 +92,6 @@ An Azure DevOps **Environment** is a logical deployment target such as `Dev`, `T
 1. Choose the resource type 'None' to give you a simple environment used only for deployment tracking and approvals.
 1. Create the environment by clicking **Create**.
 
-### Add optional approvals and checks
-
-For controlled environments such as `Production` it can be useful to restrict who can perform a deployment to this environment, and when that deployment can be performed.  You do this on the Environemnt's Approvals and Checks tab.
-
-Approvals and Checks are defined on your Environment and control the execution order of pipeline stages.  An Environment can have multiple different type of approvals and checks configured but for our purposes we're going to define a pre-check approval which will need to be authorised by a used with the relevant authority before a pipeline stage which uses this environment will be executed. If tgis pre-check approval is rejected or times out, the stage is not executed.
-
-1. Open **Pipelines** → **Environments** → **\<environment\>** then navigate to the **Approvals and checks** tab.
-1. Select **\+** (Add check).
-1. Check the **Approvals** checkbox and click **Next**.
-1. Select the user(s) who may approve a deployment and, optionally, specify some brief instructions for them.
-1. Under **Advanced** you may optionally select the **Allow approvers to approve their own runs** checkbox.
-1. Under **Control options** you may optionally specify the timeout period for an approval request.
-
-This allows you to require manual approval before a pipeline deploys to that environment. 
-
 <details markdown="1">
   <summary>Referencing an Environment from within a YAML pipeline</summary>
 To deploy to an environment, use a `deployment` job rather than a normal `job`. e.g.
@@ -153,6 +138,22 @@ environment: PROD
 In this example, `Production` should have an approval check configured so that the stage pauses until someone approves the deployment.
 </details>
 
+## Add deployment approvals
+
+For controlled environments such as `Production` it can be useful to restrict who can perform a deployment to this environment, and the date and time of when that deployment can be performed.  In Azure DevOps you do this on the Environemnt's **Approvals and Checks** tab.
+
+Approvals and Checks are defined on your Environment and control the execution order of pipeline stages.  An Environment can have multiple different type of approvals and checks configured but for our purposes we're going to define a pre-check approval which will need to be authorised by a used with the relevant authority before a pipeline stage which uses this environment will be executed. If tgis pre-check approval is rejected or times out, the stage is not executed.
+
+1. Open **Pipelines** → **Environments** → **\<environment\>** then navigate to the **Approvals and checks** tab.
+1. Select **\+** (Add check).
+1. Check the **Approvals** checkbox and click **Next**.
+1. Select the user(s) who may approve a deployment and, optionally, specify some brief instructions for them.
+1. Under **Advanced** you may optionally select the **Allow approvers to approve their own runs** checkbox.
+1. Under **Control options** you may optionally specify the timeout period for an approval request.
+
+This allows you to require manual approval before a pipeline deploys to that environment. 
+
+
 ## Variables and Secrets
 
 An Azure DevOps variable group is a reusable collection of named values that can be shared across multiple pipelines, helping you centralise common configuration such as image names, service connection names, environment URLs, or deployment settings.
@@ -169,13 +170,13 @@ To create a **Variable Group** in Azure DevOps:
 1. Under **Variables**, click **+ Add**.
 1. Add your variables, for example:
 
-   | Name                                 | Value                               |
-   | ------------------------------------ | ----------------------------------- |
-   | HostName   | value | description |
-   | UserName   | value | description |
-   | APIKey   | value | description |
-   | DatastageProject: ${{ variables.Datastage_Project }}"
-   | EnvironmentID: ${{ variables.EnvID }}"
+   | Name                                  | Value                               |
+   | ------------------------------------- | ----------------------------------- |
+   | HostName         | value              | The URL of your DataStage host      |
+   | UserName         | value              | Your NextGen DataStage username     |
+   | APIKey           | value              | Your NextGen DataStage API key      |
+   | DatastageProject | MyDataStageProject | The 'base' name of your DataStage project |  
+   | EnvironmentID    | 'CI'               | The environment identifier appended to your base DataStage project name |
 
 1. For sensitive values, click the **lock** icon (🔓) beside the value to mark it as secret.
 1. Click **Save**.<br/>
@@ -183,12 +184,14 @@ To create a **Variable Group** in Azure DevOps:
 
 <details markdown="1">
   <summary>Referencing a Variable from within a YAML pipeline</summary>
-At the top of your Azure Pipeline YAML file, reference the group like this:
+The YAML syntax for referencing a variable group is:
+
 ```yaml
 {% raw %}variables:
-- group: mcix-settings
+- group: my-variable-group
 {% endraw %}```
 
+where `group` must be the first property in that entry.<br/>
 Then use the variables in your pipeline steps:
 
 ```yaml
@@ -215,15 +218,6 @@ steps:
     containerImage: $(containerImage)
     containerRegistryServiceConnection: $(containerRegistryServiceConnection)
 {% endraw %}```
-
-The YAML syntax for referencing a variable group is:
-
-```yaml
-{% raw %}variables:
-- group: my-variable-group
-{% endraw %}```
-
-where `group` must be the first property in that entry.
 </details>
 
 ## Other Settings

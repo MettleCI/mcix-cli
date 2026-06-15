@@ -55,7 +55,6 @@ UNIT_TEST_EXECUTE = Diagram(
                             ),
                             MultipleChoice(0, 'any',
                                 Sequence(Skip()),
-                                Sequence(NonTerminal('-project-cache'), '{path}'),
                                 Sequence(NonTerminal('-test-suite'), '{name}'),
                                 Sequence(NonTerminal('-threads'), '{threads}'),
                                 NonTerminal('-ignore-test-failures')

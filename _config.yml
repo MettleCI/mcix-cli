@@ -18,7 +18,7 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 
-title: MCIX CLI
+title: MCIX Tools
 email: John.McKeever1@ibm.com
 description: >- # This is the YAML line continuation character
   A guide to the MettleCI MCIX Command Line Interface (CLI) tool, which provides a 
@@ -53,4 +53,8 @@ defaults:
     values:
       layout: "simple"
 
-latest_version: "1.0.0" 
+container-registry: "icr.io/mettleci/mcix" 
+latest-version: "1.0.0" 
+mcix-cmd-url: "https://github.com/mettleci/mcix-cli/releases"
+supported-platforms: "Azure DevOps, GitHub Actions, or Jenkins"
+compliance: "Y"

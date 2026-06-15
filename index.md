@@ -1,5 +1,5 @@
 ---
-title: MCIX Command Line Interface
+title: MCIX Tools
 description: Modern software delivery for <br/>IBM DataStage NextGen
 banner_src: ../../assets/img/banner.jpeg
 ---
@@ -52,6 +52,7 @@ banner_src: ../../assets/img/banner.jpeg
   Beware that its commmands, options, and behaviour can change or disappear at any time without warning.
   Release of the production-ready version is anticipated by the end of 2026 Q2."
   low-contrast
+  hide-close-button="true"
   id="overlay-notification">
 </cds-inline-notification>
 
@@ -74,7 +75,7 @@ The MCIX CLI tool is available for **Unix (x86)**, **Windows (x86)**, and **macO
 
 ## Command reference
 
-{% assign namespace_pages = site.pages | where: "type", "namespace" %}
+{% assign namespace_pages = site.pages | where: "type", "frontpage" %}
 <c4d-card-group>
   {% for page in namespace_pages %}
     <c4d-card-group-item cta-type="local" href="{{ site.baseurl }}{{ page.url }}">
