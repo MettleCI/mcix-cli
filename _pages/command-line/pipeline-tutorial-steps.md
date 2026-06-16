@@ -1,22 +1,57 @@
 ---
-title: CI/CD Pipeline Prerequisites
+title: Pipeline Tutorial Steps
 description: Implementing a simple CI/CD<br/>Pipeline using the MCIX CLI
 ---
 
+<script type="module" src="https://1.www.s81c.com/common/carbon-for-ibm-dotcom/version/v2.8.0/content-block.min.js"></script>
+<script type="module" src="https://1.www.s81c.com/common/carbon-for-ibm-dotcom/version/v2.8.0/content-block-mixed.min.js"></script>
+<script type="module" src="https://1.www.s81c.com/common/carbon-for-ibm-dotcom/version/v2.8.0/link-list.min.js"></script>
+
 <c4d-link-list type="default" slot="complementary">
   <c4d-link-list-heading>Resources</c4d-link-list-heading>
+  <c4d-link-list-item
+    href="pipeline-tutorial-introduction"
+    target="cmd-ref"
+    cta-type="local"
+  >
+    Tutorial Introduction
+  </c4d-link-list-item>
+  <c4d-link-list-item
+    href="pipeline-tutorial-prerequisites"
+    target="cmd-ref"
+    cta-type="local"
+  >
+    Tutorial Prerequisites
+  </c4d-link-list-item>
   <c4d-link-list-item
     href="/command-line/command-reference"
     target="cmd-ref"
     cta-type="local"
   >
+    Sample DataStage Project
+  </c4d-link-list-item>
+  <c4d-link-list-item
+    href="assets/mcix-pipeline.sh"
+    target="cmd-ref"
+    cta-type="local"
+  >
+    Template pipeline script (bash)
+  </c4d-link-list-item>
+  <c4d-link-list-item
+    href="assets/mcix-pipeline.ps1"
+    target="bash"
+    cta-type="local"
+  >
+    Template pipeline script (powershell)
+  </c4d-link-list-item>
+  <c4d-link-list-item
+    href="/command-line/command-reference"
+    target="powershell"
+    cta-type="local"
+  >
     MCIX Command Reference
   </c4d-link-list-item>
 </c4d-link-list>
-
----
-
-# A simple CI/CD pipeline using the MCIX CLI
 
 ## Scenario
 
@@ -41,10 +76,11 @@ It is assumed you already have:
 * asset-analysis rules available
 {% endif %}
 
-**Note:** If you don't have a source NextGen DataStage project available you can download a sample project for tutorial purposes here:
+**Note:** If you don't have a source NextGen DataStage project available you can download a sample project 
+for tutorial purposes (below) and import it into your source project in your DataStage NextGen environment:
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[![JUnit XML Schema]({{ site.url }}/assets/img/document--download.svg)]({{ site.url }}/assets/files/junit.xml.zip)
-<br/>&nbsp;[Download<br/>ElectroMart]({{ site.url }}/assets/files/junit.xml.zip)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[![JUnit XML Schema]({{ site.url }}/assets/img/document--download.svg)](assets/electromart.zip)
+<br/>&nbsp;[Download<br/>ElectroMart](assets/electromart.zip)
 
 ---
 
@@ -137,24 +173,24 @@ mcix-cli-pipeline-demo/
 For readability, define the values you will use throughout the pipeline as shell variables.
 
 ```bash
-export SOURCE_CP4D_URL="https://source-cpd.example.com"
-export SOURCE_PROJECT="Development"
+# The location of your DataStage instance
+# This tutorial uses the same instance for both source and target environments
+export CP4D_URL="https://dataplatform.cloud.ibm.com/"    # DataStage as-a-service on IBM Cloud 
+                                                         # or your internal CPD instance
+export CP4D_USERNAME="myname@MyOrg.com"                  # DataStage username
+export CP4D_API_KEY="my-api-key"                         # DataStage password
 
-export TARGET_CP4D_URL="https://target-cpd.example.com"
-export TARGET_PROJECT="Test"
+# Project names (see 'Environments and DataStage project naming')
+export SOURCE_PROJECT="mcix-cli-demo" # The location of your development (source) project
+export TARGET_PROJECT="mcix-cli-demo_CI"                 # Demo will deploy to a 'CI' environment
 
-export CP4D_USERNAME="john@example.com"
-export CP4D_API_KEY="your-api-key"
-
-export EXPORT_DIR="./exported-assets"
-export OVERLAY_DIR="./overlaid-assets"
-export REPORT_DIR="./reports"
-export TEST_RESULTS_DIR="./test-results"
+# Local working folders
+export EXPORT_DIR="./exported-assets"                    # Exported assets
+export OVERLAY_DIR="./overlaid-assets"                   # Overlaid assets
+export REPORT_DIR="./reports"                            # JUnit report outputs
 ```
 
-Adjust the variable names and values to match your MCIX command options.
-
-NOTE: You can generate a Cloud Pak API key [here](https://www.ibm.com/docs/en/cloud-paks/cp-data/5.3.x?topic=tutorials-generating-api-keys).
+Adjust the variable names and values to match your environment. If you don't yet have one, you can generate a IBM Cloud Pak API key [here](https://www.ibm.com/docs/en/cloud-paks/cp-data/5.3.x?topic=tutorials-generating-api-keys).
 
 ---
 
@@ -168,7 +204,7 @@ mcix datastage export \
   --project "$SOURCE_PROJECT" \
   --username "$CP4D_USERNAME" \
   --api-key "$CP4D_API_KEY" \
-  --output-dir "$EXPORT_DIR"
+  --export-path "$EXPORT_DIR"
 ```
 
 After this step, your exported DataStage assets should be available in:
@@ -177,36 +213,78 @@ After this step, your exported DataStage assets should be available in:
 ./exported-assets
 ```
 
-This exported directory becomes the input to the next stage.
+This directory of exported assets becomes the input to the next stage.
 
 ---
 
-## 4. Apply environment overlays
+## 4. Identify and commit changes
 
-Next, apply overlays to transform the exported assets for the target environment.
-
-For example, overlays might change connection names, schema names, database endpoints, project parameters, or other environment-specific values.
+Now we'll identify which of our exported assets in our local directory are different to 
+our source of truth stored in Git; in other words, the difference between our local and 
+remote Git repositories.  We'll do this using the Git command line:
 
 ```bash
-mcix overlay apply \
-  --input-dir "$EXPORT_DIR" \
-  --overlay-dir "./overlays/test" \
-  --output-dir "$OVERLAY_DIR"
+git status
 ```
 
-After this step, the transformed assets should be available in:
+As you have an empty remote Git repository this command will list a
 
-```text
-./overlaid-assets
+```bash
+Refresh index: 100% (291/291), done.
+On branch main
+Your branch is up to date with 'origin/main'.
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	datastage
+
+nothing added to commit but untracked files present (use "git add" to track)
 ```
 
-A common pattern is to keep overlays in source control, for example:
+We can see, as expected, that we have new files (in the `datastage` directory) added to our local repository
+ which are not present in the remote.  Let's tell Git we want to bring those files under version control by 
+ **staging** them:
 
-```text
-overlays/
-├── dev/
-├── test/
-└── prod/
+ ```bash
+ git add datastage/
+ ```
+
+ This command will not produce a response, so let's check what's changed:
+
+ ```bash
+git status
+```
+
+We'll now see that the requested files are now under version control, but have yet to be comitted to the remote repository.
+Your terminal output will look something like this:
+
+```bash
+Refresh index: 100% (291/291), done.
+On branch main
+Your branch is up to date with 'origin/main'.
+
+Changes not staged for commit:
+  (use "git add/rm <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	added:      FlowName1.json
+	added:      FlowName2.json
+	added:      FlowName3.json
+	added:      FlowName4.json
+	added:      FlowName5.json
+	added:      FlowName6.json
+  etc.
+```
+
+Now let's commit these changes to the local repository:
+
+```bash
+git commit -m "Initial tutorial commit"
+```
+
+... and finally, push them to the remote repository:
+
+```bash
+git push
 ```
 
 ---
@@ -228,7 +306,46 @@ At this point, the transformed DataStage assets have been deployed into the targ
 
 ---
 
-## 6. Run asset analysis tests
+## 4. Apply environment overlays
+
+Next, we'll apply overlays to transform the exported assets for the target environment.  For example, overlays might change connection names, schema names, database endpoints, project parameters, or other environment-specific values.
+
+A common pattern is to keep overlays in source control, for example:
+
+```text
+overlays/
+├── dev/
+├── test/
+└── prod/
+```
+
+Start by creating an overlay file in your `overlays/ci` directory called `ci.overlay` and populating it with this overlay specification:
+
+```json
+{
+  inputDir: "/test/input",
+  outputDir: "/test/output",
+}
+```
+Then apply the overlay to te recently exported assets to generate a new set of **overlaid** assets:
+
+```bash
+mcix overlay apply \
+  --input-dir "$EXPORT_DIR" \
+  --overlay-dir "./overlays/test" \
+  --output-dir "$OVERLAY_DIR"
+```
+
+After this step, the transformed assets should be available in:
+
+```text
+./overlaid-assets
+```
+
+---
+
+{% if site.compliance == "Y" %}
+## X. Run asset analysis tests
 
 Next, run asset analysis tests to validate that the imported assets comply with your rules.
 
@@ -251,10 +368,11 @@ This produces a JUnit-style test result file:
 That file can later be consumed by a CI/CD system such as GitHub Actions, Azure DevOps, Jenkins, or Tekton.
 
 ---
+{% endif %}
 
 ## 7. Run unit tests
 
-Finally, execute the DataStage unit tests.
+Now we'll execute the DataStage unit tests.
 
 ```bash
 mcix unit-test execute \
@@ -262,7 +380,19 @@ mcix unit-test execute \
   --project "$TARGET_PROJECT" \
   --username "$CP4D_USERNAME" \
   --api-key "$CP4D_API_KEY" \
-  --junit-output "$TEST_RESULTS_DIR/unit-test-results.xml"
+  --junit-output "$REPORT_DIR/unit-test-results.xml"
+```
+
+You'll see the test being executed in the target environment:
+
+```bash
+MettleCI Command Line (build 1.0-99)
+(C) 2018-2026 Data Migrators Pty Ltd
+unit-test execute (1.0-123)
+Finding changes to flows and unit tests
+Executing 1 test cases with 8 concurrent jobs...
+ * Test TxFctFinDs - PASSED (7s)
+SUCCESS: Executed 1 tests
 ```
 
 This produces another JUnit-style result file:
@@ -271,98 +401,117 @@ This produces another JUnit-style result file:
 ./test-results/unit-test-results.xml
 ```
 
+Note that if you were to run this command again then MCIX would identify that 
+the test has already succeeded successfully and doesn't need to be re-executed:
+
+```bash
+MettleCI Command Line (build 1.0-99)
+(C) 2018-2026 Data Migrators Pty Ltd
+unit-test execute (1.0-123)
+Finding changes to flows and unit tests
+ * Test TxFctFinDs no changes detected - SKIPPED
+Executing 0 test cases with 8 concurrent jobs...
+SUCCESS: Executed 0 tests
+```
+
 ---
 
 ## 8. Run the full pipeline as a script
 
-Once the individual commands work, place them into a shell script.
+Once you've run the individual commands you may wish to place them into a shell script to reproduce them easily. 
 
-Create a file named:
+Templates of this script are available for Linux/macOS and Windows (below)
 
-```bash
-run-mcix-pipeline.sh
+In each case you'll need to update the file's configuration values near the top of the script, including:
+
+```powershell
+$CP4D_URL = "https://source-cpd.example.com"
+$CP4D_USERNAME = "john@example.com"
+$CP4D_API_KEY  = "your-api-key"
+$PROJECT  = "Development"
+
+$TARGET_CP4D_URL = "https://target-cpd.example.com"
+$TARGET_PROJECT  = "Test"
+
 ```
 
-Add the following content:
 
-```bash
-#!/usr/bin/env bash
-set -euo pipefail
 
-export SOURCE_CP4D_URL="https://source-cpd.example.com"
-export SOURCE_PROJECT="Development"
 
-export TARGET_CP4D_URL="https://target-cpd.example.com"
-export TARGET_PROJECT="Test"
 
-export CP4D_USERNAME="john@example.com"
-export CP4D_API_KEY="your-api-key"
-
-export EXPORT_DIR="./exported-assets"
-export OVERLAY_DIR="./overlaid-assets"
-export REPORT_DIR="./reports"
-export TEST_RESULTS_DIR="./test-results"
-
-mkdir -p "$EXPORT_DIR"
-mkdir -p "$OVERLAY_DIR"
-mkdir -p "$REPORT_DIR"
-mkdir -p "$TEST_RESULTS_DIR"
-
-echo "Exporting DataStage assets..."
-mcix datastage export \
-  --url "$SOURCE_CP4D_URL" \
-  --project "$SOURCE_PROJECT" \
-  --username "$CP4D_USERNAME" \
-  --api-key "$CP4D_API_KEY" \
-  --output-dir "$EXPORT_DIR"
-
-echo "Applying overlays..."
-mcix overlay apply \
-  --input-dir "$EXPORT_DIR" \
-  --overlay-dir "./overlays/test" \
-  --output-dir "$OVERLAY_DIR"
-
-echo "Importing DataStage assets..."
-mcix datastage import \
-  --url "$TARGET_CP4D_URL" \
-  --project "$TARGET_PROJECT" \
-  --username "$CP4D_USERNAME" \
-  --api-key "$CP4D_API_KEY" \
-  --input-dir "$OVERLAY_DIR"
-
-echo "Running asset analysis tests..."
-mcix asset-analysis test \
-  --url "$TARGET_CP4D_URL" \
-  --project "$TARGET_PROJECT" \
-  --username "$CP4D_USERNAME" \
-  --api-key "$CP4D_API_KEY" \
-  --rules-dir "./asset-analysis-rules" \
-  --junit-output "$REPORT_DIR/asset-analysis-results.xml"
-
-echo "Running unit tests..."
-mcix unit-test execute \
-  --url "$TARGET_CP4D_URL" \
-  --project "$TARGET_PROJECT" \
-  --username "$CP4D_USERNAME" \
-  --api-key "$CP4D_API_KEY" \
-  --junit-output "$TEST_RESULTS_DIR/unit-test-results.xml"
-
-echo "Pipeline completed successfully."
-echo "Asset analysis report: $REPORT_DIR/asset-analysis-results.xml"
-echo "Unit test report:      $TEST_RESULTS_DIR/unit-test-results.xml"
-```
+<details markdown="1">
+  <summary>Linux/macOS</summary>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[![run-mcix-pipeline.sh]({{ site.url }}/assets/img/document--download.svg)](run-mcix-pipeline.sh)
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Download<br/>mcix-pipeline.sh](run-mcix-pipeline.sh)
 
 Make the script executable:
-
 ```bash
-chmod +x run-mcix-pipeline.sh
+chmod +x mcix-pipeline.sh
 ```
 
 Run it:
-
 ```bash
-./run-mcix-pipeline.sh
+./mcix-pipeline.sh
 ```
+
+</details>
+
+<details markdown="1">
+  <summary>Windows</summary>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[![run-mcix-pipeline.bat]({{ site.url }}/assets/img/document--download.svg)](run-mcix-pipeline.bat)
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Download<br/>mcix-pipeline.bat](run-mcix-pipeline.bat)
+
+This script assumes **PowerShell 7.4 or later**. The combination of `$ErrorActionPreference = "Stop"` and `$PSNativeCommandUseErrorActionPreference = $true` causes the script to stop if an external command such as `mcix` returns a non-zero exit code. In older versions of PowerShell, native command failures do not automatically behave like terminating PowerShell errors, so scripts may need to check `$LASTEXITCODE` explicitly after each command.
+
+Yes. For a tutorial, I’d describe the process as:
+
+## Running the PowerShell pipeline script
+
+Download the PowerShell script to your local repository folder and review it before running it.
+
+For example, save the script as:
+
+```text
+run-mcix-pipeline.ps1
+````
+
+Then open PowerShell, change into your repository directory, and run the script:
+
+```powershell
+cd path\to\mcix-cli-pipeline-demo
+.\run-mcix-pipeline.ps1
+```
+
+If PowerShell blocks the script because of your local execution policy, you can allow the script to run for this session only:
+
+```powershell
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+```
+
+Then run the script again:
+
+```powershell
+.\run-mcix-pipeline.ps1
+```
+
+This does not permanently change your system-wide PowerShell policy. It only applies to the current PowerShell session.
+
+When the script completes successfully, it should have exported the DataStage assets, applied overlays, imported the overlaid assets into the target project, and produced the configured test result files.
+
+````
+
+I’d also add this small safety note:
+
+```markdown
+> **Note:** Always review downloaded scripts before running them, especially scripts that contain credentials, API keys, or deployment commands.
+````
+
+
+
+</details>
+
+You'll need to update the variables wit your environment-specific configuration items, like URL's, credentials, and project names.
+
 
 ---
 
@@ -411,455 +560,3 @@ Do not usually store exported runtime output or generated reports in source cont
 
 ---
 
-<!--
-# Constructing a pipeline
-
-```text
-datastage export
-   ↓
-overlay apply
-   ↓
-datastage import
-   ↓
-asset-analysis test
-   ↓
-unit-test execute
-```
-
-
-```mermaid
-%%{init: {'sequence': {'diagramMarginY': 50, 'mirrorActors': false}}}%%
-sequenceDiagram
-    autonumber
-    participant MCIX as MCIX<br/>Resources<br/><br/><br/><br/>
-    participant DSDEV as DataStage<br/>Dev<br/><br/><br/><br/>
-    participant DSCI as DataStage<br/>CI<br/><br/><br/><br/>
-    actor Laptop as Laptop
-    participant Git as Your Git<br/>Repository<br/><br/><br/><br/>
-
-    DSDEV->>Laptop: datastage export
-    Laptop->>Laptop: (incremental process)
-    Laptop->>Git: git push
-    Laptop->>Laptop: overlay apply
-    Laptop->>DSCI: datastage import
-```
-
-The example assumes you are moving DataStage assets from a source project, applying environment-specific overlays, importing them into a target project, then validating and testing the result.
-
----
-
-## 1. Prepare a working directory
-
-Create a local directory to hold exported assets, overlay output, reports, and test results.
-
-```bash
-mkdir mcix-pipeline-demo
-cd mcix-pipeline-demo
-
-mkdir exported-assets
-mkdir overlaid-assets
-mkdir reports
-mkdir test-results
-```
-
-Example structure:
-
-```text
-mcix-pipeline-demo/
-├── exported-assets/
-├── overlaid-assets/
-├── reports/
-└── test-results/
-```
-
----
-
-
-
-
-
-
-
----
-
-## Notes for real-world usage
-
-Avoid hard-coding credentials directly in the script. For local use, prefer environment variables or a secure secrets manager.
-
-The same sequence can later be moved into a CI/CD platform. In that case, each command becomes a pipeline step, and the JUnit XML files can be published as test results.
-
-For repeatable deployments, keep the following items in source control:
-
-```text
-overlays/
-asset-analysis-rules/
-unit-test definitions/
-run-mcix-pipeline.sh
-```
-
-Do not usually store exported runtime output or generated reports in source control.
-
-
-
-
-
-```mermaid
-%%{init: {'sequence': {'diagramMarginY': 50, 'mirrorActors': false}}}%%
-sequenceDiagram
-    autonumber
-    participant MCIX as MCIX<br/>Resources<br/><br/><br/><br/>
-    participant DSDEV as DataStage<br/>Dev<br/><br/><br/><br/>
-    participant DSCI as DataStage<br/>CI<br/><br/><br/><br/>
-    actor Laptop as Laptop
-    participant Git as Your Git<br/>Repository<br/><br/><br/><br/>
-
-    MCIX->>Laptop: git clone<br/>(template repository)
-    DSDEV->>Laptop: datastage export<br/>(/datastage)
-    Laptop->>Git: git push
-```
-
----
-
-<!--
-# Constructing a pipeline
-
-```text
-datastage export
-   ↓
-overlay apply
-   ↓
-datastage import
-   ↓
-asset-analysis test
-   ↓
-unit-test execute
-```
-
-
-```mermaid
-%%{init: {'sequence': {'diagramMarginY': 50, 'mirrorActors': false}}}%%
-sequenceDiagram
-    autonumber
-    participant MCIX as MCIX<br/>Resources<br/><br/><br/><br/>
-    participant DSDEV as DataStage<br/>Dev<br/><br/><br/><br/>
-    participant DSCI as DataStage<br/>CI<br/><br/><br/><br/>
-    actor Laptop as Laptop
-    participant Git as Your Git<br/>Repository<br/><br/><br/><br/>
-
-    DSDEV->>Laptop: datastage export
-    Laptop->>Laptop: (incremental process)
-    Laptop->>Git: git push
-    Laptop->>Laptop: overlay apply
-    Laptop->>DSCI: datastage import
-```
-
-The example assumes you are moving DataStage assets from a source project, applying environment-specific overlays, importing them into a target project, then validating and testing the result.
-
----
-
-## 1. Prepare a working directory
-
-Create a local directory to hold exported assets, overlay output, reports, and test results.
-
-```bash
-mkdir mcix-pipeline-demo
-cd mcix-pipeline-demo
-
-mkdir exported-assets
-mkdir overlaid-assets
-mkdir reports
-mkdir test-results
-```
-
-Example structure:
-
-```text
-mcix-pipeline-demo/
-├── exported-assets/
-├── overlaid-assets/
-├── reports/
-└── test-results/
-```
-
----
-
-## 2. Define your connection details
-
-For readability, define the values you will use throughout the pipeline as shell variables.
-
-```bash
-export SOURCE_CP4D_URL="https://source-cpd.example.com"
-export SOURCE_PROJECT="Development"
-
-export TARGET_CP4D_URL="https://target-cpd.example.com"
-export TARGET_PROJECT="Test"
-
-export CP4D_USERNAME="john@example.com"
-export CP4D_API_KEY="your-api-key"
-
-export EXPORT_DIR="./exported-assets"
-export OVERLAY_DIR="./overlaid-assets"
-export REPORT_DIR="./reports"
-export TEST_RESULTS_DIR="./test-results"
-```
-
-Adjust the variable names and values to match your MCIX command options.
-
-NOTE: You can generate a Cloud Pak API key [here](https://www.ibm.com/docs/en/cloud-paks/cp-data/5.3.x?topic=tutorials-generating-api-keys).
-
----
-
-## 3. Export DataStage assets
-
-The first stage exports assets from the source DataStage project.
-
-```bash
-mcix datastage export \
-  --url "$SOURCE_CP4D_URL" \
-  --project "$SOURCE_PROJECT" \
-  --username "$CP4D_USERNAME" \
-  --api-key "$CP4D_API_KEY" \
-  --output-dir "$EXPORT_DIR"
-```
-
-After this step, your exported DataStage assets should be available in:
-
-```text
-./exported-assets
-```
-
-This exported directory becomes the input to the next stage.
-
----
-
-## 4. Apply environment overlays
-
-Next, apply overlays to transform the exported assets for the target environment.
-
-For example, overlays might change connection names, schema names, database endpoints, project parameters, or other environment-specific values.
-
-```bash
-mcix overlay apply \
-  --input-dir "$EXPORT_DIR" \
-  --overlay-dir "./overlays/test" \
-  --output-dir "$OVERLAY_DIR"
-```
-
-After this step, the transformed assets should be available in:
-
-```text
-./overlaid-assets
-```
-
-A common pattern is to keep overlays in source control, for example:
-
-```text
-overlays/
-├── dev/
-├── test/
-└── prod/
-```
-
----
-
-## 5. Import DataStage assets
-
-Now import the overlaid assets into the target DataStage project.
-
-```bash
-mcix datastage import \
-  --url "$TARGET_CP4D_URL" \
-  --project "$TARGET_PROJECT" \
-  --username "$CP4D_USERNAME" \
-  --api-key "$CP4D_API_KEY" \
-  --input-dir "$OVERLAY_DIR"
-```
-
-At this point, the transformed DataStage assets have been deployed into the target project.
-
----
-
-## 6. Run asset analysis tests
-
-Next, run asset analysis tests to validate that the imported assets comply with your rules.
-
-```bash
-mcix asset-analysis test \
-  --url "$TARGET_CP4D_URL" \
-  --project "$TARGET_PROJECT" \
-  --username "$CP4D_USERNAME" \
-  --api-key "$CP4D_API_KEY" \
-  --rules-dir "./asset-analysis-rules" \
-  --junit-output "$REPORT_DIR/asset-analysis-results.xml"
-```
-
-This produces a JUnit-style test result file:
-
-```text
-./reports/asset-analysis-results.xml
-```
-
-That file can later be consumed by a CI/CD system such as GitHub Actions, Azure DevOps, Jenkins, or Tekton.
-
----
-
-## 7. Run unit tests
-
-Finally, execute the DataStage unit tests.
-
-```bash
-mcix unit-test execute \
-  --url "$TARGET_CP4D_URL" \
-  --project "$TARGET_PROJECT" \
-  --username "$CP4D_USERNAME" \
-  --api-key "$CP4D_API_KEY" \
-  --junit-output "$TEST_RESULTS_DIR/unit-test-results.xml"
-```
-
-This produces another JUnit-style result file:
-
-```text
-./test-results/unit-test-results.xml
-```
-
----
-
-## 8. Run the full pipeline as a script
-
-Once the individual commands work, place them into a shell script.
-
-Create a file named:
-
-```bash
-run-mcix-pipeline.sh
-```
-
-Add the following content:
-
-```bash
-#!/usr/bin/env bash
-set -euo pipefail
-
-export SOURCE_CP4D_URL="https://source-cpd.example.com"
-export SOURCE_PROJECT="Development"
-
-export TARGET_CP4D_URL="https://target-cpd.example.com"
-export TARGET_PROJECT="Test"
-
-export CP4D_USERNAME="john@example.com"
-export CP4D_API_KEY="your-api-key"
-
-export EXPORT_DIR="./exported-assets"
-export OVERLAY_DIR="./overlaid-assets"
-export REPORT_DIR="./reports"
-export TEST_RESULTS_DIR="./test-results"
-
-mkdir -p "$EXPORT_DIR"
-mkdir -p "$OVERLAY_DIR"
-mkdir -p "$REPORT_DIR"
-mkdir -p "$TEST_RESULTS_DIR"
-
-echo "Exporting DataStage assets..."
-mcix datastage export \
-  --url "$SOURCE_CP4D_URL" \
-  --project "$SOURCE_PROJECT" \
-  --username "$CP4D_USERNAME" \
-  --api-key "$CP4D_API_KEY" \
-  --output-dir "$EXPORT_DIR"
-
-echo "Applying overlays..."
-mcix overlay apply \
-  --input-dir "$EXPORT_DIR" \
-  --overlay-dir "./overlays/test" \
-  --output-dir "$OVERLAY_DIR"
-
-echo "Importing DataStage assets..."
-mcix datastage import \
-  --url "$TARGET_CP4D_URL" \
-  --project "$TARGET_PROJECT" \
-  --username "$CP4D_USERNAME" \
-  --api-key "$CP4D_API_KEY" \
-  --input-dir "$OVERLAY_DIR"
-
-echo "Running asset analysis tests..."
-mcix asset-analysis test \
-  --url "$TARGET_CP4D_URL" \
-  --project "$TARGET_PROJECT" \
-  --username "$CP4D_USERNAME" \
-  --api-key "$CP4D_API_KEY" \
-  --rules-dir "./asset-analysis-rules" \
-  --junit-output "$REPORT_DIR/asset-analysis-results.xml"
-
-echo "Running unit tests..."
-mcix unit-test execute \
-  --url "$TARGET_CP4D_URL" \
-  --project "$TARGET_PROJECT" \
-  --username "$CP4D_USERNAME" \
-  --api-key "$CP4D_API_KEY" \
-  --junit-output "$TEST_RESULTS_DIR/unit-test-results.xml"
-
-echo "Pipeline completed successfully."
-echo "Asset analysis report: $REPORT_DIR/asset-analysis-results.xml"
-echo "Unit test report:      $TEST_RESULTS_DIR/unit-test-results.xml"
-```
-
-Make the script executable:
-
-```bash
-chmod +x run-mcix-pipeline.sh
-```
-
-Run it:
-
-```bash
-./run-mcix-pipeline.sh
-```
-
----
-
-## 9. Expected result
-
-After the script completes successfully, you should have:
-
-```text
-mcix-pipeline-demo/
-├── exported-assets/
-│   └── exported DataStage assets
-├── overlaid-assets/
-│   └── transformed assets ready for import
-├── reports/
-│   └── asset-analysis-results.xml
-└── test-results/
-    └── unit-test-results.xml
-```
-
-The pipeline has:
-
-1. Exported assets from the source project.
-2. Applied target-environment configuration.
-3. Imported assets into the target project.
-4. Validated the assets using asset analysis rules.
-5. Executed unit tests against the deployed solution.
-
----
-
-## Notes for real-world usage
-
-Avoid hard-coding credentials directly in the script. For local use, prefer environment variables or a secure secrets manager.
-
-The same sequence can later be moved into a CI/CD platform. In that case, each command becomes a pipeline step, and the JUnit XML files can be published as test results.
-
-For repeatable deployments, keep the following items in source control:
-
-```text
-overlays/
-asset-analysis-rules/
-unit-test definitions/
-run-mcix-pipeline.sh
-```
-
-Do not usually store exported runtime output or generated reports in source control.
-
-
--->
--->

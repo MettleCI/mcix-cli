@@ -1,0 +1,23 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Jekyll: serve locally",
+      "type": "shell",
+      "command": "bundle exec jekyll serve --livereload",
+      "problemMatcher": []
+    },
+    {
+      "label": "Jekyll: check internal links",
+      "type": "shell",
+      "command": "bundle exec jekyll build && bundle exec htmlproofer ./_site --assume-extension .html --disable-external",
+      "problemMatcher": []
+    },
+    {
+      "label": "Jekyll: check external links",
+      "type": "shell",
+      "command": "bundle exec jekyll build && bundle exec htmlproofer ./_site --assume-extension .html --ignore-urls \"https://github.com/MettleCI/datastage-nextgen-repo-template\"",
+      "problemMatcher": []
+    }
+  ]
+}

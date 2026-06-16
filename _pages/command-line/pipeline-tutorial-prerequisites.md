@@ -11,7 +11,7 @@ You'll perform the CI/CD actions at the commad line of you local host. Start by 
 Download the MCIX CLI instalation media for your local host platform from [here]({{ site.mcix-cmd-url }}) then follow the installation instructions: 
 
 <details markdown="1">
-  <summary>macOS</summary>
+  <summary>Linux/macOS</summary>
 1. Unzip it
 1. Drag the `mcix.app` folder to your local host's `/Applications` folder
 1. Add `export PATH=$PATH:/Applications/mcix.app/Contents/MacOS` to your shell's profile file
@@ -175,7 +175,7 @@ Login to your Git platform and create a new repository.
 | GitHub | [https://github.com](https://github.com) | [Authentication](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/about-authentication-to-github), [Create a repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-new-repository) |
 | GitLab | [https://gitlab.com](https://gitlab.com) | [Authentication](https://docs.gitlab.com/auth/user_authentication/), [Create a repository](https://docs.gitlab.com/user/project/repository/#create-a-repository) |
 
-Use a simple, purpose-based repository name, such as `mcix-cli-pipeline-demo`.
+Use a simple, purpose-based repository name, such as `mcix-cli-demo`.
 
 Avoid naming the repository after a specific environment, such as `myproject-prod` or `myproject-test`. The repository should represent the single source of truth for the DataStage initiative, not one particular deployment target.
 
@@ -189,7 +189,7 @@ Recommended settings for your repository:
 
 | Setting | Value |
 | ------- | ----- |
-| Repository name   | mcix-cli-pipeline-demo |
+| Repository name   | mcix-cli-demo |
 | Visibility        | Private  |
 | Default branch    | main     |
 | .gitignore        | Yes      |
@@ -254,7 +254,7 @@ etc.
   hide-close-button="true">
   <div class="cds--inline-notification__subtitle">
     <p>If you want to use SSH with Azure Repos then copy the SSH host shown in the Azure DevOps 'clone' instructions of your repository in the Azure DevOps user interface. e.g.,<br/>
-    <code>git@ssh.dev.azure.com:v3/MyOrg/mcix-cli-pipeline-demo</code>.</p>
+    <code>git@ssh.dev.azure.com:v3/MyOrg/mcix-cli-demo</code>.</p>
   </div>
 </cds-inline-notification>
 
@@ -263,21 +263,21 @@ Both of these approaches (HTTPS or SSH) will require you to authenticate yoursel
 
 1. Inspect the contents of the cloned repository:
 ```shell
-cd mcix-cli-pipeline-demo
+cd mcix-cli-demo
 ls -al
 ```
 Which should look like this:
 ```text
-mcix-cli-pipeline-demo/
+mcix-cli-demo/
 ├── .git
 ├── .gitattributes
 ├── .gitignore
 ├── datastage/
 ├── filesystem/
+├ ── overlays/
 ├── pipelines/
 ├── README.md
-├── unit-tests/
-└── varfiles/
+└── unit-tests/
 ```
 The `.git` and `.gitattributes` files tell your Git CLI that this is folder is a Git repository, and what its properties are.
 <br/><br/>
@@ -303,7 +303,7 @@ git remote set-url origin <YOUR_NEW_REPOSITORY_URL>
 ```
 For example:
 ```shell
-https://myusername@dev.azure.com/MyOrg/MyProject/_git/mcix-cli-pipeline-demo
+https://myusername@dev.azure.com/MyOrg/MyProject/_git/mcix-cli-demo
 ```
 Again, you can get the repository URL by clicking the **clone** button of your repository in the Azure DevOps user interface and selecting 'HTTPS'.
 <br/><br/>You can verify your `git remote set` has worked by re-issuing... 

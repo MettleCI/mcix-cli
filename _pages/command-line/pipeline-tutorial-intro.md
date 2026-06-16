@@ -67,12 +67,12 @@ The tutorial walks through the following stages.
 
 | Stage    | Purpose                                                     |
 | -------- | ----------------------------------------------------------- |
-| Export   | Retrieve DataStage assets from a source project.            |
-| Version  | Store the exported assets in a Git repository.              |
-| Overlay  | Apply environment-specific configuration changes.           |
-| Import   | Deploy the modified assets into a target DataStage project. |
-| Validate | Check that the assets meet expected standards.              |
-| Test     | Execute DataStage unit tests and produce test results.      |
+| Export   | Retrieve DataStage assets from a source project             |
+| Version  | Store the exported assets in a Git repository               |
+| Overlay  | Apply environment-specific configuration changes            |
+| Import   | Deploy the modified assets into a target DataStage project  |
+| Validate | Check that the assets meet expected standards               |
+| Test     | Execute DataStage unit tests and produce test results       |
 
 Some of stages are optional. For example, asset analysis may only apply where asset analysis rules are available.
 
@@ -88,11 +88,11 @@ In a real CI/CD implementation, the same steps would usually be automated by you
 
 | Tutorial approach                                          | Real-world CI/CD approach                                             |
 | ---------------------------------------------------------- | --------------------------------------------------------------------- |
-| You run commands manually.                                 | The CI/CD platform runs commands automatically.                       |
-| You store credentials locally or in environment variables. | Credentials are stored in platform-managed secrets.                   |
-| You inspect results in the filesystem.                     | Test results are published to you CI/CD platform by the pipeline run. |
-| You decide when to continue.                               | The pipeline enforces success, failure, and approval rules.           |
-| You run the process from your workstation.                 | Jobs run on hosted or self-hosted build agents.                       |
+| You run commands manually                                  | The CI/CD platform runs commands automatically                        |
+| You store credentials locally or in environment variables  | Credentials are stored in platform-managed variables and secrets      |
+| You inspect results in the filesystem                      | Test results are published to you CI/CD platform by the pipeline run  |
+| You decide when to continue                                | The pipeline enforces success, failure, and approval rules            |
+| You run the process from your workstation                  | Jobs run on hosted or self-hosted build agents                        |
 
 The important point is that the underlying MCIX commands remain broadly the same (almost all MCIX commands have equivalent native tasks for the popular
 build systems). The CI/CD platform changes _how_ the commands are orchestrated, not the purpose of the commands themselves.
@@ -107,10 +107,9 @@ Before running the pipeline steps, you will prepare a local working environment 
 - the Git command line
 - access to a remote Git repository
 - a local clone of that repository
-- access to a source DataStage project
+- access to a source DataStage project containing at least one unit test specification and associated test data
 - access to a target DataStage project
-- overlay files for the target environment
-- unit test specifications and test data
+- at least one [overlay file](/introduction/overlays) for the target environment
 
 The [prerequisite page](/command-line/pipeline-tutorial-prerequisites) walks through the local MCIX and Git setup, repository creation, template repository cloning, and verification of basic Git operations.
 
@@ -118,9 +117,7 @@ The [prerequisite page](/command-line/pipeline-tutorial-prerequisites) walks thr
 
 ## Repository role in the tutorial
 
-The Git repository acts as the well goverened, single source of truth for your DataStage delivery assets.
-
-It is not tied to a single environment such as Dev, Test, or Production. Instead, it represents the authoritative versioned source for the DataStage initiative.
+The Git repository acts as the well goverened, single source of truth for your DataStage delivery assets.  It is not tied to a single environment such as Dev, Test, or Production. Instead, it represents the authoritative versioned source for the DataStage initiative.
 
 The different DataStage environments are populated from that source at different stages of the delivery lifecycle. For example:
 
