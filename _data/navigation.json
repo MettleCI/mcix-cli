@@ -48,13 +48,9 @@
         "url": "/command-line/pipeline-tutorial-steps"
       },
       {
-        "title": "Pipeline Tutorial 2",
-        "url": "/command-line/pipeline-tutorial-steps2"
-      },
-      {
         "title": "CLI Command Reference",
         "url": "/command-line/command-reference"
-      },
+      }
     ]
   },
   {
