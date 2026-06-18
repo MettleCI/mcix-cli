@@ -6,7 +6,7 @@ order: 3
 # banner_src: ./img/carbon-header.png
 ---
 
-# Introduction
+## Introduction
 
 <cds-inline-notification
   kind="info"
@@ -31,7 +31,7 @@ Commands are organised into *Namespaces*, which are used to fully qualify each c
 $> mcix {namespace} {command} {parameters} 
 ```
 
-For example, on macOS/Unix:
+For example, on Linux/macOS the `datastage` namespace contains a `compile` command:
 
 ```shell
 $> mcix datastage compile \
@@ -210,6 +210,77 @@ Usage: datastage compile [options]
 ```
 
 When their usage is listed by the `mcix` command neither is identified as mandatory, but the description provides more details.
+
+## Error logging
+
+The MCIX command logs all its behaviour by default into a set of files located here:
+
+<details markdown="1">
+  <summary>Linux</summary>
+```bash
+${XDG_CACHE_HOME}/MettleCI/logs
+```
+or if `${XDG_CACHE_HOME}` has not been set:
+```bash
+~/.cache/MettleCI/logs 
+```
+</details>
+<details markdown="1">
+  <summary>macOS</summary>
+```bash
+~/Library/Logs/MettleCI
+```
+</details>
+
+<details markdown="1">
+  <summary>Windows</summary>
+```bash
+%LOCALAPPDATA%\MettleCI\logs
+```
+or if `%LOCALAPPDATA%` has not been set:
+```bash
+%USERPROFILE%\.MettleCI\logs
+```
+</details>
+
+There are two forms of log file, both in plain text:
+
+| Filename | Description |
+| -------- | ----------- |
+| cli.*YYYY-MM-DD*.log | A regular log file summarising all behaviour of the MCIX command  |
+| exception.*{Unique Hexadecimal ID}* | A log file describing a specific exception event in detail | 
+
+#### cli files
+
+These files contain a log of all operations produced by the MCIX command shell, including high-level details of any exceptions encountered.  Points to note:
+- A new log is created for each day that MCIX is executed.
+- A maximum of 30 days worth of logs are stored.  Older logs are automatically removed.
+- The size of a log file is capped at 100MB.
+
+#### exception files
+
+Every MCIX exception is described along with a unique hexadecimal ID which you can use to identify an associated exception file.  This file contained detailed debug information which can you in understanding your underlying issue.
+
+For example, running an mcix command with an invalid API key produces:
+
+```bash
+There was an error running command. It has been logged (ID f2c386bfa8f17574).
+HttpException: HTTP 401 {"id":"WSCPA0000E","code":401,"error":"Unauthorized","reason":"Bearer token is either missing or invalid: undefined.","message":"Access denied"}
+Command failed.
+```
+
+So using `(ID f2c386bfa8f17574)` we can retrieve detailed logs about the error. For example:
+
+```bash
+$> ls -al ~/Library/Logs/MettleCI/
+-rw-r--r--@ 1 johnmckeever  staff   5.6K 15 Jun 14:25 cli.2026-06-15.log
+-rw-r--r--@ 1 johnmckeever  staff   921B 16 Jun 14:20 cli.2026-06-16.log
+-rw-r--r--@ 1 johnmckeever  staff    20K 17 Jun 13:50 cli.2026-06-17.log
+-rw-r--r--@ 1 johnmckeever  staff    34K 17 Jun 12:55 exception.f2c386bfa8f17574.log
+```
+
+If you ever need to raise a support request related to MCIX you should supply both the relevant **cli** and **exception** 
+files with your support request.
 
 ## Use passwords containing special characters
 

@@ -16,7 +16,7 @@ The optional `-check-row-count-only` flag will cause the generation of a test ca
 | **check-row-count-only** | - | -   | ... |
 
 <details markdown="1">
-  <summary>Examples</summary>
+  <summary>Example</summary>
 ```shell
 {% raw %}# mcix unit-test generate
 mcix unittest generate \

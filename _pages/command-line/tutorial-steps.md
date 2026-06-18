@@ -166,6 +166,8 @@ mcix-cli-pipeline-demo/
 └── unit-tests/       # DataStage unit test specifications and data files
 ```
 
+Of particular note is the `datastage` directory.  This is where our DataStage asset will be placed, organised into subdirectories by their asset type.
+
 ---
 
 ## 2. Define your connection details
@@ -180,12 +182,12 @@ export CP4D_URL="https://dataplatform.cloud.ibm.com/"    # DataStage as-a-servic
 export CP4D_USERNAME="myname@MyOrg.com"                  # DataStage username
 export CP4D_API_KEY="my-api-key"                         # DataStage password
 
-# Project names (see 'Environments and DataStage project naming')
+# Project names
 export SOURCE_PROJECT="mcix-cli-demo" # The location of your development (source) project
 export TARGET_PROJECT="mcix-cli-demo_CI"                 # Demo will deploy to a 'CI' environment
 
 # Local working folders
-export EXPORT_DIR="./exported-assets"                    # Exported assets
+export EXPORT_DIR="./datastage"                          # Exported assets
 export OVERLAY_DIR="./overlaid-assets"                   # Overlaid assets
 export REPORT_DIR="./reports"                            # JUnit report outputs
 ```
@@ -207,13 +209,152 @@ mcix datastage export \
   --export-path "$EXPORT_DIR"
 ```
 
-After this step, your exported DataStage assets should be available in:
+<details markdown="1">
+  <summary>Example output</summary>
+```bash
+MettleCI Command Line (build 1.0-123)
+(C) 2018-2026 Data Migrators Pty Ltd
+datastage export (1.0-123)
+Connecting to CP4D...
+Exporting project containing 108 assets
+ * Write scRegionReference (data_intg_subflow) - SUCCESS
+ * Write TxFctFinDs (data_intg_test_case) - SUCCESS
+ * Write TxTransformedSales_container (data_intg_flow) - SUCCESS
+ * Write LdDimDate (data_intg_flow) - SUCCESS
+ * Write LdFactSales (data_intg_flow) - SUCCESS
+ * Write LdRegionSalesSummary (data_intg_flow) - SUCCESS
+ * Write LdProductPerformance (data_intg_flow) - SUCCESS
+ * Write LdQuarterlyFinancials (data_intg_flow) - SUCCESS
+ * Write TxFactFinanceDsBAK (data_intg_flow) - SUCCESS
+ * Write LdFactFinance (data_intg_flow) - SUCCESS
+ * Write TxDailySalesSummaryDs (data_intg_flow) - SUCCESS
+ * Write LdDimSupplier (data_intg_flow) - SUCCESS
+ * Write LdDimCustomer (data_intg_flow) - SUCCESS
+ * Write TxRegionSalesSummaryDs_container (data_intg_flow) - SUCCESS
+ * Write TxCreateDateSource (data_intg_flow) - SUCCESS
+ * Write LdDimProduct (data_intg_flow) - SUCCESS
+ * Write LdDailySalesSummary (data_intg_flow) - SUCCESS
+ * Write LdRefUSStates (data_intg_flow) - SUCCESS
+ * Write ScdDimSupplierDs (data_intg_flow) - SUCCESS
+ * Write LdStgSupplier (data_intg_flow) - SUCCESS
+ * Write ScdDimProductDs (data_intg_flow) - SUCCESS
+ * Write LdStgProduct (data_intg_flow) - SUCCESS
+ * Write ScdDimCustomerDs (data_intg_flow) - SUCCESS
+ * Write TxTransformedCustomer (data_intg_flow) - SUCCESS
+ * Write LdStgCustomer (data_intg_flow) - SUCCESS
+ * Write TxRegionSalesSummaryDs (data_intg_flow) - SUCCESS
+ * Write LdStgFinance (data_intg_flow) - SUCCESS
+ * Write TxFactFinanceDs (data_intg_flow) - SUCCESS
+ * Write TxProductPerformanceDs (data_intg_flow) - SUCCESS
+ * Write TxFactSalesDs (data_intg_flow) - SUCCESS
+ * Write TxTransformedSales (data_intg_flow) - SUCCESS
+ * Write LdStgSales (data_intg_flow) - SUCCESS
+ * Write TxQuarterlyFinancialsDs (data_intg_flow) - SUCCESS
+ * Write UpdateProductSurrogateKeys (data_intg_flow) - SUCCESS
+ * Write UpdateSalesSurrogateKeys (data_intg_flow) - SUCCESS
+ * Write UpdateCustomerSurrogateKeys (data_intg_flow) - SUCCESS
+ * Write UpdateSupplierSurrogateKeys (data_intg_flow) - SUCCESS
+ * Write UpdateFinanceSurrogateKeys (data_intg_flow) - SUCCESS
+ * Write UpdDimSupplier (orchestration_flow) - SUCCESS
+ * Write UpdDimProduct (orchestration_flow) - SUCCESS
+ * Write UpdDimCustomer (orchestration_flow) - SUCCESS
+ * Write UpdRegionSalesSummary (orchestration_flow) - SUCCESS
+ * Write UpdFactFinance (orchestration_flow) - SUCCESS
+ * Write UpdProductPerformance (orchestration_flow) - SUCCESS
+ * Write UpdFactSales (orchestration_flow) - SUCCESS
+ * Write UpdQuarterlyFinancials (orchestration_flow) - SUCCESS
+ * Write UpdateAllSurrogateKeys (orchestration_flow) - SUCCESS
+ * Write UpdDailySalesSummary (orchestration_flow) - SUCCESS
+ * Write S3TestDataConnection (connection) - SUCCESS
+ * Write RDS postgres-dev_cp4d (connection) - SUCCESS
+ * Write psDatabaseConnect (parameter_set) - SUCCESS
+ * Write psGlobal (parameter_set) - SUCCESS
+ * Write TxTransformedSales_container.DataStage job (job) - SUCCESS
+ * Write LdDimDate.DataStage job (job) - SUCCESS
+ * Write LdFactSales.DataStage job (job) - SUCCESS
+ * Write LdRegionSalesSummary.DataStage job (job) - SUCCESS
+ * Write LdProductPerformance.DataStage job (job) - SUCCESS
+ * Write LdQuarterlyFinancials.DataStage job (job) - SUCCESS
+ * Write TxFactFinanceDsBAK.DataStage job (job) - SUCCESS
+ * Write LdFactFinance.DataStage job (job) - SUCCESS
+ * Write TxDailySalesSummaryDs.DataStage job (job) - SUCCESS
+ * Write LdDimSupplier.DataStage job (job) - SUCCESS
+ * Write LdDimCustomer.DataStage job (job) - SUCCESS
+ * Write TxRegionSalesSummaryDs_container.DataStage job (job) - SUCCESS
+ * Write TxCreateDateSource.DataStage job (job) - SUCCESS
+ * Write LdDimProduct.DataStage job (job) - SUCCESS
+ * Write LdDailySalesSummary.DataStage job (job) - SUCCESS
+ * Write LdRefUSStates.DataStage job (job) - SUCCESS
+ * Write Trial job - UpdDimSupplier (job) - SUCCESS
+ * Write UpdDimSupplier.DataStage sequence (job) - SUCCESS
+ * Write ScdDimSupplierDs.DataStage job (job) - SUCCESS
+ * Write LdStgSupplier.DataStage job (job) - SUCCESS
+ * Write UpdDimProduct.DataStage sequence (job) - SUCCESS
+ * Write Trial job - UpdDimProduct (job) - SUCCESS
+ * Write ScdDimProductDs.DataStage job (job) - SUCCESS
+ * Write LdStgProduct.DataStage job (job) - SUCCESS
+ * Write Trial job - UpdDimCustomer (job) - SUCCESS
+ * Write UpdDimCustomer.DataStage sequence (job) - SUCCESS
+ * Write ScdDimCustomerDs.DataStage job (job) - SUCCESS
+ * Write TxTransformedCustomer.DataStage job (job) - SUCCESS
+ * Write LdStgCustomer.DataStage job (job) - SUCCESS
+ * Write Trial job - UpdRegionSalesSummary (job) - SUCCESS
+ * Write UpdRegionSalesSummary.DataStage sequence (job) - SUCCESS
+ * Write TxRegionSalesSummaryDs.DataStage job (job) - SUCCESS
+ * Write Trial job - UpdFactFinance (job) - SUCCESS
+ * Write UpdFactFinance.DataStage sequence (job) - SUCCESS
+ * Write LdStgFinance.DataStage job (job) - SUCCESS
+ * Write TxFactFinanceDs.DataStage job (job) - SUCCESS
+ * Write Trial job - UpdProductPerformance (job) - SUCCESS
+ * Write UpdProductPerformance.DataStage sequence (job) - SUCCESS
+ * Write TxProductPerformanceDs.DataStage job (job) - SUCCESS
+ * Write UpdFactSales.DataStage sequence (job) - SUCCESS
+ * Write Trial job - UpdFactSales (job) - SUCCESS
+ * Write TxFactSalesDs.DataStage job (job) - SUCCESS
+ * Write TxTransformedSales.DataStage job (job) - SUCCESS
+ * Write LdStgSales.DataStage job (job) - SUCCESS
+ * Write UpdQuarterlyFinancials.DataStage sequence (job) - SUCCESS
+ * Write Trial job - UpdQuarterlyFinancials (job) - SUCCESS
+ * Write TxQuarterlyFinancialsDs.DataStage job (job) - SUCCESS
+ * Write Trial job - UpdateAllSurrogateKeys (job) - SUCCESS
+ * Write UpdateAllSurrogateKeys.DataStage sequence (job) - SUCCESS
+ * Write UpdateProductSurrogateKeys.DataStage job (job) - SUCCESS
+ * Write UpdateSalesSurrogateKeys.DataStage job (job) - SUCCESS
+ * Write UpdateCustomerSurrogateKeys.DataStage job (job) - SUCCESS
+ * Write UpdateSupplierSurrogateKeys.DataStage job (job) - SUCCESS
+ * Write UpdateFinanceSurrogateKeys.DataStage job (job) - SUCCESS
+ * Write Trial job - UpdDailySalesSummary (job) - SUCCESS
+ * Write UpdDailySalesSummary.DataStage sequence (job) - SUCCESS
+SUCCESS: Completed 108 actions
+```
+</details>
 
+After this step, your exported DataStage assets should be available in your specified directory, organised by asset type:
 ```text
-./exported-assets
+$> ls -al exported-assets
+total 0
+drwxr-xr-x@  4 johnmckeever  staff   128B 17 Jun 16:43 connection
+drwxr-xr-x@ 38 johnmckeever  staff   1.2K 17 Jun 16:43 data_intg_flow
+drwxr-xr-x@  3 johnmckeever  staff    96B 17 Jun 16:43 data_intg_subflow
+drwxr-xr-x@  3 johnmckeever  staff    96B 17 Jun 16:43 data_intg_test_case
+drwxr-xr-x@ 58 johnmckeever  staff   1.8K 17 Jun 16:43 job
+drwxr-xr-x@ 12 johnmckeever  staff   384B 17 Jun 16:43 orchestration_flow
+drwxr-xr-x@  4 johnmckeever  staff   128B 17 Jun 16:43 parameter_set
 ```
 
 This directory of exported assets becomes the input to the next stage.
+
+<cds-inline-notification
+  kind="info"
+  title="Note"
+  low-contrast="true"
+  hide-close-button="true">
+  <div class="cds--inline-notification__subtitle">
+    <p>The <code>mcix datastage export</code> command in the current release of MCIX performs a bulk export of the entire DataStage projecty to your local directory.</p>
+    <p>A forthcoming release of IBM Cloud Pak will provide an API update which permits the <code>mcix datastage export</code> command to identify and export only
+    those DataStage assets which are different to those already in the specified export directory.</p>
+  </div>
+</cds-inline-notification>
 
 ---
 
@@ -314,17 +455,27 @@ A common pattern is to keep overlays in source control, for example:
 
 ```text
 overlays/
-├── dev/
-├── test/
+├── ci/
+│   ├── connection
+│   ├── job
+│   └── parameter_set
+│       ├── MyParameterSet1.json
+│       └── MyParameterSet2.json
+├── qa/
+│   └── etc. 
 └── prod/
+│   └── etc.
 ```
 
 Start by creating an overlay file in your `overlays/ci` directory called `ci.overlay` and populating it with this overlay specification:
 
 ```json
 {
-  inputDir: "/test/input",
-  outputDir: "/test/output",
+  DatasetDir:   "/px-storage/data/electromart/ci/dataset",
+  LandingDir:   "/px-storage/data/electromart/ci/file",
+  StateFileDir: "/px-storage/data/electromart/ci/file",
+  ReportDir:    "/px-storage/data/electromart/ci/report",
+  RejectDir:    "/px-storage/data/electromart/ci/reject",
 }
 ```
 Then apply the overlay to te recently exported assets to generate a new set of **overlaid** assets:

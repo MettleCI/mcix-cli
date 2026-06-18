@@ -40,7 +40,7 @@ Exports DataStage assets from a DataStage CP4D/CP4DaaS project to a destination 
 </details>
 
 <details markdown="1">
-  <summary>Examples</summary>
+  <summary>Example</summary>
 ```yaml
 {% raw %}# mcix datastage export
 - task: mcixDatastageExport@1

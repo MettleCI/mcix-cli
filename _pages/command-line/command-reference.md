@@ -8,6 +8,20 @@ tags:
   - DataStage
 ---
 
+{% include_relative ref/help.md %}
+
+---
+
+{% if site.compliance == "Y" %}
+{% include_relative ref/asset-analysis-query.md %}
+
+---
+
+{% include_relative ref/asset-analysis-test.md %}
+
+---
+{% endif %}
+
 {% include_relative ref/datastage-compile.md %}
 
 ---

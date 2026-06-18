@@ -32,7 +32,7 @@ Compiles a DataStage Job, producing a [JUnit-compatible](../../command-shell/jun
 | **include-job-in-test-name** | - | False | Test case names will include the compiled asset name in the JUnit reports |
 
 <details markdown="1">
-  <summary>Examples</summary>
+  <summary>Example</summary>
 ```yaml
 {% raw %}# mcix datastage compile 
 - task: mcixDatastageCompile@1

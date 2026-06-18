@@ -3,16 +3,8 @@ from railroad import *
 
 SYSTEM_VERSION = Diagram(
     NonTerminal('mcix'),
-    Choice(0,
-        'help',
-        Sequence(
-            NonTerminal('system'),
-            Choice(0, 
-                Terminal('help'),
-                NonTerminal('version')
-            )
-        )
-    )
+    NonTerminal('system'),
+    NonTerminal('version')
 )
 
 system = {

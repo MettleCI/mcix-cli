@@ -15,7 +15,7 @@ Migrates a MettleCI unit test from DataStage Classic format to DataStage NextGen
 | **specs-path**    | Yes      | -        | Path to unit test specs directory to be used as the source of the migration |
 
 <details markdown="1">
-  <summary>Examples</summary>
+  <summary>Example</summary>
 ```shell
 {% raw %}# mcix migrate unit-test-manual
 MettleCI Command Line (build 1.0-SNAPSHOT)

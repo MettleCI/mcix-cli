@@ -8,19 +8,26 @@ This command-line tutorial is intended to help you understand the individual ste
 
 In this tutorial, however, you will run the same type of CI/CD pipeline manually from your local command line.  This gives you a practical way to understand what each pipeline stage does before you automate the process in a real CI/CD tool.
 
-**Process**
+---
 
-1.  Ensure you have established the [prerequisites](/command-line/pipeline-tutorial-prerequisites), ensuring ...
-- The MCIX and Git command line interfaces are installed and configured you on local host (e.g. your laptop.)
-- You have access to a Git platform containing an empty a template repository for your DataStage project artefacts.
+## What you will need
 
-1. Follow the [steps to emulate a pipeline](/command-line/pipeline-tutorial-steps) using the MCIX CLI, covering ...
-- Exporting assets from DataStage
-- Identifying changes
-- Comitting and pushing those assest to a remote Git repository
-- Applying overlays
+Before running the pipeline steps, you will prepare a working environment containing:
 
+1. the MCIX command line
+1. the Git command line
+1. access to a source DataStage project 
+1. at least one unit test specification and its associated test data
+1. access to a target DataStage project
+1. access to a remote Git repository
+1. a local clone of that repository
+1. at least one [overlay file](/introduction/overlays) for the target environment
 
+The [prerequisite page](/command-line/pipeline-tutorial-prerequisites) walks through establishing 
+each of these. 
+
+That page also provides a downloadable DataStage NextGen project that can be
+imported into your DataStage environment to act as your source for the tutorial.
 
 ---
 
@@ -99,22 +106,6 @@ build systems). The CI/CD platform changes _how_ the commands are orchestrated, 
 
 ---
 
-## What you will need
-
-Before running the pipeline steps, you will prepare a local working environment containing:
-
-- the MCIX command line
-- the Git command line
-- access to a remote Git repository
-- a local clone of that repository
-- access to a source DataStage project containing at least one unit test specification and associated test data
-- access to a target DataStage project
-- at least one [overlay file](/introduction/overlays) for the target environment
-
-The [prerequisite page](/command-line/pipeline-tutorial-prerequisites) walks through the local MCIX and Git setup, repository creation, template repository cloning, and verification of basic Git operations.
-
----
-
 ## Repository role in the tutorial
 
 The Git repository acts as the well goverened, single source of truth for your DataStage delivery assets.  It is not tied to a single environment such as Dev, Test, or Production. Instead, it represents the authoritative versioned source for the DataStage initiative.
@@ -124,7 +115,7 @@ The different DataStage environments are populated from that source at different
 | Environment | Typical role                                                                   |
 | ----------- | ------------------------------------------------------------------------------ |
 | Development | Where changes are initially created                                            |
-| CI          | Where exported and overlaid assets are imported and (automaticaly) unit tested |
+| CI          | Where exported and [overlaid](/introduction/overlays) assets are imported and (automaticaly) unit tested |
 | QA          | Where a tested candidate release may be validated further                      |
 | Production  | Where only approved versions should be deployed                                |
 

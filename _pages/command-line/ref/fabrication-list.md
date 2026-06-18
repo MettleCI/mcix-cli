@@ -16,7 +16,7 @@ This command lists all the MettleCI data fabrication generators available in eit
 | **include-params**  | -        | -        |  Display parameters for each generator |
 
 <details markdown="1">
-  <summary>Examples</summary>
+  <summary>Example</summary>
 
 This example shows how to list the data fabrication generators in a supplied user-created `.json` bundle file - in this case, we'll list the capabilities of custom 'Star Wars' generator ...
 

@@ -13,7 +13,7 @@ Generates a DataStage test case for one or more specified DataStage flows.
 | **check-row-count-only** | - | -   | Causes the generation of a test case which checks row counts, rather than the default comparison of data row-by-row |
 
 <details markdown="1">
-  <summary>Examples</summary>
+  <summary>Example</summary>
 ```shell
 {% raw %}# mcix unit-test generate
 mcix unittest generate \

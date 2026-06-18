@@ -37,15 +37,15 @@
       },
       {
         "title": "Pipeline Tutorial Introduction",
-        "url": "/command-line/pipeline-tutorial-intro"
+        "url": "/command-line/tutorial-intro"
       },
       {
         "title": "Pipeline Tutorial Prerequisites",
-        "url": "/command-line/pipeline-tutorial-prerequisites"
+        "url": "/command-line/tutorial-prerequisites"
       },
       {
         "title": "Pipeline Tutorial Steps",
-        "url": "/command-line/pipeline-tutorial-steps"
+        "url": "/command-line/tutorial-steps"
       },
       {
         "title": "CLI Command Reference",
@@ -103,12 +103,24 @@
     "title": "GitHub",
     "submenu": [
       {
-        "title": "Establishing tempalte repository",
-        "url": "/azure/template-repository"
+        "title": "Pipeline Tutorial Introduction",
+        "url": "/github/tutorial-intro"
+      },
+      {
+        "title": "Pipeline Tutorial Prerequisites",
+        "url": "/github/tutorial-prerequisites"
+      },
+      {
+        "title": "Pipeline Tutorial Steps",
+        "url": "/github/tutorial-steps"
+      },
+      {
+        "title": "CLI Command Reference",
+        "url": "/command-line/command-reference"
       },
       {
         "title": "GitHub Actions",
-        "url": "/container/github/"
+        "url": "/github/action-reference"
       }
     ]
   },

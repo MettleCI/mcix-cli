@@ -1,7 +1,5 @@
 ## system version
 
-![system version](img/system-version.svg "system version syntax")
-
 This command displays:
 
 - The MettleCI CLI [command shell](../command-shell/command-shell) version number,
@@ -133,3 +131,4 @@ stage("Diagnostics") {
 {% endraw %}```
 </details>
 
+---

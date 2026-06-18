@@ -30,7 +30,7 @@ Imports DataStage assets from a DataStage export zip file or directory into a CP
 
 
 <details markdown="1">
-  <summary>Examples</summary>
+  <summary>Example</summary>
 ```yaml
 {% raw %}# mcix datastage import 
 - task: mcixDatastageImport@1

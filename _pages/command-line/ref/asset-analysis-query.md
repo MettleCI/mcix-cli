@@ -17,8 +17,8 @@ The command line implementation of the Asset Analysis Query functionality expose
 | ***include-tag*** | -        | -        | Tags of asset queries to include (case insensitive), includes everything by default<br/>*(repeatable)* |
 | ***threads***     | -        | 1        | Number of threads of execution |
 
-#### Examples
-
+<details markdown="1">
+  <summary>Example</summary>
 This example demonstrates how run Asset Queries against one or more ISX files. 
 
 ```shell
@@ -29,3 +29,4 @@ mcix asset-analysis query \
 ```
 
 **Note**: This command is not available as a CI/CD native GitHub Actions or Azure DevOps task/plugin as there is no identified need for this functionality within the context of a CI/CD pipeline. If you require this functionality within your CI/CD pipeline then you can invoke the command line directly using a command line pipeline task.
+</details>

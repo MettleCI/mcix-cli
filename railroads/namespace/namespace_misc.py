@@ -34,7 +34,24 @@ CLI_COMMAND_MODE = Diagram(
     )
 )
 
+HELP = Diagram(
+    NonTerminal('mcix'),
+    Choice(0,
+        Sequence(
+            Terminal('help'),
+            Optional(
+                Sequence(
+                    NonTerminal('{namespace}'),
+                    Optional(
+                        NonTerminal('{command}')
+                    )
+                )
+            )
+        )
+    )
+)
 
 misc = {
-    'cli-command-mode': CLI_COMMAND_MODE
-}
+    'cli-command-mode': CLI_COMMAND_MODE,
+    'help': HELP
+    }

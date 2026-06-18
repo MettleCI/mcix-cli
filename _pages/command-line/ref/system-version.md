@@ -14,7 +14,7 @@ This command displays:
 This command takes no parameters.
 
 <details markdown="1">
-  <summary>Examples</summary>
+  <summary>Example</summary>
 ```shell
 {% raw %}# mcix system version
 mcix system version

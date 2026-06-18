@@ -18,7 +18,7 @@ This command applies changes - defined in a [json5-formatted](https://json5.org/
 | **properties** | -        | -        | Properties file with replacement values |
 
 <details markdown="1">
-  <summary>Examples</summary>
+  <summary>Example</summary>
 ```shell
 {% raw %}# mcix overlay apply 
 mcix overlay apply \

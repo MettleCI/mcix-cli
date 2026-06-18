@@ -16,7 +16,7 @@ This command invokes a specific test data fabrication generator, from either…
 | **include-internal** | -        | False    | Include pre-existing generators from our internal libraries |
 
 <details markdown="1">
-  <summary>Examples</summary>
+  <summary>Example</summary>
 
 This example shows how to list the tags of a directory of Asset Analysis rules in both tabulated and CSV formats:
 

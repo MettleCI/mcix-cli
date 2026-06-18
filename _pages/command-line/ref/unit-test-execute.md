@@ -41,7 +41,7 @@ The `mcix unit-test execute -ignore-test-failures` option will prevent a failing
 </details>
 
 <details markdown="1">
-  <summary>Examples</summary>
+  <summary>Example</summary>
 ```shell
 {% raw %}# mcix unit-test execute
 mcix unit-test execute \
