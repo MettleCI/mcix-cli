@@ -24,3 +24,5 @@ mcix overlay apply \
     -properties /path/to/properties-file.properties
 {% endraw %}```
 </details>
+
+---

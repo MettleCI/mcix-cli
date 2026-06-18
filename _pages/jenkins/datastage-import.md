@@ -2,7 +2,7 @@
 
 ![datastage import syntax](img/datastage-import.svg "datastage import syntax")
 
-Imports DataStage assets from a DataStage export zip file or directory into a CP4D/CP4DaaS project.  This command produces a [JUnit-compatible](../command-shell/junit-output) test output XML file which reports each individual job’s import status.
+Imports DataStage assets from a DataStage export zip file or directory into a CP4D/CP4DaaS project.  This command produces a [JUnit-compatible](/introduxtion/junit-output) test output XML file which reports each individual job’s import status.
 
 
 #### Parameters

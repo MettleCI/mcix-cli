@@ -2,7 +2,7 @@
 
 ![datastage compile syntax](img/datastage-compile.svg "datastage compile syntax")
 
-Compiles a DataStage Job, producing a [JUnit-compatible](/pipelines/junit-output) test output XML file which reports each individual job’s compilation result.
+Compiles a DataStage Job, producing a [JUnit-compatible](/introduction/junit-output) test output XML file which reports each individual job’s compilation result.
 
 #### Parameters
 
@@ -29,3 +29,5 @@ mcix datastage compile \
   -include-asset-in-test-name
 {% endraw %}```
 </details>
+
+---

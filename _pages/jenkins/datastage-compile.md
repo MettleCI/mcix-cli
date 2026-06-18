@@ -2,7 +2,7 @@
 
 ![datastage compile syntax](img/datastage-compile.svg "datastage compile syntax")
 
-Compiles a DataStage Job, producing a [JUnit-compatible](../../command-shell/junit-output) test output XML file which reports each individual job’s compilation result.
+Compiles a DataStage Job, producing a [JUnit-compatible](..//introduxtion/junit-output) test output XML file which reports each individual job’s compilation result.
 
 #### Parameters
 

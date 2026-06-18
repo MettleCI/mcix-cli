@@ -4,7 +4,6 @@ description: MCIX tasks for your<br/>Azure DevOps Pipelines
 # banner_src: ../../assets/img/banner.jpeg
 ---
 
-<script type="module" src="https://1.www.s81c.com/common/carbon-for-ibm-dotcom/version/v2.8.0/card-group.min.js"></script>
 <script type="module" src="https://1.www.s81c.com/common/carbon-for-ibm-dotcom/version/v2.8.0/content-block.min.js"></script>
 <script type="module" src="https://1.www.s81c.com/common/carbon-for-ibm-dotcom/version/v2.8.0/content-block-mixed.min.js"></script>
 <script type="module" src="https://1.www.s81c.com/common/carbon-for-ibm-dotcom/version/v2.8.0/link-list.min.js"></script>
@@ -22,61 +21,20 @@ description: MCIX tasks for your<br/>Azure DevOps Pipelines
 
 ---
 
-<!--
-
-{% include_relative ref/asset-analysis-query.md %}
-
----
+{% if site.compliance == "Y" %}
 
 {% include_relative ref/asset-analysis-test.md %}
 
----
--->
+{% endif %}
 
 {% include_relative ref/datastage-compile.md %}
 
----
-
 {% include_relative ref/datastage-deploy.md %}
-
----
-
-{% include_relative ref/datastage-export.md %}
-
----
 
 {% include_relative ref/datastage-import.md %}
 
-<!--
----
-
-{% include_relative ref/fabrication-list.md %}
-
----
-
-{% include_relative ref/fabrication-test.md %}
-
----
--->
-
-{% include_relative ref/migrate-unit-test-manual.md %}
-
----
-
-{% include_relative ref/migrate-unit-test.md %}
-
----
-
 {% include_relative ref/overlay-apply.md %}
-
----
 
 {% include_relative ref/system-version.md %}
 
----
-
 {% include_relative ref/unit-test-execute.md %}
-
----
-
-{% include_relative ref/unit-test-generate.md %}

@@ -2,8 +2,6 @@
 
 **Note**: This command is for running MettleCI Asset Analysis *Rules*. If you're looking for the **Asset Queries** typically used in a MettleCI Report Card then please see the [asset-analysis query](#asset-analysis-query) Command.
 
-![compliance test syntax](img/asset-analysis-test.svg "compliance test syntax")
-
 The command line implementation of the Compliance Test functionality enables the production of a Compliance Results report of the specified assets against the specified set of MettleCI Compliance Rules.
 
 #### Parameters
@@ -11,10 +9,10 @@ The command line implementation of the Compliance Test functionality enables the
 | Name              | Required | Default  | Description |
 | :-------          | :------- | :------- | :-------    |
 | **api-key**       | -        | -        | CP4D API key |
-| **exclude-tag**   | -        | -        | Tags (case insensitive) of compliance rules to exclude ([Read more](../asset-analysis-rule-tags)) |
+| **exclude-tag**   | -        | -        | Tags (case insensitive) of asset analysis rules to exclude |
 | **ignore-test-failures** | - | False | Returns zero when testing completes regardless of failures |
 | **include-job-in-test-name** | - | False | Test case names will include the job name in the jUnit report |
-| **include-tag**   | -        | -        | Tags (case insensitive)of compliance rules to include, includes everything by default ([Read more](../asset-analysis-rule-tags)) |
+| **include-tag**   | -        | -        | Tags (case insensitive) of asset analysis rules to include, includes everything by default |
 | **path**          | -        | -        | Location of project export directory or zip file |
 | **project**       | -        | -        | Project Name |
 | **report**        | Yes      | -        | Report name (`.csv` or `.xml`) |

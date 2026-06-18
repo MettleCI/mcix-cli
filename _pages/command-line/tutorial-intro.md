@@ -23,7 +23,7 @@ Before running the pipeline steps, you will prepare a working environment contai
 1. a local clone of that repository
 1. at least one [overlay file](/introduction/overlays) for the target environment
 
-The [prerequisite page](/command-line/pipeline-tutorial-prerequisites) walks through establishing 
+The [prerequisite page](/command-line/tutorial-prerequisites) walks through establishing 
 each of these. 
 
 That page also provides a downloadable DataStage NextGen project that can be

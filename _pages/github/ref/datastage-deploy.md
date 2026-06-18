@@ -1,5 +1,7 @@
 ## datastage deploy
 
+[<img src="https://img.shields.io/badge/github-marketplace-blue?style=flat-square&logo=github">](https://github.com/marketplace/actions/mcix-datastage-deploy){:target="_blank" rel="noopener"} 
+
 This **composite action** deploys DataStage assets to a target CP4D/CP4DaaS project by applying any specified overlays, importing the resulting assets, and compiling the imported DataStage flows. Compilation produces a [JUnit-compatible](/introduction/junit-output) XML output file which reports each individual flow's compilation result.
 
 <cds-inline-notification

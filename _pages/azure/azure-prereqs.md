@@ -88,7 +88,7 @@ An Azure DevOps **Environment** is a logical deployment target such as `Dev`, `T
 1. Navigate to your Azure DevOps project (Azure DevOps → Your organisation → Your project)
 1. In the left-hand navigation, select **Pipelines** → **Environments**
 1. Create a new environment by clicking **New environment**.
-1. Enter the environment name and description. See the [CI Concepts](/getting-started/ci-concepts) for a list of environments used in the example pipelines accompanying MCIX.
+1. Enter the environment name and description. See the [CI Concepts](/introduction/cicd-concepts) for a list of environments used in the example pipelines accompanying MCIX.
 1. Choose the resource type 'None' to give you a simple environment used only for deployment tracking and approvals.
 1. Create the environment by clicking **Create**.
 

@@ -21,7 +21,7 @@ Run one or more MettleCI Unit Tests against one or more DataStage jobs.
 <details markdown="1">
   <summary>The 'report' option</summary>
 
-The `reports` option is used to specify the directory into which the [JUnit](/pipelines/junit-output) XML files produced by this command will be placed.  Each job tested will produce a separate XML file named after the Job (e.g. Job `MY_JOB_ABC` will produce a JUnit file named `MY_JOB_ABC.xml`)
+The `reports` option is used to specify the directory into which the [JUnit](/introduction/junit-output) XML files produced by this command will be placed.  Each job tested will produce a separate XML file named after the Job (e.g. Job `MY_JOB_ABC` will produce a JUnit file named `MY_JOB_ABC.xml`)
 </details>
 
 <details markdown="1">
@@ -54,3 +54,5 @@ mcix unit-test execute \
   -include-asset-in-test-name
 {% endraw %}```
 </details>
+
+---

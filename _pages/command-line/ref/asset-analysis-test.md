@@ -11,10 +11,10 @@ The **MCIX asset analysis test** command provides an automated quality gate for 
 | Name              | Required | Default  | Description |
 | :-------          | :------- | :------- | :-------    |
 | **api-key**       | -        | -        | CP4D API key |
-| **exclude-tag**   | -        | -        | Tags (case insensitive) of compliance rules to exclude ([Read more](../asset-analysis-rule-tags)) |
+| **exclude-tag**   | -        | -        | Tags (case insensitive) of compliance rules to exclude |
 | **ignore-test-failures** | - | False | Returns zero when testing completes regardless of failures |
 | **include-job-in-test-name** | - | False | Test case names will include the job name in the jUnit report |
-| **include-tag**   | -        | -        | Tags (case insensitive)of compliance rules to include, includes everything by default ([Read more](../asset-analysis-rule-tags)) |
+| **include-tag**   | -        | -        | Tags (case insensitive)of compliance rules to include, includes everything by default |
 | **path**          | -        | -        | Location of project export directory or zip file |
 | **project**       | -        | -        | Project Name |
 | **report**        | Yes      | -        | Report name (`.csv` or `.xml`) |
@@ -25,7 +25,7 @@ The **MCIX asset analysis test** command provides an automated quality gate for 
 
 <details markdown="1">
   <summary>Example</summary>
-These examples demonstrate the use of the `asset-analysis test` command to execute a set of Flow Analysis Rules against one or more exported ISX files. Note that the asset path specification in the export command uses the [same wildcard rules](https://www.ibm.com/docs/en/iis/11.7.0?topic=command-asset-paths) as the `istool` command. 
+These examples demonstrate the use of the `asset-analysis test` command to execute a set of asset analysis rules against one or more exported asset files. Note that the asset path specification in the export command uses the [same wildcard rules](https://www.ibm.com/docs/en/iis/11.7.0?topic=command-asset-paths) as the `istool` command. 
 
 ```shell
 mcix asset-analysis test \
@@ -38,3 +38,6 @@ mcix asset-analysis test \
   -include-job-in-test-name
 ```
 </details>
+
+---
+

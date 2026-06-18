@@ -1,5 +1,7 @@
 ## overlay apply
 
+[<img src="https://img.shields.io/badge/github-marketplace-blue?style=flat-square&logo=github">](https://github.com/marketplace/actions/mcix-overlay-apply){:target="_blank" rel="noopener"} 
+
 This command applies changes - defined in a [json5-formatted](https://json5.org/){:target="_blank" rel="noopener"} overlay file - to one or more specified DataStage assets supplied in a directory or `.zip` file.
 
 #### Parameters

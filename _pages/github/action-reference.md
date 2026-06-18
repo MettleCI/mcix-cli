@@ -1,5 +1,5 @@
 ---
-title: MCIX GitHib Action Reference
+title: MCIX GitHub Action Reference
 description: All MCIX GitHub Actions
 type: none
 ---
@@ -12,8 +12,6 @@ type: none
 
 {% include_relative ref/datastage-deploy.md %}
 
-{% include_relative ref/datastage-export.md %}
-
 {% include_relative ref/datastage-import.md %}
 
 {% include_relative ref/overlay-apply.md %}
@@ -21,5 +19,3 @@ type: none
 {% include_relative ref/system-version.md %}
 
 {% include_relative ref/unit-test-execute.md %}
-
-{% include_relative ref/unit-test-generate.md %}

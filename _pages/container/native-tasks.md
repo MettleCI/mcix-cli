@@ -34,7 +34,7 @@ description: Native MCIX tasks for popular CI/CD orchestration tools
   </c4d-link-list-item>
 </c4d-link-list>
 
-As well being available as a [terminal command](../command-shell/command-shell) and a [Docker container image](../container/container), the individual commands provided by the MCIX command shell are also available as native tasks for the most popular CI/CD orchestration tools.
+As well being available as a [terminal command](../command-line/command-shell) and a [Docker container image](../container/container), the individual commands provided by the MCIX command shell are also available as native tasks for the most popular CI/CD orchestration tools.
 
 The XXXXX native tasks provide richer deeper integration and richer feedback than terminal commands while also requiring no additional infrastructure, oer the use of remote GitHub runners. For example:
 

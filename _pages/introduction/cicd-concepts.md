@@ -178,7 +178,7 @@ A service connection, used by some CI/CD platforms, is a stored, reusable connec
 example, Azure DevOps service connections can be used to connect to:
 
 * an external deployment platform
-* a container registry (This is how you tell MCIX Azure DevOps Tasks where the MCIX container can be found. More details [here](/azure/prereqs).)
+* a container registry (This is how you tell MCIX Azure DevOps Tasks where the MCIX container can be found. More details [here](/azure/azure-prereqs).)
 * a Git repository (This is how you use Azure DevOps backed by a different Git provider, such as GitHub.)
 
 In the MCIX Azure DevOps tutorial, a Docker Registry service connection allows the pipeline to semalessly authenticate to the registry that hosts the MCIX container image. This avoids placing registry credentials directly into every pipeline definition.
@@ -189,14 +189,14 @@ In the MCIX Azure DevOps tutorial, a Docker Registry service connection allows t
 
 An artifact is a file or package produced by one part of a pipeline and used later. Examples include:
 
-* exported code assets
-* [overlaid](/introduction/overlays-introduction) deployment assets
+* exported assets
+* overlaid deployment assets
 * test reports
 * log
 * compiled binaries (Not applicable to DataStage)
 * release packages  (Not applicable to DataStage)
 
-In the MCIX tutorial, exported assets, [overlaid assets](/introduction/overlays-introduction), and [JUnit XML](/introduction/junit-output) reports are all useful examples of pipeline artifacts.
+In the MCIX tutorial, exported assets, [overlaid assets](/introduction/overlays), and [JUnit XML](/introduction/junit-output) reports are all useful examples of pipeline artifacts.
 
 ---
 
@@ -204,7 +204,7 @@ In the MCIX tutorial, exported assets, [overlaid assets](/introduction/overlays-
 
 One of the functions of a CI/CD pipelines is to produce evidence of whether a change is safe to promote.  Many CI/CD tools understand standard test result formats such as JUnit XML. This means that the results from testing tools which produce their test results in [JUnit format](/introduction/junit-output) can to be displayed in the pipeline interface rather than buried in logs.
 
-For MCIX, commands such as {% if site.compliance == "Y" %}[asset-analysis test](command-line/command-reference#asset-analysis-test) and {% endif%}[unit-test execute](command-line/command-reference#unit-test-execute) can produce test result files that a CI/CD platform can publish and display.
+For MCIX, commands such as {% if site.compliance == "Y" %}[asset-analysis test](/command-line/command-reference#asset-analysis-test) and {% endif%}[unit-test execute](/command-line/command-reference#unit-test-execute) can produce test result files that a CI/CD platform can publish and display.
 
 ---
 
@@ -267,7 +267,7 @@ The same DataStage assets often need different configuration in different enviro
 * credentials
 * runtime parameters
 
-The [overlay](/introduction/overlays-introduction) step in the tutorials included in this documentation demonstrates this principle. The core assets are versioned once, while environment-specific configuration is applied during deployment.
+The [overlay](/command-line/tutorial-steps#4-apply-environment-overlays) step in the tutorials included in this documentation demonstrates this principle. The core assets are versioned once, while environment-specific configuration is applied during deployment.
 
 ---
 
@@ -288,6 +288,5 @@ Modern CI/CD systems usually define pipelines in files stored in source control.
 * **GitHub:** `.github/workflows/deploy.yml`
 * **GitLab:** `.gitlab-ci.yml`
 * **Jenkins:**`Jenkinsfile`
-* **Tekton** Tekton YAML definitions
 
 This is refered to a 'pipeline as code'. This approach means the pipeline definition can be reviewed, versioned, branched, and changed using the same source-control practices as the assets it tests and deploys.

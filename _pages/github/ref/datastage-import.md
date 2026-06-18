@@ -1,7 +1,8 @@
 ## datastage import
 
-Imports DataStage assets from a DataStage export zip file or directory into a CP4D/CP4DaaS project.  This command produces a [JUnit-compatible](../command-shell/junit-output) test output XML file which reports each individual job’s import status.
+[<img src="https://img.shields.io/badge/github-marketplace-blue?style=flat-square&logo=github">](https://github.com/marketplace/actions/mcix-datastage-import){:target="_blank" rel="noopener"} 
 
+Imports DataStage assets from a DataStage export zip file or directory into a CP4D/CP4DaaS project.  This command produces a [JUnit-compatible](/introduxtion/junit-output) test output XML file which reports each individual job’s import status.
 
 #### Parameters
 

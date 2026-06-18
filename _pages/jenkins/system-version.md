@@ -4,7 +4,7 @@
 
 This command displays:
 
-- The MettleCI CLI [command shell](../command-shell/command-shell) version number,
+- The MettleCI CLI [command shell](../command-line/command-shell) version number,
 - Your O/S version and architecture,
 - Your O/S username and language/locale settings, and
 - A list of MettleCI CLI plugins loaded from your `plugins` folder.

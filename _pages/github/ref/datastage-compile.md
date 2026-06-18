@@ -1,6 +1,8 @@
 ## datastage compile
 
-This action compiles a DataStage flow, producing a [JUnit-compatible](../../command-shell/junit-output) XML output 
+[<img src="https://img.shields.io/badge/github-marketplace-blue?style=flat-square&logo=github">](https://github.com/marketplace/actions/mcix-datastage-compile){:target="_blank" rel="noopener"} 
+
+This action compiles a DataStage flow, producing a [JUnit-compatible](/introduction/junit-output) XML output 
 file which reports each individual flow's compilation result.
 
 #### Parameters

@@ -20,7 +20,7 @@ This command invokes a specific test data fabrication generator, from either…
 <details markdown="1">
   <summary>Example</summary>
 
-This example shows how to list the tags of a directory of Asset Analysis rules in both tabulated and CSV formats:
+This example shows how to list the tags of a directory of asset analysis rules in both tabulated and CSV formats:
 
 ```shell
 {% raw %}# Command usage
@@ -77,3 +77,5 @@ Impressive. Most impressive. Obi-Wan has taught you well.
 $>
 {% endraw %}```
 </details>
+
+---

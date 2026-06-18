@@ -36,15 +36,15 @@
         "url": "/command-line/command-shell"
       },
       {
-        "title": "Pipeline Tutorial Introduction",
+        "title": "CLI Tutorial Introduction",
         "url": "/command-line/tutorial-intro"
       },
       {
-        "title": "Pipeline Tutorial Prerequisites",
+        "title": "CLI Tutorial Prerequisites",
         "url": "/command-line/tutorial-prerequisites"
       },
       {
-        "title": "Pipeline Tutorial Steps",
+        "title": "CLI Tutorial Steps",
         "url": "/command-line/tutorial-steps"
       },
       {
@@ -74,12 +74,16 @@
     "title": "Azure DevOps",
     "submenu": [
       {
-        "title": "MCIX Tasks for Azure DevOps",
-        "url": "/azure/azure"
+        "title": "ADO Tutorial Introduction",
+        "url": "/azure/tutorial-intro"
       },
       {
-        "title": "Azure DevOps Prerequisites",
+        "title": "ADO Tutorial Prerequisites",
         "url": "/azure/azure-prereqs"
+      },
+      {
+        "title": "Automating ADO Project Setup",
+        "url": "/azure/azure-automating-project-creation"
       },
       {
         "title": "Create a template repository",
@@ -92,10 +96,6 @@
       {
         "title": "Azure DevOps Task Reference",
         "url": "/azure/azure-task-ref"
-      },
-      {
-        "title": "Automating Azure DevOps project creation",
-        "url": "/azure/azure-automating-project-creation"
       }
     ]
   },
@@ -103,20 +103,16 @@
     "title": "GitHub",
     "submenu": [
       {
-        "title": "Pipeline Tutorial Introduction",
+        "title": "GitHub Tutorial Introduction",
         "url": "/github/tutorial-intro"
       },
       {
-        "title": "Pipeline Tutorial Prerequisites",
+        "title": "GitHub Tutorial Prerequisites",
         "url": "/github/tutorial-prerequisites"
       },
       {
-        "title": "Pipeline Tutorial Steps",
+        "title": "GitHub Tutorial Steps",
         "url": "/github/tutorial-steps"
-      },
-      {
-        "title": "CLI Command Reference",
-        "url": "/command-line/command-reference"
       },
       {
         "title": "GitHub Actions",

@@ -4,7 +4,7 @@ The `system` namespace contains commands for understanding, diagnosing, and cust
 
 This command displays:
 
-- The MettleCI CLI [command shell](../command-shell/command-shell) version number,
+- The MettleCI CLI [command shell](../command-line/command-shell) version number,
 - Your O/S version and architecture,
 - Your O/S username and language/locale settings, and
 - A list of MettleCI CLI plugins loaded from your `plugins` folder.
@@ -34,3 +34,5 @@ Loaded plugins:
 * MettleCI CP4D Overlays Plugin (1.0-012)
 ```
 </details>
+
+---

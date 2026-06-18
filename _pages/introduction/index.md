@@ -73,7 +73,7 @@ These capabilities are supplied by the MCIX command which itself is available in
 
 ## Terminal Command
 
-The MCIX CLI terminal command provides the ability to interactively explore MCIX's capabilities without requiring additional software or infrastructure.  It is described in more detail [here](../command-shell/command-shell){:target="_blank" rel="noopener"}.
+The MCIX CLI terminal command provides the ability to interactively explore MCIX's capabilities without requiring additional software or infrastructure.  It is described in more detail [here](../command-line/command-shell){:target="_blank" rel="noopener"}.
 
 The command is available for **Unix (x86)**, **Windows (x86)**, and **macOS (ARM64)**, all downloadable from [here](https://github.com/mettleci/mcix-cli/releases/latest){:target="_blank" rel="noopener"}.
 

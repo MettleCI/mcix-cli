@@ -2,7 +2,7 @@
 
 ![overlay apply](img/overlay-apply.svg "overlay apply syntax")
 
-**Note:** A detailed description of the role and use of overlays is provided [here](/introduction/overlays-introduction)
+**Note:** A detailed description of the role and use of overlays is provided [here](/introduction/overlays)
 
 The `overlay` namespace contains commands wich enable you to define and apply changes to DataStage assets in order to modify their behavior or configuration without altering the original asset directly. This is particularly useful in scenarios where you want to maintain different configurations for different environments (e.g., development, testing, production) or when you want to apply temporary changes for specific use cases.
 
@@ -28,3 +28,5 @@ mcix overlay apply \
     -properties /path/to/properties-file.properties
 {% endraw %}```
 </details>
+
+---

@@ -1,4 +1,4 @@
-<svg class="railroad-diagram" height="112" viewBox="0 0 927.5 112" width="927.5" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg class="railroad-diagram" height="152" viewBox="0 0 669.0 152" width="669.0" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 <g>
 <style>/* <![CDATA[ */
 	svg.railroad-diagram {
@@ -31,24 +31,26 @@
 
 /* ]]> */
 </style><g>
-<path d="M20 21v20m10 -20v20m-10 -10h20"></path></g><path d="M40 31h10"></path><g class="non-terminal">
-<path d="M50 31h0"></path><path d="M104.0 31h0.0"></path><rect height="22" width="54.0" x="50" y="20"></rect><text x="77.0" y="35">mcix</text></g><path d="M104.0 31h10"></path><path d="M114.0 31h10"></path><g class="non-terminal">
-<path d="M124.0 31h0"></path><path d="M220.5 31h0.0"></path><rect height="22" width="96.5" x="124.0" y="20"></rect><text x="172.25" y="35">unit-test</text></g><path d="M220.5 31h10"></path><path d="M230.5 31h10"></path><g class="non-terminal">
-<path d="M240.5 31h0"></path><path d="M328.5 31h0.0"></path><rect height="22" width="88.0" x="240.5" y="20"></rect><text x="284.5" y="35">generate</text></g><path d="M328.5 31h10"></path><path d="M338.5 31h10"></path><g>
-<path d="M348.5 31h0"></path><path d="M877.5 31h0.0"></path><g>
-<path d="M348.5 31h0"></path><path d="M589.0 31h0.0"></path><path d="M378.5 31h10"></path><g>
-<path d="M388.5 31h0"></path><path d="M550.5 31h8.5"></path><g class="non-terminal">
-<path d="M388.5 31h0"></path><path d="M459.5 31h0.0"></path><rect height="22" width="71.0" x="388.5" y="20"></rect><text x="424.0" y="35">-specs</text></g><path d="M459.5 31h10"></path><path d="M469.5 31h10"></path><g class="terminal">
-<path d="M479.5 31h0"></path><path d="M550.5 31h0.0"></path><rect height="22" rx="10" ry="10" width="71.0" x="479.5" y="20"></rect><text x="515.0" y="35">{path}</text></g></g><path d="M559.0 31h10"></path><path d="M378.5 31v20a10 10 0 0 0 10 10"></path><g>
-<path d="M388.5 61h0"></path><path d="M559.0 61h0.0"></path><g class="non-terminal">
-<path d="M388.5 61h0"></path><path d="M468.0 61h0.0"></path><rect height="22" width="79.5" x="388.5" y="50"></rect><text x="428.25" y="65">-assets</text></g><path d="M468.0 61h10"></path><path d="M478.0 61h10"></path><g class="terminal">
-<path d="M488.0 61h0"></path><path d="M559.0 61h0.0"></path><rect height="22" rx="10" ry="10" width="71.0" x="488.0" y="50"></rect><text x="523.5" y="65">{path}</text></g></g><path d="M559.0 61a10 10 0 0 0 10 -10v-10"></path><g class="diagram-text">
-<title>take all branches, once each, in any order</title><path class="diagram-text" d="M 378.5 21 h -26 a 4 4 0 0 0 -4 4 v 12 a 4 4 0 0 0 4 4 h 26 z"></path><text class="diagram-text" x="363.5" y="35">all</text><path class="diagram-text" d="M 569.0 21 h 16 a 4 4 0 0 1 4 4 v 12 a 4 4 0 0 1 -4 4 h -16 z"></path><text class="diagram-arrow" x="579.0" y="35">↺</text></g></g><path d="M589.0 31h10"></path><path d="M599.0 31h10"></path><g>
-<path d="M609.0 31h0"></path><path d="M877.5 31h0.0"></path><path d="M639.0 31h10"></path><g>
-<path d="M649.0 31h0"></path><path d="M649.0 31h198.5"></path><g>
-<path d="M649.0 31h0"></path></g></g><path d="M847.5 31h10"></path><path d="M639.0 31v10a10 10 0 0 0 10 10"></path><g>
-<path d="M649.0 51h0"></path><path d="M828.0 51h19.5"></path><g class="non-terminal">
-<path d="M649.0 51h0"></path><path d="M737.0 51h0.0"></path><rect height="22" width="88.0" x="649.0" y="40"></rect><text x="693.0" y="55">-joblist</text></g><path d="M737.0 51h10"></path><path d="M747.0 51h10"></path><g class="terminal">
-<path d="M757.0 51h0"></path><path d="M828.0 51h0.0"></path><rect height="22" rx="10" ry="10" width="71.0" x="757.0" y="40"></rect><text x="792.5" y="55">{path}</text></g></g><path d="M847.5 51a10 10 0 0 0 10 -10v0"></path><path d="M639.0 31v40a10 10 0 0 0 10 10"></path><g class="non-terminal">
-<path d="M649.0 81h0"></path><path d="M847.5 81h0.0"></path><rect height="22" width="198.5" x="649.0" y="70"></rect><text x="748.25" y="85">-check-row-count-only</text></g><path d="M847.5 81a10 10 0 0 0 10 -10v-30"></path><g class="diagram-text">
-<title>take one or more branches, once each, in any order</title><path class="diagram-text" d="M 639.0 21 h -26 a 4 4 0 0 0 -4 4 v 12 a 4 4 0 0 0 4 4 h 26 z"></path><text class="diagram-text" x="624.0" y="35">1+</text><path class="diagram-text" d="M 857.5 21 h 16 a 4 4 0 0 1 4 4 v 12 a 4 4 0 0 1 -4 4 h -16 z"></path><text class="diagram-arrow" x="867.5" y="35">↺</text></g></g></g><path d="M877.5 31h10"></path><path d="M 887.5 31 h 20 m -10 -10 v 20 m 10 -20 v 20"></path></g></svg>
+<path d="M20 21v20m10 -20v20m-10 -10h20"></path></g><path d="M40 31h10"></path><g>
+<path d="M50 31h0"></path><path d="M50 31h10"></path><g>
+<path d="M60 31h0"></path><path d="M338.5 31h270.5"></path><g class="non-terminal">
+<path d="M60 31h0"></path><path d="M114.0 31h0.0"></path><rect height="22" width="54.0" x="60" y="20"></rect><text x="87.0" y="35">mcix</text></g><path d="M114.0 31h10"></path><path d="M124.0 31h10"></path><g class="non-terminal">
+<path d="M134.0 31h0"></path><path d="M230.5 31h0.0"></path><rect height="22" width="96.5" x="134.0" y="20"></rect><text x="182.25" y="35">unit-test</text></g><path d="M230.5 31h10"></path><path d="M240.5 31h10"></path><g class="non-terminal">
+<path d="M250.5 31h0"></path><path d="M338.5 31h0.0"></path><rect height="22" width="88.0" x="250.5" y="20"></rect><text x="294.5" y="35">generate</text></g></g><path d="M609.0 31a10 10 0 0 1 10 10v0a10 10 0 0 1 -10 10h-549.0a10 10 0 0 0 -10 10v0a10 10 0 0 0 10 10"></path><g>
+<path d="M60 71h0"></path><path d="M589.0 71h20.0"></path><g>
+<path d="M60 71h0"></path><path d="M300.5 71h0.0"></path><path d="M90 71h10"></path><g>
+<path d="M100 71h0"></path><path d="M262.0 71h8.5"></path><g class="non-terminal">
+<path d="M100 71h0"></path><path d="M171.0 71h0.0"></path><rect height="22" width="71.0" x="100" y="60"></rect><text x="135.5" y="75">-specs</text></g><path d="M171.0 71h10"></path><path d="M181.0 71h10"></path><g class="terminal">
+<path d="M191.0 71h0"></path><path d="M262.0 71h0.0"></path><rect height="22" rx="10" ry="10" width="71.0" x="191.0" y="60"></rect><text x="226.5" y="75">{path}</text></g></g><path d="M270.5 71h10"></path><path d="M90 71v20a10 10 0 0 0 10 10"></path><g>
+<path d="M100 101h0"></path><path d="M270.5 101h0.0"></path><g class="non-terminal">
+<path d="M100 101h0"></path><path d="M179.5 101h0.0"></path><rect height="22" width="79.5" x="100" y="90"></rect><text x="139.75" y="105">-assets</text></g><path d="M179.5 101h10"></path><path d="M189.5 101h10"></path><g class="terminal">
+<path d="M199.5 101h0"></path><path d="M270.5 101h0.0"></path><rect height="22" rx="10" ry="10" width="71.0" x="199.5" y="90"></rect><text x="235.0" y="105">{path}</text></g></g><path d="M270.5 101a10 10 0 0 0 10 -10v-10"></path><g class="diagram-text">
+<title>take all branches, once each, in any order</title><path class="diagram-text" d="M 90 61 h -26 a 4 4 0 0 0 -4 4 v 12 a 4 4 0 0 0 4 4 h 26 z"></path><text class="diagram-text" x="75" y="75">all</text><path class="diagram-text" d="M 280.5 61 h 16 a 4 4 0 0 1 4 4 v 12 a 4 4 0 0 1 -4 4 h -16 z"></path><text class="diagram-arrow" x="290.5" y="75">↺</text></g></g><path d="M300.5 71h10"></path><path d="M310.5 71h10"></path><g>
+<path d="M320.5 71h0"></path><path d="M589.0 71h0.0"></path><path d="M350.5 71h10"></path><g>
+<path d="M360.5 71h0"></path><path d="M360.5 71h198.5"></path><g>
+<path d="M360.5 71h0"></path></g></g><path d="M559.0 71h10"></path><path d="M350.5 71v10a10 10 0 0 0 10 10"></path><g>
+<path d="M360.5 91h0"></path><path d="M539.5 91h19.5"></path><g class="non-terminal">
+<path d="M360.5 91h0"></path><path d="M448.5 91h0.0"></path><rect height="22" width="88.0" x="360.5" y="80"></rect><text x="404.5" y="95">-joblist</text></g><path d="M448.5 91h10"></path><path d="M458.5 91h10"></path><g class="terminal">
+<path d="M468.5 91h0"></path><path d="M539.5 91h0.0"></path><rect height="22" rx="10" ry="10" width="71.0" x="468.5" y="80"></rect><text x="504.0" y="95">{path}</text></g></g><path d="M559.0 91a10 10 0 0 0 10 -10v0"></path><path d="M350.5 71v40a10 10 0 0 0 10 10"></path><g class="non-terminal">
+<path d="M360.5 121h0"></path><path d="M559.0 121h0.0"></path><rect height="22" width="198.5" x="360.5" y="110"></rect><text x="459.75" y="125">-check-row-count-only</text></g><path d="M559.0 121a10 10 0 0 0 10 -10v-30"></path><g class="diagram-text">
+<title>take one or more branches, once each, in any order</title><path class="diagram-text" d="M 350.5 61 h -26 a 4 4 0 0 0 -4 4 v 12 a 4 4 0 0 0 4 4 h 26 z"></path><text class="diagram-text" x="335.5" y="75">1+</text><path class="diagram-text" d="M 569.0 61 h 16 a 4 4 0 0 1 4 4 v 12 a 4 4 0 0 1 -4 4 h -16 z"></path><text class="diagram-arrow" x="579.0" y="75">↺</text></g></g></g><path d="M609.0 71h10"></path><path d="M619.0 71h0.0"></path></g><path d="M619.0 71h10"></path><path d="M 629.0 71 h 20 m -10 -10 v 20 m 10 -20 v 20"></path></g></svg>

@@ -10,14 +10,14 @@ description: Implementing a simple CI/CD<br/>Pipeline using the MCIX CLI
 <c4d-link-list type="default" slot="complementary">
   <c4d-link-list-heading>Resources</c4d-link-list-heading>
   <c4d-link-list-item
-    href="pipeline-tutorial-introduction"
+    href="tutorial-introduction"
     target="cmd-ref"
     cta-type="local"
   >
     Tutorial Introduction
   </c4d-link-list-item>
   <c4d-link-list-item
-    href="pipeline-tutorial-prerequisites"
+    href="tutorial-prerequisites"
     target="cmd-ref"
     cta-type="local"
   >
@@ -148,7 +148,7 @@ The example assumes you are moving DataStage assets from a source project, apply
 
 ## 1. Prepare a working directory
 
-After you've followed the [prerequisite steps](/command-line/pipeline-tutorial-prerequisites) to create your local Git repository you'll have established your directory to hold exported assets, overlay output, reports, and test results.  Your repository directory will look something like this:
+After you've followed the [prerequisite steps](/command-line/tutorial-prerequisites) to create your local Git repository you'll have established your directory to hold exported assets, overlay output, reports, and test results.  Your repository directory will look something like this:
 
 ```text
 mcix-cli-pipeline-demo/
@@ -202,11 +202,11 @@ The first stage exports assets from the source DataStage project.
 
 ```bash
 mcix datastage export \
-  --url "$SOURCE_CP4D_URL" \
-  --project "$SOURCE_PROJECT" \
-  --username "$CP4D_USERNAME" \
-  --api-key "$CP4D_API_KEY" \
-  --export-path "$EXPORT_DIR"
+  -url "$CP4D_URL" \
+  -project "$SOURCE_PROJECT" \
+  -username "$CP4D_USERNAME" \
+  -api-key "$CP4D_API_KEY" \
+  -export-path "$EXPORT_DIR"
 ```
 
 <details markdown="1">
@@ -222,104 +222,7 @@ Exporting project containing 108 assets
  * Write TxTransformedSales_container (data_intg_flow) - SUCCESS
  * Write LdDimDate (data_intg_flow) - SUCCESS
  * Write LdFactSales (data_intg_flow) - SUCCESS
- * Write LdRegionSalesSummary (data_intg_flow) - SUCCESS
- * Write LdProductPerformance (data_intg_flow) - SUCCESS
- * Write LdQuarterlyFinancials (data_intg_flow) - SUCCESS
- * Write TxFactFinanceDsBAK (data_intg_flow) - SUCCESS
- * Write LdFactFinance (data_intg_flow) - SUCCESS
- * Write TxDailySalesSummaryDs (data_intg_flow) - SUCCESS
- * Write LdDimSupplier (data_intg_flow) - SUCCESS
- * Write LdDimCustomer (data_intg_flow) - SUCCESS
- * Write TxRegionSalesSummaryDs_container (data_intg_flow) - SUCCESS
- * Write TxCreateDateSource (data_intg_flow) - SUCCESS
- * Write LdDimProduct (data_intg_flow) - SUCCESS
- * Write LdDailySalesSummary (data_intg_flow) - SUCCESS
- * Write LdRefUSStates (data_intg_flow) - SUCCESS
- * Write ScdDimSupplierDs (data_intg_flow) - SUCCESS
- * Write LdStgSupplier (data_intg_flow) - SUCCESS
- * Write ScdDimProductDs (data_intg_flow) - SUCCESS
- * Write LdStgProduct (data_intg_flow) - SUCCESS
- * Write ScdDimCustomerDs (data_intg_flow) - SUCCESS
- * Write TxTransformedCustomer (data_intg_flow) - SUCCESS
- * Write LdStgCustomer (data_intg_flow) - SUCCESS
- * Write TxRegionSalesSummaryDs (data_intg_flow) - SUCCESS
- * Write LdStgFinance (data_intg_flow) - SUCCESS
- * Write TxFactFinanceDs (data_intg_flow) - SUCCESS
- * Write TxProductPerformanceDs (data_intg_flow) - SUCCESS
- * Write TxFactSalesDs (data_intg_flow) - SUCCESS
- * Write TxTransformedSales (data_intg_flow) - SUCCESS
- * Write LdStgSales (data_intg_flow) - SUCCESS
- * Write TxQuarterlyFinancialsDs (data_intg_flow) - SUCCESS
- * Write UpdateProductSurrogateKeys (data_intg_flow) - SUCCESS
- * Write UpdateSalesSurrogateKeys (data_intg_flow) - SUCCESS
- * Write UpdateCustomerSurrogateKeys (data_intg_flow) - SUCCESS
- * Write UpdateSupplierSurrogateKeys (data_intg_flow) - SUCCESS
- * Write UpdateFinanceSurrogateKeys (data_intg_flow) - SUCCESS
- * Write UpdDimSupplier (orchestration_flow) - SUCCESS
- * Write UpdDimProduct (orchestration_flow) - SUCCESS
- * Write UpdDimCustomer (orchestration_flow) - SUCCESS
- * Write UpdRegionSalesSummary (orchestration_flow) - SUCCESS
- * Write UpdFactFinance (orchestration_flow) - SUCCESS
- * Write UpdProductPerformance (orchestration_flow) - SUCCESS
- * Write UpdFactSales (orchestration_flow) - SUCCESS
- * Write UpdQuarterlyFinancials (orchestration_flow) - SUCCESS
- * Write UpdateAllSurrogateKeys (orchestration_flow) - SUCCESS
- * Write UpdDailySalesSummary (orchestration_flow) - SUCCESS
- * Write S3TestDataConnection (connection) - SUCCESS
- * Write RDS postgres-dev_cp4d (connection) - SUCCESS
- * Write psDatabaseConnect (parameter_set) - SUCCESS
- * Write psGlobal (parameter_set) - SUCCESS
- * Write TxTransformedSales_container.DataStage job (job) - SUCCESS
- * Write LdDimDate.DataStage job (job) - SUCCESS
- * Write LdFactSales.DataStage job (job) - SUCCESS
- * Write LdRegionSalesSummary.DataStage job (job) - SUCCESS
- * Write LdProductPerformance.DataStage job (job) - SUCCESS
- * Write LdQuarterlyFinancials.DataStage job (job) - SUCCESS
- * Write TxFactFinanceDsBAK.DataStage job (job) - SUCCESS
- * Write LdFactFinance.DataStage job (job) - SUCCESS
- * Write TxDailySalesSummaryDs.DataStage job (job) - SUCCESS
- * Write LdDimSupplier.DataStage job (job) - SUCCESS
- * Write LdDimCustomer.DataStage job (job) - SUCCESS
- * Write TxRegionSalesSummaryDs_container.DataStage job (job) - SUCCESS
- * Write TxCreateDateSource.DataStage job (job) - SUCCESS
- * Write LdDimProduct.DataStage job (job) - SUCCESS
- * Write LdDailySalesSummary.DataStage job (job) - SUCCESS
- * Write LdRefUSStates.DataStage job (job) - SUCCESS
- * Write Trial job - UpdDimSupplier (job) - SUCCESS
- * Write UpdDimSupplier.DataStage sequence (job) - SUCCESS
- * Write ScdDimSupplierDs.DataStage job (job) - SUCCESS
- * Write LdStgSupplier.DataStage job (job) - SUCCESS
- * Write UpdDimProduct.DataStage sequence (job) - SUCCESS
- * Write Trial job - UpdDimProduct (job) - SUCCESS
- * Write ScdDimProductDs.DataStage job (job) - SUCCESS
- * Write LdStgProduct.DataStage job (job) - SUCCESS
- * Write Trial job - UpdDimCustomer (job) - SUCCESS
- * Write UpdDimCustomer.DataStage sequence (job) - SUCCESS
- * Write ScdDimCustomerDs.DataStage job (job) - SUCCESS
- * Write TxTransformedCustomer.DataStage job (job) - SUCCESS
- * Write LdStgCustomer.DataStage job (job) - SUCCESS
- * Write Trial job - UpdRegionSalesSummary (job) - SUCCESS
- * Write UpdRegionSalesSummary.DataStage sequence (job) - SUCCESS
- * Write TxRegionSalesSummaryDs.DataStage job (job) - SUCCESS
- * Write Trial job - UpdFactFinance (job) - SUCCESS
- * Write UpdFactFinance.DataStage sequence (job) - SUCCESS
- * Write LdStgFinance.DataStage job (job) - SUCCESS
- * Write TxFactFinanceDs.DataStage job (job) - SUCCESS
- * Write Trial job - UpdProductPerformance (job) - SUCCESS
- * Write UpdProductPerformance.DataStage sequence (job) - SUCCESS
- * Write TxProductPerformanceDs.DataStage job (job) - SUCCESS
- * Write UpdFactSales.DataStage sequence (job) - SUCCESS
- * Write Trial job - UpdFactSales (job) - SUCCESS
- * Write TxFactSalesDs.DataStage job (job) - SUCCESS
- * Write TxTransformedSales.DataStage job (job) - SUCCESS
- * Write LdStgSales.DataStage job (job) - SUCCESS
- * Write UpdQuarterlyFinancials.DataStage sequence (job) - SUCCESS
- * Write Trial job - UpdQuarterlyFinancials (job) - SUCCESS
- * Write TxQuarterlyFinancialsDs.DataStage job (job) - SUCCESS
- * Write Trial job - UpdateAllSurrogateKeys (job) - SUCCESS
- * Write UpdateAllSurrogateKeys.DataStage sequence (job) - SUCCESS
- * Write UpdateProductSurrogateKeys.DataStage job (job) - SUCCESS
- * Write UpdateSalesSurrogateKeys.DataStage job (job) - SUCCESS
+ <<<REDACTED FOR BREVITY>>>
  * Write UpdateCustomerSurrogateKeys.DataStage job (job) - SUCCESS
  * Write UpdateSupplierSurrogateKeys.DataStage job (job) - SUCCESS
  * Write UpdateFinanceSurrogateKeys.DataStage job (job) - SUCCESS
@@ -436,18 +339,18 @@ Now import the overlaid assets into the target DataStage project.
 
 ```bash
 mcix datastage import \
-  --url "$TARGET_CP4D_URL" \
-  --project "$TARGET_PROJECT" \
-  --username "$CP4D_USERNAME" \
-  --api-key "$CP4D_API_KEY" \
-  --input-dir "$OVERLAY_DIR"
+  -url "$TARGET_CP4D_URL" \
+  -project "$TARGET_PROJECT" \
+  -username "$CP4D_USERNAME" \
+  -api-key "$CP4D_API_KEY" \
+  -input-dir "$OVERLAY_DIR"
 ```
 
 At this point, the transformed DataStage assets have been deployed into the target project.
 
 ---
 
-## 4. Apply environment overlays
+## 6. Apply environment overlays
 
 Next, we'll apply overlays to transform the exported assets for the target environment.  For example, overlays might change connection names, schema names, database endpoints, project parameters, or other environment-specific values.
 
@@ -482,9 +385,9 @@ Then apply the overlay to te recently exported assets to generate a new set of *
 
 ```bash
 mcix overlay apply \
-  --input-dir "$EXPORT_DIR" \
-  --overlay-dir "./overlays/test" \
-  --output-dir "$OVERLAY_DIR"
+  -input-dir "$EXPORT_DIR" \
+  -overlay-dir "./overlays/test" \
+  -output-dir "$OVERLAY_DIR"
 ```
 
 After this step, the transformed assets should be available in:
@@ -496,7 +399,7 @@ After this step, the transformed assets should be available in:
 ---
 
 {% if site.compliance == "Y" %}
-## X. Run asset analysis tests
+## 7. Run asset analysis tests
 
 Next, run asset analysis tests to validate that the imported assets comply with your rules.
 
@@ -527,11 +430,11 @@ Now we'll execute the DataStage unit tests.
 
 ```bash
 mcix unit-test execute \
-  --url "$TARGET_CP4D_URL" \
-  --project "$TARGET_PROJECT" \
-  --username "$CP4D_USERNAME" \
-  --api-key "$CP4D_API_KEY" \
-  --junit-output "$REPORT_DIR/unit-test-results.xml"
+  -url "$TARGET_CP4D_URL" \
+  -project "$TARGET_PROJECT" \
+  -username "$CP4D_USERNAME" \
+  -api-key "$CP4D_API_KEY" \
+  -junit-output "$REPORT_DIR/unit-test-results.xml"
 ```
 
 You'll see the test being executed in the target environment:
@@ -573,27 +476,21 @@ Once you've run the individual commands you may wish to place them into a shell 
 
 Templates of this script are available for Linux/macOS and Windows (below)
 
-In each case you'll need to update the file's configuration values near the top of the script, including:
+In each case you'll need to update the file's configuration values to suit your environment. For example:
 
-```powershell
-$CP4D_URL = "https://source-cpd.example.com"
-$CP4D_USERNAME = "john@example.com"
+```bash
+$CP4D_URL="https://source-cpd.example.com"
+$CP4D_USERNAME = "username@example.com"
 $CP4D_API_KEY  = "your-api-key"
 $PROJECT  = "Development"
-
-$TARGET_CP4D_URL = "https://target-cpd.example.com"
 $TARGET_PROJECT  = "Test"
-
+$TARGET_PROJECT  = "Test_CI"
 ```
-
-
-
-
 
 <details markdown="1">
   <summary>Linux/macOS</summary>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[![run-mcix-pipeline.sh]({{ site.url }}/assets/img/document--download.svg)](run-mcix-pipeline.sh)
-<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Download<br/>mcix-pipeline.sh](run-mcix-pipeline.sh)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[![mcix-pipeline.sh]({{ site.url }}/assets/img/document--download.svg)](mcix-pipeline.sh)
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Download<br/>mcix-pipeline.sh](mcix-pipeline.sh)
 
 Make the script executable:
 ```bash
@@ -609,8 +506,8 @@ Run it:
 
 <details markdown="1">
   <summary>Windows</summary>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[![run-mcix-pipeline.bat]({{ site.url }}/assets/img/document--download.svg)](run-mcix-pipeline.bat)
-<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Download<br/>mcix-pipeline.bat](run-mcix-pipeline.bat)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[![mcix-pipeline.ps1]({{ site.url }}/assets/img/document--download.svg)](mcix-pipeline.ps1)
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Download<br/>mcix-pipeline.bat](mcix-pipeline.ps1)
 
 This script assumes **PowerShell 7.4 or later**. The combination of `$ErrorActionPreference = "Stop"` and `$PSNativeCommandUseErrorActionPreference = $true` causes the script to stop if an external command such as `mcix` returns a non-zero exit code. In older versions of PowerShell, native command failures do not automatically behave like terminating PowerShell errors, so scripts may need to check `$LASTEXITCODE` explicitly after each command.
 
@@ -657,12 +554,9 @@ I’d also add this small safety note:
 > **Note:** Always review downloaded scripts before running them, especially scripts that contain credentials, API keys, or deployment commands.
 ````
 
-
-
 </details>
 
 You'll need to update the variables wit your environment-specific configuration items, like URL's, credentials, and project names.
-
 
 ---
 
@@ -704,7 +598,7 @@ For repeatable deployments, keep the following items in source control:
 overlays/
 asset-analysis-rules/
 unit-test definitions/
-run-mcix-pipeline.sh
+mcix-pipeline.sh
 ```
 
 Do not usually store exported runtime output or generated reports in source control.

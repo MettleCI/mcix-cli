@@ -1,6 +1,6 @@
 ## asset-analysis test
 
-![Released](https://img.shields.io/badge/status-release_pending-orange?logo=github) [<img src="https://img.shields.io/badge/github-repository-blue?style=flat-square&logo=github">](https://github.com/MettleCI/mcix-asset-analysis-test){:target="_blank" rel="noopener"}
+[<img src="https://img.shields.io/badge/github-marketplace-blue?style=flat-square&logo=github">](https://github.com/marketplace/actions/mcix-asset-analysis-test){:target="_blank" rel="noopener"} 
 
 The **MCIX asset analysis test** action provides an automated quality gate for DataStage assets.  It examines exported DataStage assets and checks them against a defined set of rules, identifying issues such as poor design patterns, missing standards, naming problems, or other project-specific quality concerns before those assets are promoted further through a CI/CD pipeline.
 

@@ -2,7 +2,7 @@
 
 ![datastage import syntax](img/datastage-import.svg "datastage import syntax")
 
-Imports DataStage assets from a DataStage export zip file or directory into a CP4D/CP4DaaS project.  This command produces a [JUnit-compatible](/pipelines/junit-output) test output XML file which reports each individual job’s import status.
+Imports DataStage assets from a DataStage export zip file or directory into a CP4D/CP4DaaS project.  This command produces a [JUnit-compatible](/introduction/junit-output) test output XML file which reports each individual job’s import status.
 
 
 #### Parameters
@@ -28,3 +28,5 @@ mcix datastage import \
   -project dstage1 
 {% endraw %}```
 </details>
+
+---

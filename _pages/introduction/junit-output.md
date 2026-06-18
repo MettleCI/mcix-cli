@@ -1,5 +1,5 @@
 ---
-title: Test results using JUnit
+title: JUnit XML Test Results
 description: The de facto standard for<br/>reporting test results
 # banner_src: ../../assets/img/banner.jpeg
 ---
