@@ -305,7 +305,7 @@ datastage
 compile
 -domain
 test1-svcs.datamigrators.io:59445
--username
+-user
 isadmin
 -password
 isadminpwd

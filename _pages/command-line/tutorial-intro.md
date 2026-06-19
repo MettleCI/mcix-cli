@@ -1,10 +1,9 @@
 ---
 title: Pipeline Tutorial Introduction
-description: Simulating a simple CI/CD<br/>Pipeline using the MCIX CLI
-description: Understanding the pipeline pattern<br/>before automating it
+description: Emulating a simple CI/CD<br/>Pipeline using the MCIX CLI
 ---
 
-This command-line tutorial is intended to help you understand the individual steps that make up an MCIX-based CI/CD pipeline. In a production environment, these steps would normally be executed automatically by a CI/CD platform such as GitHub Actions, Azure DevOps, Jenkins, GitLab CI, or Tekton. In a production pipeline, the CI/CD platform provides the automation, orchestration, credential management, approval gates, audit history, logging, notifications, and repeatability needed to run these steps reliably across teams and environments. The MCIX CLI performs the DataStage-related work, but the CI/CD tool is responsible for deciding when, where, and how these commands are executed. Read more about the role of a CI/CD tool [here](/introduction/cicd-concepts).
+This command-line tutorial will help you understand the individual steps that make up an MCIX-based CI/CD pipeline. In a production environment, these steps would normally be executed automatically by a CI/CD platform such as Azure DevOps, Bitbucket pipelines, GitHub Actions, GitLab CI, or Jenkins. In a production pipeline, the CI/CD platform provides the automation, orchestration, credential management, approval gates, audit history, logging, notifications, and repeatability needed to run these steps reliably across teams and environments. The MCIX CLI performs the DataStage-related work, but the CI/CD tool is responsible for deciding when, where, and how these commands are executed. Read more about the role of a CI/CD tool [here](/introduction/cicd-concepts).
 
 In this tutorial, however, you will run the same type of CI/CD pipeline manually from your local command line.  This gives you a practical way to understand what each pipeline stage does before you automate the process in a real CI/CD tool.
 
@@ -78,7 +77,9 @@ The tutorial walks through the following stages.
 | Version  | Store the exported assets in a Git repository               |
 | Overlay  | Apply environment-specific configuration changes            |
 | Import   | Deploy the modified assets into a target DataStage project  |
-| Validate | Check that the assets meet expected standards               |
+{% if site.compliance == "Y" %}
+| Validate | Check that the assets meet expected coding standards        |
+{% endif %}
 | Test     | Execute DataStage unit tests and produce test results       |
 
 Some of stages are optional. For example, asset analysis may only apply where asset analysis rules are available.

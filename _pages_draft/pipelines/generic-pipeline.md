@@ -136,7 +136,7 @@ steps:
         mcix datastage export \
           --url "$CP4D_SOURCE_URL" \
           --project "$CP4D_SOURCE_PROJECT" \
-          --username "$CP4D_SOURCE_USERNAME" \
+          --user "$CP4D_SOURCE_USERNAME" \
           --password "$CP4D_SOURCE_PASSWORD" \
           --output-directory /export
 
@@ -160,7 +160,7 @@ steps:
         mcix datastage import \
           --url "$CP4D_TARGET_URL" \
           --project "$CP4D_TARGET_PROJECT" \
-          --username "$CP4D_TARGET_USERNAME" \
+          --user "$CP4D_TARGET_USERNAME" \
           --password "$CP4D_TARGET_PASSWORD" \
           --input-directory /import
 
@@ -186,7 +186,7 @@ steps:
         mcix unit-test execute \
           --url "$CP4D_TARGET_URL" \
           --project "$CP4D_TARGET_PROJECT" \
-          --username "$CP4D_TARGET_USERNAME" \
+          --user "$CP4D_TARGET_USERNAME" \
           --password "$CP4D_TARGET_PASSWORD" \
           --test-suite /tests/unit-test-suite.yaml \
           --junit-file /results/unit-test-results.xml
@@ -202,7 +202,7 @@ steps:
 mcix datastage export \
   --url "$CP4D_SOURCE_URL" \
   --project "$CP4D_SOURCE_PROJECT" \
-  --username "$CP4D_SOURCE_USERNAME" \
+  --user "$CP4D_SOURCE_USERNAME" \
   --password "$CP4D_SOURCE_PASSWORD" \
   --output-directory /export
 ```
@@ -255,7 +255,7 @@ This directory contains the version of the assets that will be imported into the
 mcix datastage import \
   --url "$CP4D_TARGET_URL" \
   --project "$CP4D_TARGET_PROJECT" \
-  --username "$CP4D_TARGET_USERNAME" \
+  --user "$CP4D_TARGET_USERNAME" \
   --password "$CP4D_TARGET_PASSWORD" \
   --input-directory /import
 ```
@@ -297,7 +297,7 @@ The JUnit output can be published by your CI/CD platform so failed checks appear
 mcix unit-test execute \
   --url "$CP4D_TARGET_URL" \
   --project "$CP4D_TARGET_PROJECT" \
-  --username "$CP4D_TARGET_USERNAME" \
+  --user "$CP4D_TARGET_USERNAME" \
   --password "$CP4D_TARGET_PASSWORD" \
   --test-suite /tests/unit-test-suite.yaml \
   --junit-file /results/unit-test-results.xml
@@ -348,7 +348,7 @@ jobs:
             mcix datastage export \
               --url "${{ secrets.CP4D_SOURCE_URL }}" \
               --project "${{ vars.CP4D_SOURCE_PROJECT }}" \
-              --username "${{ secrets.CP4D_SOURCE_USERNAME }}" \
+              --user "${{ secrets.CP4D_SOURCE_USERNAME }}" \
               --password "${{ secrets.CP4D_SOURCE_PASSWORD }}" \
               --output-directory /export
 
@@ -372,7 +372,7 @@ jobs:
             mcix datastage import \
               --url "${{ secrets.CP4D_TARGET_URL }}" \
               --project "${{ vars.CP4D_TARGET_PROJECT }}" \
-              --username "${{ secrets.CP4D_TARGET_USERNAME }}" \
+              --user "${{ secrets.CP4D_TARGET_USERNAME }}" \
               --password "${{ secrets.CP4D_TARGET_PASSWORD }}" \
               --input-directory /import
 
@@ -398,7 +398,7 @@ jobs:
             mcix unit-test execute \
               --url "${{ secrets.CP4D_TARGET_URL }}" \
               --project "${{ vars.CP4D_TARGET_PROJECT }}" \
-              --username "${{ secrets.CP4D_TARGET_USERNAME }}" \
+              --user "${{ secrets.CP4D_TARGET_USERNAME }}" \
               --password "${{ secrets.CP4D_TARGET_PASSWORD }}" \
               --test-suite /tests/unit-test-suite.yaml \
               --junit-file /results/unit-test-results.xml

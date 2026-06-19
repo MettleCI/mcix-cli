@@ -2,6 +2,19 @@
 
 [<img src="https://img.shields.io/badge/github-marketplace-blue?style=flat-square&logo=github">](https://github.com/marketplace/actions/mcix-datastage-deploy){:target="_blank" rel="noopener"} 
 
+```mermaid
+flowchart LR
+  EXPORT["Export<br/>Assets"]
+  subgraph "<b>ACTION</b>&nbsp;datastage deploy"
+    OVERLAY["<b>ACTION</b><br/><a href=#overlay-apply>overlay<br/>apply</a>"]
+    IMPORT["<b>ACTION</b><br/><a href=#datastage-import>datastage<br/>import</a>"]
+    COMPILE["<b>ACTION</b><br/><a href=#datastage-compile>datastage<br/>compile</a>"]
+  end
+  TEST["Run<br/>Tests"]
+
+  EXPORT --> OVERLAY --> IMPORT --> COMPILE --> TEST
+```
+
 This **composite action** deploys DataStage assets to a target CP4D/CP4DaaS project by applying any specified overlays, importing the resulting assets, and compiling the imported DataStage flows. Compilation produces a [JUnit-compatible](/introduction/junit-output) XML output file which reports each individual flow's compilation result.
 
 <cds-inline-notification

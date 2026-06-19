@@ -36,7 +36,10 @@ These capabilities are supplied by the MCIX command which itself is available in
   classDef highlight fill:#f4f4f4,stroke:#0f62fe,stroke-width:4px,color:#161616;
 
   %% CPD
-  WATSONX["watsonx.data integration"]
+  subgraph CPD["IBM Software Hub"]
+    WATSONX["DataStage NextGen"]
+  end
+
 
   %% Command
   subgraph HOST["Host"]
@@ -180,3 +183,67 @@ Users of the most popular CI/CD orchestration tools can make use of native pipel
 - [Azure DevOps](../azure/azure)
 - [GitHub](../github/github)
 - [Jenkins](../jenkins/jenkins)
+
+```mermaid
+  flowchart TD
+
+  %% =========================
+  %% Styles
+  %% =========================
+  %% classDef registry fill:#333333,stroke:#3b82f6,stroke-width:2px,color:#111;
+  %% classDef image fill:#eefbf3,stroke:#22c55e,stroke-width:2px,color:#111;
+  %% classDef runtime fill:#fff7e6,stroke:#f59e0b,stroke-width:2px,color:#111;
+  %% classDef tooling fill:#f5ecff,stroke:#8b5cf6,stroke-width:2px,color:#111;
+  %% classDef plugin fill:#ffffff,stroke:#6b7280,stroke-width:1px,color:#111;
+  %% classDef command fill:#dcfce7,stroke:#16a34a,stroke-width:2px,color:#111;
+
+  %% =========================
+  %% GitHub environment
+  %% =========================
+  subgraph CICD["CI/CD Environment"]
+      subgraph CICDREPO["Git Repository"]
+        CICDPIPE["CI/CD Pipeline<br/>Definition"]
+      end
+      subgraph GHRUN["CI/CD Task Runner"]
+        CICDACT["CI/CD<br/>Pipeline"]
+        subgraph CICDA["CI/CD Tasks"]
+          CICDCONT["MCIX container<br/>instance"]
+        end
+      end
+  end
+  class CICDA tooling
+  class CICDCONT runtime
+
+  %% CICD Tooling references
+  CICDPIPE --> CICDACT
+  CICDACT <--> CICDA
+  CICDA <--> CICDCONT
+
+  %% =========================
+  %% Registry
+  %% =========================
+  subgraph REG["Container Registry"]
+      %% Image internals
+      subgraph IMG["MCIX Container Image"]
+        subgraph MCIX["mcix command"]
+          PLUGINS@{ shape: procs, label: "MCIX Plugins"}
+        end
+      end
+      class MCIX command
+      class PLUGINS plugin
+      class IMG image
+  end
+  %% class REG registry
+
+  subgraph CPD["IBM Software Hub"]
+    DATASTAGE["DataStage NextGen"]
+  end
+
+  %% =========================
+  %% Distribution from registry
+  %% =========================
+  IMG -. Pull .-> CICDCONT
+
+  %% Action/Task links to CPD
+  CICDCONT <--> CPD
+```

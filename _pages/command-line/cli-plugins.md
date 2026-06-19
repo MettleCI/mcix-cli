@@ -27,7 +27,7 @@ $> mettleci {namespace} {command} {parameters}
 $> mettleci datastage deploy \
    -domain services-tier.myorg.com:59445 -server engine-tier.myorg.com  \
    -project dstage1 \
-   -username isadmin -password isadminpwd \
+   -user isadmin -password isadminpwd \
    -assets assets_dir
    -include-job-in-test-name
 ```

@@ -34,7 +34,7 @@ UNIT_TEST_EXECUTE = Diagram(
                 Sequence(NonTerminal('-domain'), '{domain}'),
                 Sequence(NonTerminal('-server'), '{engine tier}'),
                 Sequence(NonTerminal('-project'), '{project}'),
-                Sequence(NonTerminal('-username'), '{user}'),
+                Sequence(NonTerminal('-user'), '{user}'),
                 Sequence(NonTerminal('-password'), '{password}'),
                 Sequence(NonTerminal('-specs'), '{path}'),
                 Sequence(NonTerminal('-reports'), '{path}'),

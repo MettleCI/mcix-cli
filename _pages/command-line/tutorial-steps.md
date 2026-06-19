@@ -79,8 +79,21 @@ It is assumed you already have:
 **Note:** If you don't have a source NextGen DataStage project available you can download a sample project 
 for tutorial purposes (below) and import it into your source project in your DataStage NextGen environment:
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[![JUnit XML Schema]({{ site.url }}/assets/img/document--download.svg)](assets/electromart.zip)
-<br/>&nbsp;[Download<br/>ElectroMart](assets/electromart.zip)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[![Electromart Export]({{ site.url }}/assets/img/document--download.svg)](../../assets/files/electromart.zip)
+<br/>&nbsp;[Download<br/>ElectroMart](../../assets/files/electromart.zip)
+
+<cds-inline-notification
+  kind="warning"
+  subtitle="Always review downloaded assets before running them"
+  low-contrast="true"
+  hide-close-button="true">
+</cds-inline-notification>
+
+### Notes for real-world usage
+
+- Avoid hard-coding credentials directly in your commands. For local use you can use environment variables to provide consistent values across calls.
+- The same sequence can later be moved into a CI/CD platform. In that case each command becomes a pipeline step, and the JUnit XML files can be published as test results to the platform.
+- Do not store generated runtime output or reports in source control.
 
 ---
 
@@ -159,11 +172,8 @@ mcix-cli-pipeline-demo/
 │                     # (in asset type-specific sub-directories)
 ├── filesystem/       # Where non-DataStage assets will to be stored
 │                     # (scripts, reference files, etc.)
-├── pipelines/        # Stores CI/CD tools' pipeline definitions
-│                     # (Not relevant to this tutorial)
 ├── overlays/         # Stores overlay configuration files 
-├── README.md         # The repository's homepage (in markdown)
-└── unit-tests/       # DataStage unit test specifications and data files
+└── README.md         # The repository's homepage (in markdown)
 ```
 
 Of particular note is the `datastage` directory.  This is where our DataStage asset will be placed, organised into subdirectories by their asset type.
@@ -204,7 +214,7 @@ The first stage exports assets from the source DataStage project.
 mcix datastage export \
   -url "$CP4D_URL" \
   -project "$SOURCE_PROJECT" \
-  -username "$CP4D_USERNAME" \
+  -user "$CP4D_USERNAME" \
   -api-key "$CP4D_API_KEY" \
   -export-path "$EXPORT_DIR"
 ```
@@ -341,7 +351,7 @@ Now import the overlaid assets into the target DataStage project.
 mcix datastage import \
   -url "$TARGET_CP4D_URL" \
   -project "$TARGET_PROJECT" \
-  -username "$CP4D_USERNAME" \
+  -user "$CP4D_USERNAME" \
   -api-key "$CP4D_API_KEY" \
   -input-dir "$OVERLAY_DIR"
 ```
@@ -407,7 +417,7 @@ Next, run asset analysis tests to validate that the imported assets comply with 
 mcix asset-analysis test \
   --url "$TARGET_CP4D_URL" \
   --project "$TARGET_PROJECT" \
-  --username "$CP4D_USERNAME" \
+  --user "$CP4D_USERNAME" \
   --api-key "$CP4D_API_KEY" \
   --rules-dir "./asset-analysis-rules" \
   --junit-output "$REPORT_DIR/asset-analysis-results.xml"
@@ -432,7 +442,7 @@ Now we'll execute the DataStage unit tests.
 mcix unit-test execute \
   -url "$TARGET_CP4D_URL" \
   -project "$TARGET_PROJECT" \
-  -username "$CP4D_USERNAME" \
+  -user "$CP4D_USERNAME" \
   -api-key "$CP4D_API_KEY" \
   -junit-output "$REPORT_DIR/unit-test-results.xml"
 ```
@@ -470,13 +480,9 @@ SUCCESS: Executed 0 tests
 
 ---
 
-## 8. Run the full pipeline as a script
+## Run the full pipeline as a script
 
-Once you've run the individual commands you may wish to place them into a shell script to reproduce them easily. 
-
-Templates of this script are available for Linux/macOS and Windows (below)
-
-In each case you'll need to update the file's configuration values to suit your environment. For example:
+Once you've run the individual commands you may wish to place them into a shell script to reproduce them easily. Templates of this script are available for **Linux/macOS** and **Windows** (below). For your selected platform you'll need to update the file's configuration values to suit your environment. For example:
 
 ```bash
 $CP4D_URL="https://source-cpd.example.com"
@@ -490,7 +496,14 @@ $TARGET_PROJECT  = "Test_CI"
 <details markdown="1">
   <summary>Linux/macOS</summary>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[![mcix-pipeline.sh]({{ site.url }}/assets/img/document--download.svg)](mcix-pipeline.sh)
-<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Download<br/>mcix-pipeline.sh](mcix-pipeline.sh)
+<br/>[mcix-pipeline.sh](mcix-pipeline.sh)
+
+<cds-inline-notification
+  kind="warning"
+  subtitle="Always review downloaded assets before running them"
+  low-contrast="true"
+  hide-close-button="true">
+</cds-inline-notification>
 
 Make the script executable:
 ```bash
@@ -501,33 +514,29 @@ Run it:
 ```bash
 ./mcix-pipeline.sh
 ```
-
 </details>
 
 <details markdown="1">
   <summary>Windows</summary>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[![mcix-pipeline.ps1]({{ site.url }}/assets/img/document--download.svg)](mcix-pipeline.ps1)
-<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Download<br/>mcix-pipeline.bat](mcix-pipeline.ps1)
+<br/>[mcix-pipeline.ps1](mcix-pipeline.ps1)
 
-This script assumes **PowerShell 7.4 or later**. The combination of `$ErrorActionPreference = "Stop"` and `$PSNativeCommandUseErrorActionPreference = $true` causes the script to stop if an external command such as `mcix` returns a non-zero exit code. In older versions of PowerShell, native command failures do not automatically behave like terminating PowerShell errors, so scripts may need to check `$LASTEXITCODE` explicitly after each command.
+<cds-inline-notification
+  kind="warning"
+  subtitle="Always review downloaded assets before running them"
+  low-contrast="true"
+  hide-close-button="true">
+</cds-inline-notification>
 
-Yes. For a tutorial, I’d describe the process as:
+This script assumes **PowerShell 7.4 or later**. The combination of `$ErrorActionPreference = "Stop"` and `$PSNativeCommandUseErrorActionPreference = $true` causes the script to stop if an external command such as `mcix` returns a non-zero exit code. In older versions of PowerShell command failures do not automatically terminate the script, so scripts should check `$LASTEXITCODE` explicitly after each command.
 
 ## Running the PowerShell pipeline script
 
-Download the PowerShell script to your local repository folder and review it before running it.
-
-For example, save the script as:
-
-```text
-run-mcix-pipeline.ps1
-````
-
-Then open PowerShell, change into your repository directory, and run the script:
+Open PowerShell, change to your repository directory, and run the script:
 
 ```powershell
 cd path\to\mcix-cli-pipeline-demo
-.\run-mcix-pipeline.ps1
+.\mcix-pipeline.ps1
 ```
 
 If PowerShell blocks the script because of your local execution policy, you can allow the script to run for this session only:
@@ -536,72 +545,35 @@ If PowerShell blocks the script because of your local execution policy, you can 
 Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 ```
 
-Then run the script again:
-
-```powershell
-.\run-mcix-pipeline.ps1
-```
-
-This does not permanently change your system-wide PowerShell policy. It only applies to the current PowerShell session.
+This does not permanently change your system-wide PowerShell policy - it only applies to the current PowerShell session.
 
 When the script completes successfully, it should have exported the DataStage assets, applied overlays, imported the overlaid assets into the target project, and produced the configured test result files.
-
-````
-
-I’d also add this small safety note:
-
-```markdown
-> **Note:** Always review downloaded scripts before running them, especially scripts that contain credentials, API keys, or deployment commands.
-````
-
 </details>
 
 You'll need to update the variables wit your environment-specific configuration items, like URL's, credentials, and project names.
 
----
+### Expected results
 
-## 9. Expected result
-
-After the script completes successfully, you should have:
+After the script completes successfully, you should have a directory that looks like this:
 
 ```text
 mcix-pipeline-demo/
-├── exported-assets/
+├── exported-assets/ (A)
 │   └── exported DataStage assets
-├── overlaid-assets/
+├── overlaid-assets/ (B)
 │   └── transformed assets ready for import
-├── reports/
-│   └── asset-analysis-results.xml
-└── test-results/
+└── test-results/    (C)
     └── unit-test-results.xml
 ```
 
 The pipeline has:
-
-1. Exported assets from the source project.
-2. Applied target-environment configuration.
-3. Imported assets into the target project.
-4. Validated the assets using asset analysis rules.
-5. Executed unit tests against the deployed solution.
-
----
-
-## Notes for real-world usage
-
-Avoid hard-coding credentials directly in the script. For local use, prefer environment variables or a secure secrets manager.
-
-The same sequence can later be moved into a CI/CD platform. In that case, each command becomes a pipeline step, and the JUnit XML files can be published as test results.
-
-For repeatable deployments, keep the following items in source control:
-
-```text
-overlays/
-asset-analysis-rules/
-unit-test definitions/
-mcix-pipeline.sh
-```
-
-Do not usually store exported runtime output or generated reports in source control.
+1. Exported assets from the source project **(A)**
+1. Applied target-environment configuration **(B)**
+1. Imported assets into the target project
+{% if site.compliance == "Y" %}
+1. Validated (locally) the assets using asset analysis rules **(C)**
+{% endif %}
+1. Executed (on DataStage) unit tests against the deployed assets **(C)**
 
 ---
 

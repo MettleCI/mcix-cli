@@ -227,7 +227,7 @@ git config --global user.name "Your Name"
 git config --global user.email "you@example.com"
 ```
 
-1. Copy the URL of the MettleCI template repository hosted on GitHub:
+1. Copy the repository clone URL:
 ```
 https://github.com/MettleCI/datastage-nextgen-repo-template
 ```
@@ -247,18 +247,20 @@ ssh -T git@gitlab.com
 ssh -T git@bitbucket.org
 etc.
 ```
-If you want to use SSH with Azure DevOps repositories then use the SSH host shown in the 'clone' instructions of your repository in the Azure DevOps user interface. e.g.,
-```shell
-git@ssh.dev.azure.com:v3/MyOrg/mcix-cli-demo
-```
-A successful response to `ssh -T` usually confirms that you have authenticated, even if it says shell access is not provided.<br/><br/>
+<cds-inline-notification
+  kind="info"
+  title="Note"
+  low-contrast="true"
+  hide-close-button="true">
+  <div class="cds--inline-notification__subtitle">
+    <p>If you want to use SSH with Azure Repos then copy the SSH host shown in the Azure DevOps 'clone' instructions of your repository in the Azure DevOps user interface. e.g.,<br/>
+    <code>git@ssh.dev.azure.com:v3/MyOrg/mcix-cli-demo</code>.</p>
+  </div>
+</cds-inline-notification>
+
+A successful response usually confirms that you have authenticated, even if it says shell access is not provided.<br/><br/>
 Both of these approaches (HTTPS or SSH) will require you to authenticate yourself to your Git platform.  When using HTTPS, your Git platform may require a personal access token rather than your account password.  See you Git platform's documentation for more details.<br/><br/>
 
-1. To help keep things organised let's rename the directory containing your local Git repository 
-clone with the name of *your* newly-created remote repository to which it will soon point:
-```shell
-mv datastage-nextgen-repo-template mcix-cli-demo
-```
 1. Inspect the contents of the cloned repository:
 ```shell
 cd mcix-cli-demo
@@ -272,8 +274,10 @@ mcix-cli-demo/
 ├── .gitignore
 ├── datastage/
 ├── filesystem/
-├── overlays/
-└── README.md
+├ ── overlays/
+├── pipelines/
+├── README.md
+└── unit-tests/
 ```
 The `.git` and `.gitattributes` files tell your Git CLI that this is folder is a Git repository, and what its properties are.
 <br/><br/>
@@ -299,49 +303,14 @@ git remote set-url origin <YOUR_NEW_REPOSITORY_URL>
 ```
 For example:
 ```shell
-git remote set-url origin https://myusername@dev.azure.com/MyOrg/MyProject/_git/mcix-cli-demo
+https://myusername@dev.azure.com/MyOrg/MyProject/_git/mcix-cli-demo
 ```
-Again, you can get the repository URL by clicking the **clone** button of your repository in the 
-Azure DevOps user interface and selecting 'HTTPS'.<br/><br/>
-You can verify your `git remote set` has worked by re-issuing... 
-```shell
+Again, you can get the repository URL by clicking the **clone** button of your repository in the Azure DevOps user interface and selecting 'HTTPS'.
+<br/><br/>You can verify your `git remote set` has worked by re-issuing... 
+```
 git remote -v
 ```
-This should now show your remote as the Git repository you specified.<br/><br/>
-1. To complete this step, we'll push our template repository up to your remote Git repository:
-```shell
-git push -u origin main
-```
-This will produce output looking something like this:
-```shell
-Enumerating objects: 78, done.
-Counting objects: 100% (78/78), done.
-Delta compression using up to 10 threads
-Compressing objects: 100% (57/57), done.
-Writing objects: 100% (78/78), 52.67 KiB | 52.67 MiB/s, done.
-Total 78 (delta 19), reused 72 (delta 16), pack-reused 0 (from 0)
-remote: Resolving deltas: 100% (19/19), done.
-To https://github.com/johnmckeever/mcix-cli-demo.git
- * [new branch]      main -> main
-branch 'main' set up to track 'origin/main'.```
-```
-Now you can login to your repository's user interface and inspect its contents.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+This should now show your remote as the Git repository you specified.
 
 ---
 

@@ -27,7 +27,7 @@ Write-Host "Exporting DataStage assets..."
 mcix datastage export `
   --url $SOURCE_CP4D_URL `
   --project $SOURCE_PROJECT `
-  --username $CP4D_USERNAME `
+  --user $CP4D_USERNAME `
   --api-key $CP4D_API_KEY `
   --output-dir $EXPORT_DIR
 
@@ -41,7 +41,7 @@ Write-Host "Importing DataStage assets..."
 mcix datastage import `
   --url $TARGET_CP4D_URL `
   --project $TARGET_PROJECT `
-  --username $CP4D_USERNAME `
+  --user $CP4D_USERNAME `
   --api-key $CP4D_API_KEY `
   --input-dir $OVERLAY_DIR
 
@@ -49,7 +49,7 @@ Write-Host "Running asset analysis tests..."
 mcix asset-analysis test `
   --url $TARGET_CP4D_URL `
   --project $TARGET_PROJECT `
-  --username $CP4D_USERNAME `
+  --user $CP4D_USERNAME `
   --api-key $CP4D_API_KEY `
   --rules-dir ".\asset-analysis-rules" `
   --junit-output "$REPORT_DIR\asset-analysis-results.xml"
@@ -58,7 +58,7 @@ Write-Host "Running unit tests..."
 mcix unit-test execute `
   --url $TARGET_CP4D_URL `
   --project $TARGET_PROJECT `
-  --username $CP4D_USERNAME `
+  --user $CP4D_USERNAME `
   --api-key $CP4D_API_KEY `
   --junit-output "$REPORT_DIR\unit-test-results.xml"
 
