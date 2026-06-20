@@ -4,6 +4,27 @@ description: Establishing the conditions for a<br/>Pipeline using the MCIX CLI
 
 ---
 
+## Configure your DataStage projects
+
+Ensure you have a DataStage nextgen project existing for each of the [environments](/introduction/cicd-concepts#environments-and-datastage-project-naming) you use during the tutorial:
+
+1. Your source (DEV) DataStage project, and 
+1. Each of the environments to which you wish to depoy.  For the purposes of this tutorial we'll stick to CI only.
+
+| Environment | Project name         |
+| ----------- | -------------------- |
+| Development | `mcix-cli-demo`      | 
+| CI          | `mcix-cli-demo_CI`   | 
+
+Ensure your DataStage NextGen projects are not configured as **Git Integrated** project.
+- **Do not** select **Git Integrated** when creating the project
+- **Do not** select **Enable Git integration** in the settings of the created project
+
+## Configuring DataStage test data storage
+
+As part of the tutorial you'll execute unit tests against one of the DataStag flows.
+To support this you'll need to configure test data storage in your CI project as this is where tests will be executed. Instructions for doing this in your projet are provided [here](https://dataplatform.cloud.ibm.com/docs/content/dstage/dsnav/topics/configuring_test_data_storage.html?context=cpdaas&audience=wdp&locale=en) 
+
 ## Install the MCIX command line
 
 You'll perform the CI/CD actions at the commad line of you local host. Start by ensuring you have a locally-installed MCIX command line interface:
@@ -162,7 +183,7 @@ You should see output similar to the below.  Your version number may well be dif
 git version 2.54.0
 ```
 
-## Create an empty project repository
+## Create an empty project git repository
 
 Your Git platform can be GitHub, GitLab, Bitbucket, Azure DevOps, your organisation’s internal Git platform, or any other Git-compatible service,
 
@@ -275,13 +296,17 @@ mcix-cli-demo/
 ├── overlays/
 └── README.md
 ```
-The `.git` and `.gitattributes` files tell your Git CLI that this is folder is a Git repository, and what its properties are.
-<br/><br/>
+The `.git` and `.gitattributes` files tell your Git CLI that this is folder is 
+a Git repository, and what its properties are.
 
-1. Point your local Git clone to your new remote repository:
+## Push your local repository template to remote
+
+Now you'll point your local Git clone to your new remote repository and push 
+the contents we cloned from the template into that remote.
+
+1. We'll start by confirming your local repository currently 
+points to the remote template repository. From within your local directory:
 ```shell
-# Confirm your local repository currently points 
-# to the remote template repository
 git remote -v
 ```
 This should show:
@@ -308,7 +333,8 @@ You can verify your `git remote set` has worked by re-issuing...
 git remote -v
 ```
 This should now show your remote as the Git repository you specified.<br/><br/>
-1. To complete this step, we'll push our template repository up to your remote Git repository:
+1. To complete this step, we'll push the template repository up to your remote Git repository, 
+ensuring you have a correctly structured remote repository, ready to receive your project assets:
 ```shell
 git push -u origin main
 ```
@@ -326,104 +352,3 @@ To https://github.com/johnmckeever/mcix-cli-demo.git
 branch 'main' set up to track 'origin/main'.```
 ```
 Now you can login to your repository's user interface and inspect its contents.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
----
-
-## Verify essential Git operations
-
-From inside the cloned repository, run:
-
-```bash
-git pull
-```
-
-If this completes successfully (usually with an `Already up to date` message) you have permission to retrieve the latest repository content.  
-
-Append a line to the `README.md` file:
-
-```bash
-echo "Git access check" >> README.md
-```
-
-<details markdown="1">
-  <summary>Verify this step</summary>
-Check the Git status to verify the change has been identified locally:
-
-```
-git status
-```
-
-This should show your change is not yet staged for commit:
-
-```
-On branch main
-Your branch is up to date with 'origin/main'.
-
-Changes not staged for commit:
-  (use "git add <file>..." to update what will be committed)
-  (use "git restore <file>..." to discard changes in working directory)
-	modified:   README.md
-
-no changes added to commit (use "git add" and/or "git commit -a")```
-```
-</details>
-
-Stage it for commit:
-
-```bash
-git add README.md
-```
-
-<details markdown="1">
-  <summary>Verify this step</summary>
-Check the change has been staged for commit:
-
-```
-git status
-```
-
-This should show:
-
-```
-On branch main
-Your branch is ahead of 'origin/main' by 1 commit.
-  (use "git push" to publish your local commits)
-
-Changes to be committed:
-  (use "git restore --staged <file>..." to unstage)
-	modified:   README.md
-```
-</details>
-
-
-Now Commit it:
-
-```
-git commit -m "Updated README to verify Git access"
-```
-
-If the commit succeeds, your local Git configuration is working. 
-
-Push the test change:
-
-```bash
-git push -u origin main
-```
-
-If this succeeds, you have the necessary write access to the repository.

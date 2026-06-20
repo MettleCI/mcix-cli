@@ -131,12 +131,9 @@ A trigger defines when a pipeline should run. Common triggers include:
 | Trigger              | Example                                             |
 | -------------------- | --------------------------------------------------- |
 | Commit trigger       | Run the pipeline whenever code is pushed to `main`. |
-| Pull request trigger | Run validation before a change is merged.           |
 | Manual trigger       | Let a user start the pipeline on demand.            |
 | Scheduled trigger    | Run the pipeline overnight or at a fixed time.      |
 | Release trigger      | Run deployment when a version tag is created.       |
-
-In the tutorials included in this documentation the manual command-line process represents what a trigger would normally start automatically.
 
 ---
 
@@ -268,6 +265,35 @@ The same DataStage assets often need different configuration in different enviro
 * runtime parameters
 
 The [overlay](/command-line/tutorial-steps#4-apply-environment-overlays) step in the tutorials included in this documentation demonstrates this principle. The core assets are versioned once, while environment-specific configuration is applied during deployment.
+
+---
+
+## Git essentials
+
+Git is a command-line tool used to track changes to files over time, making it easier to manage source code, documentation, and other project assets. Most Git operations are performed using the git command in a terminal, where you explicitly tell Git which changes to prepare, record, and share. Although graphical tools and web interfaces can simplify some tasks, understanding the Git CLI is valuable because it exposes the core workflow directly and works consistently across platforms, automation tools, and CI/CD pipelines.
+
+```mermaid
+---
+title: Basic Git Operations
+---
+stateDiagram-v2
+  direction LR
+  state WorkingDirectory {
+      [*] --> StagingArea: git add
+      StagingArea --> LocalRepository: git commit
+      [*] --> LocalRepository: git commit -a
+  }
+  LocalRepository --> RemoteRepository: git push
+  state RemoteService {
+    RemoteRepository --> Pipeline: Trigger
+   }
+```
+
+This diagram shows the basic flow of changes in Git using only the simplest of the git commands. You start with modified files in your working directory. 
+- `git add` moves selected changes into the **staging area** where they are prepared for the next commit. 
+- `git commit` then records those staged changes into your **local repository**. 
+- `git commit -a` is a shortcut which commits changes to already-tracked files directly from the working directory, bypassing a separate `git add` step. 
+- `git push` sends the commits from your **local repository** to a **remote repository**, such as one hosted on Azure DevOps ot GitHub. A git push is commonly (but not always) configured as the [trigger](/introduction/cicd-concepts#triggers) for the start of a CI/CD pipeline.  
 
 ---
 

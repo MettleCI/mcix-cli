@@ -3,56 +3,6 @@ title: Pipeline Tutorial Steps
 description: Implementing a simple CI/CD<br/>Pipeline using the MCIX CLI
 ---
 
-<script type="module" src="https://1.www.s81c.com/common/carbon-for-ibm-dotcom/version/v2.8.0/content-block.min.js"></script>
-<script type="module" src="https://1.www.s81c.com/common/carbon-for-ibm-dotcom/version/v2.8.0/content-block-mixed.min.js"></script>
-<script type="module" src="https://1.www.s81c.com/common/carbon-for-ibm-dotcom/version/v2.8.0/link-list.min.js"></script>
-
-<c4d-link-list type="default" slot="complementary">
-  <c4d-link-list-heading>Resources</c4d-link-list-heading>
-  <c4d-link-list-item
-    href="tutorial-introduction"
-    target="cmd-ref"
-    cta-type="local"
-  >
-    Tutorial Introduction
-  </c4d-link-list-item>
-  <c4d-link-list-item
-    href="tutorial-prerequisites"
-    target="cmd-ref"
-    cta-type="local"
-  >
-    Tutorial Prerequisites
-  </c4d-link-list-item>
-  <c4d-link-list-item
-    href="/command-line/command-reference"
-    target="cmd-ref"
-    cta-type="local"
-  >
-    Sample DataStage Project
-  </c4d-link-list-item>
-  <c4d-link-list-item
-    href="assets/mcix-pipeline.sh"
-    target="cmd-ref"
-    cta-type="local"
-  >
-    Template pipeline script (bash)
-  </c4d-link-list-item>
-  <c4d-link-list-item
-    href="assets/mcix-pipeline.ps1"
-    target="bash"
-    cta-type="local"
-  >
-    Template pipeline script (powershell)
-  </c4d-link-list-item>
-  <c4d-link-list-item
-    href="/command-line/command-reference"
-    target="powershell"
-    cta-type="local"
-  >
-    MCIX Command Reference
-  </c4d-link-list-item>
-</c4d-link-list>
-
 ## Scenario
 
 This tutorial shows how to replicate the actions of you CI/CD tool manually by issuing 
@@ -187,22 +137,22 @@ For readability, define the values you will use throughout the pipeline as shell
 ```bash
 # The location of your DataStage instance
 # This tutorial uses the same instance for both source and target environments
-export CP4D_URL="https://dataplatform.cloud.ibm.com/"    # DataStage as-a-service on IBM Cloud 
-                                                         # or your internal CPD instance
-export CP4D_USERNAME="myname@MyOrg.com"                  # DataStage username
-export CP4D_API_KEY="my-api-key"                         # DataStage password
+export CP4D_URL="https://cpd.myorg.com/"    # DataStage as-a-service on IBM Cloud 
+                                            # or your internal CPD instance
+export CP4D_USERNAME="MyUserName".          # DataStage username
+export CP4D_API_KEY="my-api-key"            # DataStage password
 
 # Project names
-export SOURCE_PROJECT="mcix-cli-demo" # The location of your development (source) project
-export TARGET_PROJECT="mcix-cli-demo_CI"                 # Demo will deploy to a 'CI' environment
+export SOURCE_PROJECT="mcix-cli-demo"       # The location of your development (source) project
+export TARGET_PROJECT="mcix-cli-demo_CI"    # Demo will deploy to a 'CI' environment
 
 # Local working folders
-export EXPORT_DIR="./datastage"                          # Exported assets
-export OVERLAY_DIR="./overlaid-assets"                   # Overlaid assets
-export REPORT_DIR="./reports"                            # JUnit report outputs
+export EXPORT_DIR="./datastage"             # Exported assets
+export OVERLAY_DIR="./overlaid-assets"      # Overlaid assets
+export REPORT_DIR="./reports"               # JUnit report outputs
 ```
 
-Adjust the variable names and values to match your environment. If you don't yet have one, you can generate a IBM Cloud Pak API key [here](https://www.ibm.com/docs/en/cloud-paks/cp-data/5.3.x?topic=tutorials-generating-api-keys).
+Adjust the variable names and values to match your environment. If you don't yet have one you should [generate a IBM Cloud Pak API key](https://www.ibm.com/docs/en/cloud-paks/cp-data/latest?topic=tutorials-generating-api-keys).
 
 ---
 
@@ -242,9 +192,9 @@ SUCCESS: Completed 108 actions
 ```
 </details>
 
-After this step, your exported DataStage assets should be available in your specified directory, organised by asset type:
+After this step, your exported DataStage assets should be available in your specified directory (`datastage`), organised by asset type:
 ```text
-$> ls -al exported-assets
+$> ls -al datastage
 total 0
 drwxr-xr-x@  4 johnmckeever  staff   128B 17 Jun 16:43 connection
 drwxr-xr-x@ 38 johnmckeever  staff   1.2K 17 Jun 16:43 data_intg_flow
@@ -256,6 +206,58 @@ drwxr-xr-x@  4 johnmckeever  staff   128B 17 Jun 16:43 parameter_set
 ```
 
 This directory of exported assets becomes the input to the next stage.
+
+---
+
+## 4. Initial project commit
+
+This section uses git commands.  If you're not familiar with git commands or 
+terminology you should start by reading [git concepts](/introduction/cicd-concepts#git-essentials).
+
+We'll now commit and push the entire exported project to our remote Git 
+repository, giving us a  baseline against which we can manage future change.  
+Start by adding the  export files to the Git **staging area**:
+
+```shell
+git add .
+```
+Next, we'll commit them to the **local repository** and push it to the 
+**remote repository**:
+
+```shell
+git commit -m "Initial commit"
+git push origin main
+```
+
+The commit message (`git commit -m "<message here>"`) can be anything you like, 
+but it's best practice to use a description other developers will understand.
+
+Now you can visit your Git repository's user interface and verify that the export assets have been pushed successfully.
+
+## 5. Make a development change 
+
+Next, you'll log in to your DataStage NextGen user interface and make a trivial change to one of your flows.
+
+1. Navigate to your dev project (e.g. `mcix-cli-demo`) and open a DataStage flow.  If you've imported the sample project references in the [prerequisites](/command-line/tutorial-prerequisites) then open flow `LdDailySalesSummary`.
+
+1. Select any stage on the canvas and at the bottom of the **Stage** tab enter/modify the long description field with any text you want.
+
+1. Click **Apply**, then save your flow (you don't need to compile it.)
+
+## 4. Identify and commit changes
+
+Now we'll re-export our assets to our local working directory and identify which of those assets are different to those stored in your local Git repository. 
+
+Start by re-exporting your development assets:
+
+```bash
+mcix datastage export \
+  -url "$CP4D_URL" \
+  -project "$SOURCE_PROJECT" \
+  -user "$CP4D_USERNAME" \
+  -api-key "$CP4D_API_KEY" \
+  -export-path "$EXPORT_DIR"
+```
 
 <cds-inline-notification
   kind="info"
@@ -269,77 +271,80 @@ This directory of exported assets becomes the input to the next stage.
   </div>
 </cds-inline-notification>
 
----
-
-## 4. Identify and commit changes
-
-Now we'll identify which of our exported assets in our local directory are different to 
-our source of truth stored in Git; in other words, the difference between our local and 
-remote Git repositories.  We'll do this using the Git command line:
+Next, we'll use see what's changed:
 
 ```bash
 git status
 ```
 
-As you have an empty remote Git repository this command will list a
+Which produces the following output (in this example we edited flow `ScdDimCustomerDs`):
 
-```bash
-Refresh index: 100% (291/291), done.
-On branch main
-Your branch is up to date with 'origin/main'.
-
-Untracked files:
-  (use "git add <file>..." to include in what will be committed)
-	datastage
-
-nothing added to commit but untracked files present (use "git add" to track)
-```
-
-We can see, as expected, that we have new files (in the `datastage` directory) added to our local repository
- which are not present in the remote.  Let's tell Git we want to bring those files under version control by 
- **staging** them:
-
- ```bash
- git add datastage/
- ```
-
- This command will not produce a response, so let's check what's changed:
-
- ```bash
-git status
-```
-
-We'll now see that the requested files are now under version control, but have yet to be comitted to the remote repository.
-Your terminal output will look something like this:
-
-```bash
-Refresh index: 100% (291/291), done.
+```shell
 On branch main
 Your branch is up to date with 'origin/main'.
 
 Changes not staged for commit:
-  (use "git add/rm <file>..." to update what will be committed)
+  (use "git add <file>..." to update what will be committed)
   (use "git restore <file>..." to discard changes in working directory)
-	added:      FlowName1.json
-	added:      FlowName2.json
-	added:      FlowName3.json
-	added:      FlowName4.json
-	added:      FlowName5.json
-	added:      FlowName6.json
-  etc.
+	modified:   datastage/data_intg_flow/LdDailySalesSummary.json
+	modified:   datastage/data_intg_test_case/TxFctFinDs.zip
+
+no changes added to commit (use "git add" and/or "git commit -a")
+```
+<cds-inline-notification
+  kind="info"
+  low-contrast="true"
+  hide-close-button="true">
+  <div class="cds--inline-notification__subtitle">
+    You'll notice that as well as the expected <code>LdDailySalesSummary</code> we also have another
+    line for a zip file.  If yoy've used the sample repository supplied on the prerequisites page
+    it'll be <code>TxFctFinDs</code>, otherwise it'll be named whatever test case(s) you have defined.
+    <br/><br/>
+    <b>DREW: REMIND ME WHY THIS IS?</b>
+    <br/><br/>
+    For this reason we'll ignore the <code>.zip</code> file.
+  </div>
+</cds-inline-notification>
+
+We can see, as expected, that we have new files (in the `datastage` directory) added to our local repository
+which are not present in the remote.  Let's tell Git we want to bring those files under version control by 
+**staging** them:
+
+Now let's stage, commit, and push our changed flow to our remote Git repository 
+(you may find it convenient to copy the path to the file from the `modified` line of your `git status` ouptut):
+```bash
+git add datastage/data_intg_flow/LdDailySalesSummary.json
 ```
 
-Now let's commit these changes to the local repository:
+This command will not produce a response. Let's check what's changed:
+ ```bash
+git status
+```
+
+We'll now see that the requested files are now **tracked** (under version control) but have yet to be committed or pushed to the remote repository.
+```shell
+On branch main
+Your branch is up to date with 'origin/main'.
+
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+	modified:   datastage/data_intg_flow/ScdDimCustomerDs.json
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   datastage/data_intg_test_case/TxFctFinDs.zip
+```
+
+As described above, you can ignore the `Changes not staged for commit` part as that's related to the `.zip` file we're ignoring.
+
+Now let's commit these changes to the local repository and push them to the remote:
 
 ```bash
 git commit -m "Initial tutorial commit"
-```
-
-... and finally, push them to the remote repository:
-
-```bash
 git push
 ```
+Now you can revisit your Git repository's user interface and verify you can. see those commits.
 
 ---
 
@@ -370,6 +375,7 @@ A common pattern is to keep overlays in source control, for example:
 overlays/
 ├── ci/
 │   ├── connection
+│   ├── flows
 │   ├── job
 │   └── parameter_set
 │       ├── MyParameterSet1.json
@@ -377,7 +383,7 @@ overlays/
 ├── qa/
 │   └── etc. 
 └── prod/
-│   └── etc.
+    └── etc.
 ```
 
 Start by creating an overlay file in your `overlays/ci` directory called `ci.overlay` and populating it with this overlay specification:
@@ -576,4 +582,37 @@ The pipeline has:
 1. Executed (on DataStage) unit tests against the deployed assets **(C)**
 
 ---
+
+
+
+
+
+
+
+
+
+export from dev into local clone dir
+git add .
+git commit -m "Initial commit"
+git push origin master
+
+Take a look at your git repository
+*Note* this wold normally trigger a pipeline
+
+Change a source asset (simple) - compile and save
+export from dev into local clone dir
+*note* the incremental changes forthcoming
+(Currently bulk, change detection coming)
+
+git status
+(See that our changed file has been identified)
+Note: You'll also see a *zip* file changed.  Ask Drew for the best explanation of this.
+
+git add changed file
+git commit -m "Changed something"
+git push
+
+Take a look at your git repository
+Observe git history
+*Note again* this would normally trigger a pipeline
 
