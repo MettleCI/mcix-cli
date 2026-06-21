@@ -32,7 +32,12 @@ You'll perform the CI/CD actions at the commad line of your local host. Start by
 Download the MCIX CLI installation media for your local host platform from [here]({{ site.mcix-cmd-url }}) then follow the installation instructions: 
 
 <details markdown="1">
-  <summary>Linux/macOS</summary>
+  <summary>Linux</summary>
+TBC
+</details>
+
+<details markdown="1">
+  <summary>macOS</summary>
 1. Unzip it
 1. Drag the `mcix.app` folder to your local host's `/Applications` folder
 1. Add `export PATH=$PATH:/Applications/mcix.app/Contents/MacOS` to your shell's profile file

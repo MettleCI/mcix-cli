@@ -12,9 +12,9 @@ be executed by your CI/CD tool's integrated pipeline orchestration engine.
 We'll break the tutorial into two steps:
 
 1. Establishing the  prerequisites, ensuring ...
-  - the necessary command line tools (`mcix` and `git`) are installed and configured your on local host
+  - the necessary command line tools (`mcix` and `git`) are installed and configured on your local host
   - you have access to a remote Git repository with the relevant configuration and permissions
-1. Manauly replicating the steps involved in a typical CI/CD pipeline on your local host's command line.
+1. Manually replicating the steps involved in a typical CI/CD pipeline on your local command line.
 
 It is assumed you already have:
 
@@ -69,23 +69,28 @@ sequenceDiagram
     %% ------------
     %% PARTICIPANTS
     %% ------------
-    %%participant MCIX as MCIX<br/>Resources<br/><br/><br/><br/>
     box DataStage Projects<br/><br/><br/>
       participant DSDEV as DataStage<br/>Dev<br/><br/><br/><br/>
       participant DSCI as DataStage<br/>CI<br/><br/><br/><br/>
     end
     actor Laptop as Laptop
-    participant Git as Your Git<br/>Repository<br/><br/><br/><br/>
+    box Git<br/><br/><br/>
+      participant Git as Your Git<br/>Repository<br/><br/><br/><br/>
+      participant MCIX as MCIX<br/>Resources<br/><br/><br/><br/>
+    end
 
     %% -----
     %% SETUP
     %% -----
-    Git->>Laptop: git pull
+    MCIX->>Laptop: git clone
     DSDEV->>Laptop: datastage export
+    Laptop->>Git: git push
 
     %% --------
     %% GIT PUSH
     %% --------
+    DSDEV->>DSDEV: Code change
+    DSDEV->>Laptop: datastage export
     Laptop<<-->>Laptop: Identify change
     Laptop->>Laptop: git commit
     Laptop->>Git: git push
@@ -93,11 +98,12 @@ sequenceDiagram
     %% ------------
     %% OVERLAYS
     %% ------------
-    Activate Laptop
     Laptop->>Laptop: overlay apply
-    deactivate Laptop
 
     Laptop->>DSCI: datastage import
+    Laptop->>DSCI: datastage compile
+
+    Laptop->>DSCI: unit-test execute
 
     %% ASSET ANALYSIS
     %% Temporarily reemoved until supported by the tutorial
@@ -142,7 +148,7 @@ For readability, define the values you will use throughout the pipeline as shell
 export CP4D_URL="https://cpd.myorg.com/"    # DataStage as-a-service on IBM Cloud 
                                             # or your internal CPD instance
 export CP4D_USERNAME="MyUserName"           # DataStage username
-export CP4D_API_KEY="my-api-key"            # DataStage password
+export CP4D_API_KEY="my-api-key"            # DataStage API key
 
 # Project names
 export SOURCE_PROJECT="mcix-cli-demo"       # The location of your development (source) project
@@ -296,11 +302,8 @@ no changes added to commit (use "git add" and/or "git commit -a")
   low-contrast="true"
   hide-close-button="true">
   <div class="cds--inline-notification__subtitle">
-    You'll notice that as well as the expected <code>LdDailySalesSummary</code> we also have another
-    line for a zip file.  If you've used the sample repository supplied on the prerequisites page
-    it'll be <code>TxFctFinDs</code>, otherwise it'll be named whatever test case(s) you have defined.
-    <br/><br/>
-    <b>DREW: REMIND ME WHY THIS IS?</b>
+    You'll notice that as well as the expected <code>LdDailySalesSummary</code> there
+    are also one or more 'modified' lines for ZIP files.  These files are (currently) regenerated as part of the export process. For this tutorial, we are only committing the deliberate flow change, so leave the regenerated test-case ZIP unstaged.
     <br/><br/>
     For this reason we'll ignore the <code>.zip</code> file.
   </div>
@@ -328,7 +331,7 @@ Your branch is up to date with 'origin/main'.
 
 Changes to be committed:
   (use "git restore --staged <file>..." to unstage)
-	modified:   datastage/data_intg_flow/ScdDimCustomerDs.json
+	modified:   datastage/data_intg_flow/LdDailySalesSummary.json
 
 Changes not staged for commit:
   (use "git add <file>..." to update what will be committed)
@@ -410,7 +413,7 @@ Then apply the overlay to the recently exported assets to generate a new set of 
 ```bash
 mcix overlay apply \
   -assets "$EXPORT_DIR" \
-  -overlay "./overlays/test" \
+  -overlay "./overlays/ci" \
   -output "$OVERLAY_DIR"
 ```
 
@@ -422,7 +425,7 @@ After this step, the transformed assets should be available in:
 
 ---
 
-## 8. Import DataStage assets
+## 8. Import and Compile DataStage assets
 
 Now import the overlaid assets into the target DataStage project.
 
@@ -435,36 +438,22 @@ mcix datastage import \
   -assets "$OVERLAY_DIR"
 ```
 
+And compile them:
+
+```bash
+mcix datastage compile \
+  -url "$CP4D_URL" \
+  -project "$TARGET_PROJECT" \
+  -user "$CP4D_USERNAME" \
+  -api-key "$CP4D_API_KEY" \
+  -assets "$OVERLAY_DIR" \
+  -report "$REPORT_DIR/compile-results.xml"
+  -include-asset-in-test-name
+```
+
 At this point, the transformed DataStage assets have been deployed into the target project.
 
 ---
-
-
-{% if site.compliance == "Y" %}
-## 9. Run asset analysis tests
-
-Next, run asset analysis tests to validate that the imported assets comply with your rules.
-
-```bash
-mcix asset-analysis test \
-  --url "$CP4D_URL" \
-  --project "$TARGET_PROJECT" \
-  --user "$CP4D_USERNAME" \
-  --api-key "$CP4D_API_KEY" \
-  --rules "./asset-analysis-rules" \
-  --report "$REPORT_DIR/asset-analysis-results.xml"
-```
-
-This produces a JUnit-style test result file:
-
-```text
-./reports/asset-analysis-results.xml
-```
-
-That file can later be consumed by a CI/CD system such as GitHub Actions, Azure DevOps, Jenkins, or Tekton.
-
----
-{% endif %}
 
 ## 9. Run unit tests
 
@@ -494,7 +483,7 @@ SUCCESS: Executed 1 tests
 This produces another JUnit-style result file:
 
 ```text
-./test-results/unit-test-results.xml
+./reports/unit-test-results.xml
 ```
 
 Note that if you were to run this command again then MCIX would identify that 
@@ -512,23 +501,48 @@ SUCCESS: Executed 0 tests
 
 ---
 
+{% if site.compliance == "Y" %}
+## 10. Run asset analysis tests
+
+Next, run asset analysis tests to validate that the imported assets comply with your rules.
+
+```bash
+mcix asset-analysis test \
+  -url "$CP4D_URL" \
+  -project "$TARGET_PROJECT" \
+  -user "$CP4D_USERNAME" \
+  -api-key "$CP4D_API_KEY" \
+  -rules "./asset-analysis-rules" \
+  -report "$REPORT_DIR/asset-analysis-results.xml"
+```
+
+This produces a JUnit-style test result file:
+
+```text
+./reports/asset-analysis-results.xml
+```
+
+That file can later be consumed by a CI/CD system such as GitHub Actions, Azure DevOps, Jenkins, or Tekton.
+
+---
+{% endif %}
+
 ## Run the full pipeline as a script
 
 Once you've run the individual commands you may wish to place them into a shell script to reproduce them easily. Templates of this script are available for **Linux/macOS** and **Windows** (below). For your selected platform you'll need to update the file's configuration values to suit your environment. For example:
-
-```bash
-$CP4D_URL="https://source-cpd.example.com"
-$CP4D_USERNAME = "YourUsername"
-$CP4D_API_KEY  = "your-api-key"
-$PROJECT  = "Development"
-$TARGET_PROJECT  = "Test"
-$TARGET_PROJECT  = "Test_CI"
-```
 
 <details markdown="1">
   <summary>Linux/macOS</summary>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[![mcix-pipeline.sh]({{ site.url }}/assets/img/document--download.svg)](mcix-pipeline.sh)
 <br/>[mcix-pipeline.sh](mcix-pipeline.sh)
+
+```bash
+export CP4D_URL="https://cpd.example.com"
+export CP4D_USERNAME="YourUsername"
+export CP4D_API_KEY="your-api-key"
+export SOURCE_PROJECT="mcix-cli-demo"
+export TARGET_PROJECT="mcix-cli-demo_CI"
+```
 
 <cds-inline-notification
   kind="warning"
@@ -552,6 +566,15 @@ Run it:
   <summary>Windows</summary>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[![mcix-pipeline.ps1]({{ site.url }}/assets/img/document--download.svg)](mcix-pipeline.ps1)
 <br/>[mcix-pipeline.ps1](mcix-pipeline.ps1)
+
+```powershell
+$CP4D_URL="https://source-cpd.example.com"
+$CP4D_USERNAME = "YourUsername"
+$CP4D_API_KEY  = "your-api-key"
+$PROJECT  = "Development"
+$SOURCE_PROJECT  = "Test"
+$TARGET_PROJECT  = "Test_CI"
+```
 
 <cds-inline-notification
   kind="warning"
@@ -589,12 +612,12 @@ You'll need to update the variables with your environment-specific configuration
 After the script completes successfully, you should have a directory that looks like this:
 
 ```text
-mcix-pipeline-demo/
-├── exported-assets/ (A)
+mcix-cli-demo/
+├── datastage/ (A)
 │   └── exported DataStage assets
 ├── overlaid-assets/ (B)
 │   └── transformed assets ready for import
-└── test-results/    (C)
+└── reports/    (C)
     └── unit-test-results.xml
 ```
 

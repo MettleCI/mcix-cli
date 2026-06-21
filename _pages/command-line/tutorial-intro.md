@@ -3,7 +3,7 @@ title: Pipeline Tutorial Introduction
 description: Emulating a simple CI/CD<br/>Pipeline using the MCIX CLI
 ---
 
-This command-line tutorial will help you understand the individual steps that make up an MCIX-based CI/CD pipeline. In a production environment, these steps would normally be executed automatically by a CI/CD platform such as Azure DevOps, Bitbucket pipelines, GitHub Actions, GitLab CI, or Jenkins. In a production pipeline, the CI/CD platform provides the automation, orchestration, credential management, approval gates, audit history, logging, notifications, and repeatability needed to run these steps reliably across teams and environments. The MCIX CLI performs the DataStage-related work, but the CI/CD tool is responsible for deciding when, where, and how these commands are executed. Read more about the role of a CI/CD tool [here](/introduction/cicd-concepts).
+This command-line tutorial will help you understand the individual steps that make up an MCIX-based CI/CD pipeline. In a production environment, these steps would normally be executed automatically by a CI/CD platform such as Azure DevOps, Bitbucket Pipelines, GitHub Actions, GitLab CI, or Jenkins. In a production pipeline, the CI/CD platform provides the automation, orchestration, credential management, approval gates, audit history, logging, notifications, and repeatability needed to run these steps reliably across teams and environments. The MCIX CLI performs the DataStage-related work, but the CI/CD tool is responsible for deciding when, where, and how these commands are executed. Read more about the role of a CI/CD tool [here](/introduction/cicd-concepts).
 
 In this tutorial, however, you will run the same type of CI/CD pipeline manually from your local command line.  This gives you a practical way to understand what each pipeline stage does before you automate the process in a real CI/CD tool.
 
@@ -109,7 +109,7 @@ build systems). The CI/CD platform changes _how_ the commands are orchestrated, 
 
 ## Repository role in the tutorial
 
-The Git repository acts as the well-goverened, single source of truth for your DataStage delivery assets.  It is not tied to a single environment such as Dev, Test, or Production. Instead, it represents the authoritative versioned source for the DataStage initiative.
+The Git repository acts as the well-governed, single source of truth for your DataStage delivery assets.  It is not tied to a single environment such as Dev, Test, or Production. Instead, it represents the authoritative versioned source for the DataStage initiative.
 
 The different DataStage environments are populated from that source at different stages of the delivery lifecycle. For example:
 

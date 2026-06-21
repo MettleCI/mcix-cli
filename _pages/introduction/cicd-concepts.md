@@ -315,4 +315,4 @@ Modern CI/CD systems usually define pipelines in files stored in source control.
 * **GitLab:** `.gitlab-ci.yml`
 * **Jenkins:** `Jenkinsfile`
 
-This is refered to as 'pipeline as code'. This approach means the pipeline definition can be reviewed, versioned, branched, and changed using the same source-control practices as the assets it tests and deploys.
+This is referred to as 'pipeline as code'. This approach means the pipeline definition can be reviewed, versioned, branched, and changed using the same source-control practices as the assets it tests and deploys.
