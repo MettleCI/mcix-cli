@@ -39,7 +39,7 @@ mcix overlay apply `
 
 Write-Host "Importing DataStage assets..."
 mcix datastage import `
-  --url $TARGET_CP4D_URL `
+  --url $CP4D_URL `
   --project $TARGET_PROJECT `
   --user $CP4D_USERNAME `
   --api-key $CP4D_API_KEY `
@@ -47,7 +47,7 @@ mcix datastage import `
 
 Write-Host "Running asset analysis tests..."
 mcix asset-analysis test `
-  --url $TARGET_CP4D_URL `
+  --url $CP4D_URL `
   --project $TARGET_PROJECT `
   --user $CP4D_USERNAME `
   --api-key $CP4D_API_KEY `
@@ -56,7 +56,7 @@ mcix asset-analysis test `
 
 Write-Host "Running unit tests..."
 mcix unit-test execute `
-  --url $TARGET_CP4D_URL `
+  --url $CP4D_URL `
   --project $TARGET_PROJECT `
   --user $CP4D_USERNAME `
   --api-key $CP4D_API_KEY `

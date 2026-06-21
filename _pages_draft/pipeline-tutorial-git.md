@@ -63,7 +63,7 @@ Login to your Git platform and create a new repository.
 | GitHub | [https://github.com](https://github.com) | [Authentication](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/about-authentication-to-github), [Create a repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-new-repository) |
 | GitLab | [https://gitlab.com](https://gitlab.com) | [Authentication](https://docs.gitlab.com/auth/user_authentication/), [Create a repository](https://docs.gitlab.com/user/project/repository/#create-a-repository) |
 
-Use a simple, purpose-based repository name, such as `mcix-cli-pipeline-demo`.
+Use a simple, purpose-based repository name, such as `mcix-cli-demo`.
 
 Avoid naming the repository after a specific environment, such as `myproject-prod` or `myproject-test`. The repository should represent the single source of truth for the DataStage initiative, not one particular deployment target.
 
@@ -76,9 +76,9 @@ You do not need to enable any provider-specific features such as build pipelines
 
 Recommended settings for your repository:
 
-| Setting | Value |
-| ------- | ----- |
-| Repository name   | mcix-cli-pipeline-demo |
+| Setting           | Value    |
+| ----------------- | -------- |
+| Repository name   | mcix-cli-demo |
 | Visibility        | Private  |
 | Default branch    | main     |
 | .gitignore        | Yes      |
@@ -141,12 +141,12 @@ Both of these approaches (HTTPS or SSH) will require you to authenticate yoursel
 
 1. Next, inspect the contents of the cloned repository:
 ```shell
-cd mcix-cli-pipeline-demo
+cd mcix-cli-demo
 ls -al
 ```
 Which should look like this:
 ```text
-mcix-cli-pipeline-demo/
+mcix-cli-demo/
 ├── .git
 ├── .gitattributes
 ├── .gitignore

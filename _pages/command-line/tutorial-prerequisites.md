@@ -6,10 +6,10 @@ description: Establishing the conditions for a<br/>Pipeline using the MCIX CLI
 
 ## Configure your DataStage projects
 
-Ensure you have a DataStage nextgen project existing for each of the [environments](/introduction/cicd-concepts#environments-and-datastage-project-naming) you use during the tutorial:
+Ensure you have a DataStage NextGen project existing for each of the [environments](/introduction/cicd-concepts#environments-and-datastage-project-naming) you use during the tutorial:
 
 1. Your source (DEV) DataStage project, and 
-1. Each of the environments to which you wish to depoy.  For the purposes of this tutorial we'll stick to CI only.
+1. Each of the environments to which you wish to deploy.  For the purposes of this tutorial we'll stick to CI only.
 
 | Environment | Project name         |
 | ----------- | -------------------- |
@@ -22,14 +22,14 @@ Ensure your DataStage NextGen projects are not configured as **Git Integrated** 
 
 ## Configuring DataStage test data storage
 
-As part of the tutorial you'll execute unit tests against one of the DataStag flows.
-To support this you'll need to configure test data storage in your CI project as this is where tests will be executed. Instructions for doing this in your projet are provided [here](https://dataplatform.cloud.ibm.com/docs/content/dstage/dsnav/topics/configuring_test_data_storage.html?context=cpdaas&audience=wdp&locale=en) 
+As part of the tutorial you'll execute unit tests against one of the DataStage flows.
+To support this you'll need to configure test data storage in your CI project as this is where tests will be executed. Instructions for doing this in your project are provided [here](https://dataplatform.cloud.ibm.com/docs/content/dstage/dsnav/topics/configuring_test_data_storage.html?context=cpdaas&audience=wdp&locale=en) 
 
 ## Install the MCIX command line
 
-You'll perform the CI/CD actions at the commad line of you local host. Start by ensuring you have a locally-installed MCIX command line interface:
+You'll perform the CI/CD actions at the commad line of your local host. Start by ensuring you have a locally-installed MCIX command line interface:
 
-Download the MCIX CLI instalation media for your local host platform from [here]({{ site.mcix-cmd-url }}) then follow the installation instructions: 
+Download the MCIX CLI installation media for your local host platform from [here]({{ site.mcix-cmd-url }}) then follow the installation instructions: 
 
 <details markdown="1">
   <summary>Linux/macOS</summary>
@@ -37,13 +37,13 @@ Download the MCIX CLI instalation media for your local host platform from [here]
 1. Drag the `mcix.app` folder to your local host's `/Applications` folder
 1. Add `export PATH=$PATH:/Applications/mcix.app/Contents/MacOS` to your shell's profile file
 
-One way of permanently adding the command to your path is by entering a command liek of these in a command shell:
+One way of permanently adding the command to your path is by entering a command like this in a command shell:
 
 ```
 echo "export PATH=$PATH:/Applications/mcix.app/Contents/MacOS" >> ~/.profile
 ```
 
-Note that you configuration may use `~/.bash_profile` or `~/.zprofile`, for example.  This approach ensures the application is located aongside your other applications, is easily discoverable from macOS Finder, and can be invoked from the command shell by typing `mcix`.
+Note that you configuration may use `~/.bash_profile` or `~/.zprofile`, for example.  This approach ensures the application is located alongside your other applications, is easily discoverable from macOS Finder, and can be invoked from the command shell by typing `mcix`.
 </details>
 
 <details markdown="1">
@@ -55,7 +55,7 @@ Note that you configuration may use `~/.bash_profile` or `~/.zprofile`, for exam
 One way of permanently adding the command to your path is by entering the following in a command shell:
 
 ```
-setx PATH "%PATH%;C:\Program\ Files\mcix" /M
+setx PATH "%PATH%;C:\Program Files\mcix" /M
 ```
 </details>
 
@@ -89,7 +89,7 @@ Check which namespaces are provided by your MCIX installation.
 mcix help
 ```
 
-Which should produce something like the below. Note that your list of namepsaces, and their ordering, may differ from this example.
+Which should produce something like the below. Note that your list of namespaces, and their ordering, may differ from this example.
 
 ```
 MettleCI Command Line (build 1.0-123)
@@ -200,7 +200,7 @@ Use a simple, purpose-based repository name, such as `mcix-cli-demo`.
 
 Avoid naming the repository after a specific environment, such as `myproject-prod` or `myproject-test`. The repository should represent the single source of truth for the DataStage initiative, not one particular deployment target.
 
-In this model, environments such as Dev, CI, QA, and Prod are separate DataStage projects. Each environment is populated from the repository at different points in the delivery lifecycle. For example, Dev may contain the latest working changes, QA may contain a tested candidate release, and Prod should contain only the approved production version.  Read more about our recommended projet naming scheme [here](/introduction/cicd-concepts#environments-and-datastage-project-naming).
+In this model, environments such as Dev, CI, QA, and Prod are separate DataStage projects. Each environment is populated from the repository at different points in the delivery lifecycle. For example, Dev may contain the latest working changes, QA may contain a tested candidate release, and Prod should contain only the approved production version.  Read more about our recommended project naming scheme [here](/introduction/cicd-concepts#environments-and-datastage-project-naming).
 
 In other words, the repository stores the authoritative versioned source, while the DataStage projects represent environment-specific deployments of that source.
 
@@ -234,7 +234,7 @@ Recommended settings for your repository:
 ## Clone the template repository locally
 
 A MettleCI template repository is provided for convenience and as a recommended starting point. It is available to clone from [here](https://github.com/MettleCI/datastage-nextgen-repo-template). This repository is hosted on GitHub but is a generic Git repository which can be cloned to your local host and subsequently 
-deployed to any target Git paltform.
+deployed to any target Git platform.
 
 You are not required to follow the template repository's structure. You can organise your repository in whatever way best suits your project, including where you store DataStage assets, scripts, configuration files, documentation, and other non-DataStage artefacts. The repository does, however, demonstrate a practical best-practice layout that is easy to understand, easy to deploy, and suitable for most delivery pipelines. Starting from the template helps you avoid unnecessary setup decisions and gives you a working structure that can be adapted later as your needs evolve.
 
@@ -253,7 +253,7 @@ git config --global user.email "you@example.com"
 https://github.com/MettleCI/datastage-nextgen-repo-template
 ```
 
-1. Clone the to your local host:
+1. Clone the repository template to your local host:
 ```shell
 git clone https://github.com/MettleCI/datastage-nextgen-repo-template
 ```
@@ -273,7 +273,7 @@ If you want to use SSH with Azure DevOps repositories then use the SSH host show
 git@ssh.dev.azure.com:v3/MyOrg/mcix-cli-demo
 ```
 A successful response to `ssh -T` usually confirms that you have authenticated, even if it says shell access is not provided.<br/><br/>
-Both of these approaches (HTTPS or SSH) will require you to authenticate yourself to your Git platform.  When using HTTPS, your Git platform may require a personal access token rather than your account password.  See you Git platform's documentation for more details.<br/><br/>
+Both of these approaches (HTTPS or SSH) will require you to authenticate yourself to your Git platform.  When using HTTPS, your Git platform may require a personal access token rather than your account password.  See your Git platform's documentation for more details.<br/><br/>
 
 1. To help keep things organised let's rename the directory containing your local Git repository 
 clone with the name of *your* newly-created remote repository to which it will soon point:
@@ -296,7 +296,7 @@ mcix-cli-demo/
 ├── overlays/
 └── README.md
 ```
-The `.git` and `.gitattributes` files tell your Git CLI that this is folder is 
+The `.git` and `.gitattributes` files tell your Git CLI that this folder is 
 a Git repository, and what its properties are.
 
 ## Push your local repository template to remote
@@ -349,6 +349,6 @@ Total 78 (delta 19), reused 72 (delta 16), pack-reused 0 (from 0)
 remote: Resolving deltas: 100% (19/19), done.
 To https://github.com/johnmckeever/mcix-cli-demo.git
  * [new branch]      main -> main
-branch 'main' set up to track 'origin/main'.```
+branch 'main' set up to track 'origin/main'.
 ```
 Now you can login to your repository's user interface and inspect its contents.

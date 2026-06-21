@@ -4,7 +4,7 @@ setlocal enabledelayedexpansion
 set "SOURCE_CP4D_URL=https://source-cpd.example.com"
 set "SOURCE_PROJECT=Development"
 
-set "TARGET_CP4D_URL=https://target-cpd.example.com"
+set "CP4D_URL=https://target-cpd.example.com"
 set "TARGET_PROJECT=Test"
 
 set "CP4D_USERNAME=john@example.com"
@@ -38,7 +38,7 @@ if errorlevel 1 exit /b %errorlevel%
 
 echo Importing DataStage assets...
 mcix datastage import ^
-  --url "%TARGET_CP4D_URL%" ^
+  --url "%CP4D_URL%" ^
   --project "%TARGET_PROJECT%" ^
   --user "%CP4D_USERNAME%" ^
   --api-key "%CP4D_API_KEY%" ^
@@ -48,7 +48,7 @@ if errorlevel 1 exit /b %errorlevel%
 
 echo Running asset analysis tests...
 mcix asset-analysis test ^
-  --url "%TARGET_CP4D_URL%" ^
+  --url "%CP4D_URL%" ^
   --project "%TARGET_PROJECT%" ^
   --user "%CP4D_USERNAME%" ^
   --api-key "%CP4D_API_KEY%" ^
@@ -59,7 +59,7 @@ if errorlevel 1 exit /b %errorlevel%
 
 echo Running unit tests...
 mcix unit-test execute ^
-  --url "%TARGET_CP4D_URL%" ^
+  --url "%CP4D_URL%" ^
   --project "%TARGET_PROJECT%" ^
   --user "%CP4D_USERNAME%" ^
   --api-key "%CP4D_API_KEY%" ^

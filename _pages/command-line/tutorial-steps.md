@@ -51,7 +51,11 @@ for tutorial purposes (below) and import it into your source project in your Dat
 
 The pipeline you'll simulate will:
 
-1. Export assets from a source project.
+1. Export all assets from a source DataStage project.
+1. Commit and push them to a remote Git repository.
+1. Change an asset in the source DataStage project.
+1. Export the assets from the source project.
+1. Commit and push modified assets to a remote Git repository. 
 1. Apply environment-specific changes using overlays.
 1. Import the modified assets into a target project.
 {% if site.compliance == "Y" %}
@@ -114,7 +118,7 @@ The example assumes you are moving DataStage assets from a source project, apply
 After you've followed the [prerequisite steps](/command-line/tutorial-prerequisites) to create your local Git repository you'll have established your directory to hold exported assets, overlay output, reports, and test results.  Your repository directory will look something like this:
 
 ```text
-mcix-cli-pipeline-demo/
+mcix-cli-demo/
 ├── .git              # Tells the Git CLI this is a local Git repository
 ├── .gitattributes    # Tells the Git CLI the repository properties
 ├── .gitignore        # Tells the Git CLI which files to ignore
@@ -139,7 +143,7 @@ For readability, define the values you will use throughout the pipeline as shell
 # This tutorial uses the same instance for both source and target environments
 export CP4D_URL="https://cpd.myorg.com/"    # DataStage as-a-service on IBM Cloud 
                                             # or your internal CPD instance
-export CP4D_USERNAME="MyUserName".          # DataStage username
+export CP4D_USERNAME="MyUserName"           # DataStage username
 export CP4D_API_KEY="my-api-key"            # DataStage password
 
 # Project names
@@ -354,11 +358,11 @@ Now import the overlaid assets into the target DataStage project.
 
 ```bash
 mcix datastage import \
-  -url "$TARGET_CP4D_URL" \
+  -url "$CP4D_URL" \
   -project "$TARGET_PROJECT" \
   -user "$CP4D_USERNAME" \
   -api-key "$CP4D_API_KEY" \
-  -input-dir "$OVERLAY_DIR"
+  -assets "$OVERLAY_DIR"
 ```
 
 At this point, the transformed DataStage assets have been deployed into the target project.
@@ -401,9 +405,9 @@ Then apply the overlay to te recently exported assets to generate a new set of *
 
 ```bash
 mcix overlay apply \
-  -input-dir "$EXPORT_DIR" \
-  -overlay-dir "./overlays/test" \
-  -output-dir "$OVERLAY_DIR"
+  -assets "$EXPORT_DIR" \
+  -overlay "./overlays/test" \
+  -output "$OVERLAY_DIR"
 ```
 
 After this step, the transformed assets should be available in:
@@ -421,12 +425,12 @@ Next, run asset analysis tests to validate that the imported assets comply with 
 
 ```bash
 mcix asset-analysis test \
-  --url "$TARGET_CP4D_URL" \
+  --url "$CP4D_URL" \
   --project "$TARGET_PROJECT" \
   --user "$CP4D_USERNAME" \
   --api-key "$CP4D_API_KEY" \
-  --rules-dir "./asset-analysis-rules" \
-  --junit-output "$REPORT_DIR/asset-analysis-results.xml"
+  --rules "./asset-analysis-rules" \
+  --report "$REPORT_DIR/asset-analysis-results.xml"
 ```
 
 This produces a JUnit-style test result file:
@@ -446,11 +450,11 @@ Now we'll execute the DataStage unit tests.
 
 ```bash
 mcix unit-test execute \
-  -url "$TARGET_CP4D_URL" \
+  -url "$CP4D_URL" \
   -project "$TARGET_PROJECT" \
   -user "$CP4D_USERNAME" \
   -api-key "$CP4D_API_KEY" \
-  -junit-output "$REPORT_DIR/unit-test-results.xml"
+  -report "$REPORT_DIR/unit-test-results.xml"
 ```
 
 You'll see the test being executed in the target environment:
@@ -492,7 +496,7 @@ Once you've run the individual commands you may wish to place them into a shell 
 
 ```bash
 $CP4D_URL="https://source-cpd.example.com"
-$CP4D_USERNAME = "username@example.com"
+$CP4D_USERNAME = "YourUsername"
 $CP4D_API_KEY  = "your-api-key"
 $PROJECT  = "Development"
 $TARGET_PROJECT  = "Test"
@@ -541,7 +545,7 @@ This script assumes **PowerShell 7.4 or later**. The combination of `$ErrorActio
 Open PowerShell, change to your repository directory, and run the script:
 
 ```powershell
-cd path\to\mcix-cli-pipeline-demo
+cd path\to\mcix-cli-demo
 .\mcix-pipeline.ps1
 ```
 

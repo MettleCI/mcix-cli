@@ -82,7 +82,7 @@ The tutorial walks through the following stages.
 {% endif %}
 | Test     | Execute DataStage unit tests and produce test results       |
 
-Some of stages are optional. For example, asset analysis may only apply where asset analysis rules are available.
+Some of the stages are optional. For example, asset analysis may only apply where asset analysis rules are available.
 
 ---
 
@@ -98,7 +98,7 @@ In a real CI/CD implementation, the same steps would usually be automated by you
 | ---------------------------------------------------------- | --------------------------------------------------------------------- |
 | You run commands manually                                  | The CI/CD platform runs commands automatically                        |
 | You store credentials locally or in environment variables  | Credentials are stored in platform-managed variables and secrets      |
-| You inspect results in the filesystem                      | Test results are published to you CI/CD platform by the pipeline run  |
+| You inspect results in the filesystem                      | Test results are published to your CI/CD platform by the pipeline run  |
 | You decide when to continue                                | The pipeline enforces success, failure, and approval rules            |
 | You run the process from your workstation                  | Jobs run on hosted or self-hosted build agents                        |
 
@@ -109,14 +109,14 @@ build systems). The CI/CD platform changes _how_ the commands are orchestrated, 
 
 ## Repository role in the tutorial
 
-The Git repository acts as the well goverened, single source of truth for your DataStage delivery assets.  It is not tied to a single environment such as Dev, Test, or Production. Instead, it represents the authoritative versioned source for the DataStage initiative.
+The Git repository acts as the well-goverened, single source of truth for your DataStage delivery assets.  It is not tied to a single environment such as Dev, Test, or Production. Instead, it represents the authoritative versioned source for the DataStage initiative.
 
 The different DataStage environments are populated from that source at different stages of the delivery lifecycle. For example:
 
 | Environment | Typical role                                                                   |
 | ----------- | ------------------------------------------------------------------------------ |
 | Development | Where changes are initially created                                            |
-| CI          | Where exported and [overlaid](/introduction/overlays) assets are imported and (automaticaly) unit tested |
+| CI          | Where exported and [overlaid](/introduction/overlays) assets are imported and (automatically) unit tested |
 | QA          | Where a tested candidate release may be validated further                      |
 | Production  | Where only approved versions should be deployed                                |
 
@@ -200,7 +200,7 @@ You will:
 - execute unit tests
 - review the generated outputs
 
-The attached pipeline page already describes the command sequence and expected outputs for this process.
+The [pipeline steps](tutorial-steps) page describes the command sequence and expected outputs for this process.
 
 ---
 

@@ -59,11 +59,11 @@ the functional role of each project:
 | Environment | Project name       | Role                                                                           |
 | ----------- | ------------------ | ------------------------------------------------------------------------------ |
 | Development | `ElectroMart`      | Where changes are initially created                                            |
-| CI          | `ElectroMart_CI`   | Where exported and overlaid assets are imported and (automaticaly) unit tested |
+| CI          | `ElectroMart_CI`   | Where exported and overlaid assets are imported and (automatically) unit tested |
 | QA          | `ElectroMart_QA`   | Where a tested candidate release may be validated further                      |
 | Production  | `ElectroMart_PROD` | Where only approved versions should be deployed                                |
 
-In this model, the project name without a sufix represents the development project. Environment-specific projects are then created by appending a standard suffix such as `_CI`, `_QA`, or `_PROD`.
+In this model, the project name without a suffix represents the development project. Environment-specific projects are then created by appending a standard suffix such as `_CI`, `_QA`, or `_PROD`.
 
 This convention is used consistently for all DataStage projects, regardless of the chosen base name. For example:
 
@@ -106,7 +106,7 @@ A pipeline is usually made up of **stages**. A stage is a logical part of the de
 | Test            | Confirm that the deployed result behaves as expected. |
 | Promote         | Move an approved version to the next environment.     |
 
-In the MCIX tutorials inclued in this documentation these stages are implemented using operations such as `datastage export`, `overlay apply`, `datastage import`, `asset-analysis test`, and `unit-test execute`.
+In the MCIX tutorials included in this documentation these stages are implemented using operations such as `datastage export`, `overlay apply`, `datastage import`, `asset-analysis test`, and `unit-test execute`.
 
 ---
 
@@ -178,7 +178,7 @@ example, Azure DevOps service connections can be used to connect to:
 * a container registry (This is how you tell MCIX Azure DevOps Tasks where the MCIX container can be found. More details [here](/azure/azure-prereqs).)
 * a Git repository (This is how you use Azure DevOps backed by a different Git provider, such as GitHub.)
 
-In the MCIX Azure DevOps tutorial, a Docker Registry service connection allows the pipeline to semalessly authenticate to the registry that hosts the MCIX container image. This avoids placing registry credentials directly into every pipeline definition.
+In the MCIX Azure DevOps tutorial, a Docker Registry service connection allows the pipeline to seamlessly authenticate to the registry that hosts the MCIX container image. This avoids placing registry credentials directly into every pipeline definition.
 
 ---
 
@@ -189,7 +189,7 @@ An artifact is a file or package produced by one part of a pipeline and used lat
 * exported assets
 * overlaid deployment assets
 * test reports
-* log
+* logs
 * compiled binaries (Not applicable to DataStage)
 * release packages  (Not applicable to DataStage)
 
@@ -199,7 +199,7 @@ In the MCIX tutorial, exported assets, [overlaid assets](/introduction/overlays)
 
 ## Test results
 
-One of the functions of a CI/CD pipelines is to produce evidence of whether a change is safe to promote.  Many CI/CD tools understand standard test result formats such as JUnit XML. This means that the results from testing tools which produce their test results in [JUnit format](/introduction/junit-output) can to be displayed in the pipeline interface rather than buried in logs.
+One of the functions of a CI/CD pipeline is to produce evidence of whether a change is safe to promote.  Many CI/CD tools understand standard test result formats such as JUnit XML. This means that the results from testing tools which produce their test results in [JUnit format](/introduction/junit-output) can be displayed in the pipeline interface rather than buried in logs.
 
 For MCIX, commands such as {% if site.compliance == "Y" %}[asset-analysis test](/command-line/command-reference#asset-analysis-test) and {% endif%}[unit-test execute](/command-line/command-reference#unit-test-execute) can produce test result files that a CI/CD platform can publish and display.
 
@@ -293,13 +293,13 @@ This diagram shows the basic flow of changes in Git using only the simplest of t
 - `git add` moves selected changes into the **staging area** where they are prepared for the next commit. 
 - `git commit` then records those staged changes into your **local repository**. 
 - `git commit -a` is a shortcut which commits changes to already-tracked files directly from the working directory, bypassing a separate `git add` step. 
-- `git push` sends the commits from your **local repository** to a **remote repository**, such as one hosted on Azure DevOps ot GitHub. A git push is commonly (but not always) configured as the [trigger](/introduction/cicd-concepts#triggers) for the start of a CI/CD pipeline.  
+- `git push` sends the commits from your **local repository** to a **remote repository**, such as one hosted on Azure DevOps or GitHub. A git push is commonly (but not always) configured as the [trigger](/introduction/cicd-concepts#triggers) for the start of a CI/CD pipeline.  
 
 ---
 
 ## Rollback
 
-A Good CI/CD design should not only be capable of promote a change forward, but should also consider how to stop safely, report failures clearly, and support recovery to a previous known-good version. In practice, this means keeping deployed assets versioned, preserving deployment outputs and logs, and ensuring that an earlier approved version can be redeployed if the current change proves unsuccessful.
+A good CI/CD design should not only be capable of promoting a change forward, but should also consider how to stop safely, report failures clearly, and support recovery to a previous known-good version. In practice, this means keeping deployed assets versioned, preserving deployment outputs and logs, and ensuring that an earlier approved version can be redeployed if the current change proves unsuccessful.
 
 Rollback is the ability to return an environment to a previous known-good version.  In a DataStage context, this may involve redeploying a previous version of the exported assets from Git.
 
@@ -313,6 +313,6 @@ Modern CI/CD systems usually define pipelines in files stored in source control.
 * **Bitbucket:** `bitbucket_pipeline.yml`
 * **GitHub:** `.github/workflows/deploy.yml`
 * **GitLab:** `.gitlab-ci.yml`
-* **Jenkins:**`Jenkinsfile`
+* **Jenkins:** `Jenkinsfile`
 
-This is refered to a 'pipeline as code'. This approach means the pipeline definition can be reviewed, versioned, branched, and changed using the same source-control practices as the assets it tests and deploys.
+This is refered to as 'pipeline as code'. This approach means the pipeline definition can be reviewed, versioned, branched, and changed using the same source-control practices as the assets it tests and deploys.
