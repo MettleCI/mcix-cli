@@ -5,22 +5,22 @@ description: Implementing a simple CI/CD<br/>Pipeline using the MCIX CLI
 
 ## Scenario
 
-This tutorial shows how to replicate the actions of you CI/CD tool manually by issuing 
+This tutorial shows how to replicate the actions of your CI/CD tool manually by issuing 
 various `mcix` commands at the command line.  In the real world your pipeline would normally 
 be executed by your CI/CD tool's integrated pipeline orchestration engine.  
 
 We'll break the tutorial into two steps:
 
 1. Establishing the  prerequisites, ensuring ...
-  - the necessary command line tools (`mcix` and `git`) are installed and configured you on local host
+  - the necessary command line tools (`mcix` and `git`) are installed and configured your on local host
   - you have access to a remote Git repository with the relevant configuration and permissions
-1. Manaully replicating the steps involved in a typical CI/CD pipeline on your local hosts's command line.
+1. Manauly replicating the steps involved in a typical CI/CD pipeline on your local host's command line.
 
 It is assumed you already have:
 
-* a source Nextgen DataStage project containing compiled and executing DataStage flows and associated assets
+* a source DataStage NextGen project containing compiled and executing DataStage flows and associated assets
 * unit-test specifications and associated test data for at least some of those DataStage flows
-* a target Nextgen DataStage project into which assets can be imported, compiled, and executed
+* a target DataStage NextGen project into which assets can be imported, compiled, and executed
 * environment-specific overlay files stored in your repository
 {% if site.compliance == "Y" %}
 * asset-analysis rules available
@@ -66,8 +66,6 @@ The pipeline you'll simulate will:
 ```mermaid
 %%{init: {'sequence': {'diagramMarginY': 50, 'mirrorActors': false}}}%%
 sequenceDiagram
-    autonumber
-
     %% ------------
     %% PARTICIPANTS
     %% ------------
@@ -88,7 +86,7 @@ sequenceDiagram
     %% --------
     %% GIT PUSH
     %% --------
-    Laptop<<-->>Git: Compare<br/>(Identify change)
+    Laptop<<-->>Laptop: Identify change
     Laptop->>Laptop: git commit
     Laptop->>Git: git push
 
@@ -113,7 +111,7 @@ The example assumes you are moving DataStage assets from a source project, apply
 
 ---
 
-## 1. Prepare a working directory
+## 1. Prepare your working directory
 
 After you've followed the [prerequisite steps](/command-line/tutorial-prerequisites) to create your local Git repository you'll have established your directory to hold exported assets, overlay output, reports, and test results.  Your repository directory will look something like this:
 
@@ -122,9 +120,9 @@ mcix-cli-demo/
 ├── .git              # Tells the Git CLI this is a local Git repository
 ├── .gitattributes    # Tells the Git CLI the repository properties
 ├── .gitignore        # Tells the Git CLI which files to ignore
-├── datastage/        # Where DataStage assets will to be stored
+├── datastage/        # Where DataStage assets will be stored
 │                     # (in asset type-specific sub-directories)
-├── filesystem/       # Where non-DataStage assets will to be stored
+├── filesystem/       # Where non-DataStage assets will be stored
 │                     # (scripts, reference files, etc.)
 ├── overlays/         # Stores overlay configuration files 
 └── README.md         # The repository's homepage (in markdown)
@@ -156,7 +154,7 @@ export OVERLAY_DIR="./overlaid-assets"      # Overlaid assets
 export REPORT_DIR="./reports"               # JUnit report outputs
 ```
 
-Adjust the variable names and values to match your environment. If you don't yet have one you should [generate a IBM Cloud Pak API key](https://www.ibm.com/docs/en/cloud-paks/cp-data/latest?topic=tutorials-generating-api-keys).
+Adjust the variable names and values to match your environment. If you don't yet have one you should [generate an IBM Cloud Pak API key](https://www.ibm.com/docs/en/cloud-paks/cp-data/latest?topic=tutorials-generating-api-keys).
 
 ---
 
@@ -248,11 +246,9 @@ Next, you'll log in to your DataStage NextGen user interface and make a trivial 
 
 1. Click **Apply**, then save your flow (you don't need to compile it.)
 
-## 4. Identify and commit changes
+## 6. Identify and commit changes
 
-Now we'll re-export our assets to our local working directory and identify which of those assets are different to those stored in your local Git repository. 
-
-Start by re-exporting your development assets:
+Now we'll re-export our assets to our local working directory and identify which of those assets are different to those stored in your local Git repository. Start by re-exporting your development assets:
 
 ```bash
 mcix datastage export \
@@ -269,19 +265,19 @@ mcix datastage export \
   low-contrast="true"
   hide-close-button="true">
   <div class="cds--inline-notification__subtitle">
-    <p>The <code>mcix datastage export</code> command in the current release of MCIX performs a bulk export of the entire DataStage projecty to your local directory.</p>
+    <p>The <code>mcix datastage export</code> command in the current release of MCIX performs a bulk export of the entire DataStage project to your local directory.</p>
     <p>A forthcoming release of IBM Cloud Pak will provide an API update which permits the <code>mcix datastage export</code> command to identify and export only
     those DataStage assets which are different to those already in the specified export directory.</p>
   </div>
 </cds-inline-notification>
 
-Next, we'll use see what's changed:
+Next, we'll see what's changed:
 
 ```bash
 git status
 ```
 
-Which produces the following output (in this example we edited flow `ScdDimCustomerDs`):
+Which produces the following output (in this example we edited flow `LdDailySalesSummary`):
 
 ```shell
 On branch main
@@ -301,7 +297,7 @@ no changes added to commit (use "git add" and/or "git commit -a")
   hide-close-button="true">
   <div class="cds--inline-notification__subtitle">
     You'll notice that as well as the expected <code>LdDailySalesSummary</code> we also have another
-    line for a zip file.  If yoy've used the sample repository supplied on the prerequisites page
+    line for a zip file.  If you've used the sample repository supplied on the prerequisites page
     it'll be <code>TxFctFinDs</code>, otherwise it'll be named whatever test case(s) you have defined.
     <br/><br/>
     <b>DREW: REMIND ME WHY THIS IS?</b>
@@ -314,8 +310,8 @@ We can see, as expected, that we have new files (in the `datastage` directory) a
 which are not present in the remote.  Let's tell Git we want to bring those files under version control by 
 **staging** them:
 
-Now let's stage, commit, and push our changed flow to our remote Git repository 
-(you may find it convenient to copy the path to the file from the `modified` line of your `git status` ouptut):
+Now let's stage, commit, and push our changes to the remote Git repository 
+(you may find it convenient to copy the path to the file from the `modified` line of your `git status` output):
 ```bash
 git add datastage/data_intg_flow/LdDailySalesSummary.json
 ```
@@ -348,28 +344,36 @@ Now let's commit these changes to the local repository and push them to the remo
 git commit -m "Initial tutorial commit"
 git push
 ```
-Now you can revisit your Git repository's user interface and verify you can. see those commits.
+Now you can revisit your Git repository's user interface and verify you can see those commits.
 
 ---
 
-## 5. Import DataStage assets
+## Notes for this tutorial
 
-Now import the overlaid assets into the target DataStage project.
+The operations from this point forward would normally be performed by a pipeline in your CI/CD platform which, in most cases, would be automatically triggered by the `git push` you've just performed.  For this CLI tutorial you'll be performing them manually.
 
-```bash
-mcix datastage import \
-  -url "$CP4D_URL" \
-  -project "$TARGET_PROJECT" \
-  -user "$CP4D_USERNAME" \
-  -api-key "$CP4D_API_KEY" \
-  -assets "$OVERLAY_DIR"
-```
+<cds-inline-notification
+  kind="info"
+  low-contrast="true"
+  hide-close-button="true">
+  <div class="cds--inline-notification__subtitle">
+    An important distinction between the CLI and the MCIX native operations for CI/CD platforms is that the following tutorial steps will take you theough the execution of the
+    following steps:
+    <br/><br/>
+    <code>overlay apply</code> → <code>datastage import</code> → <code>datastage compile</code>
+    <br/><br/>
+    Given that this combination of operations is very common, the MCIX native operators for CI/CD platforms provide a shortcut operation called <b>datastage deploy</b> which compopses all three operations, in the order described, into a single call. 
+    <br><br>
+    See the examples for 
+    <a href="/github/action-reference#datastage-deploy">GitHub</a> and 
+    <a href="/azure/azure-task-ref#datastage-deploy">Azure</a>.
+  </div>
+</cds-inline-notification>
 
-At this point, the transformed DataStage assets have been deployed into the target project.
 
 ---
 
-## 6. Apply environment overlays
+## 7. Apply environment overlays
 
 Next, we'll apply overlays to transform the exported assets for the target environment.  For example, overlays might change connection names, schema names, database endpoints, project parameters, or other environment-specific values.
 
@@ -401,7 +405,7 @@ Start by creating an overlay file in your `overlays/ci` directory called `ci.ove
   RejectDir:    "/px-storage/data/electromart/ci/reject",
 }
 ```
-Then apply the overlay to te recently exported assets to generate a new set of **overlaid** assets:
+Then apply the overlay to the recently exported assets to generate a new set of **overlaid** assets:
 
 ```bash
 mcix overlay apply \
@@ -418,8 +422,26 @@ After this step, the transformed assets should be available in:
 
 ---
 
+## 8. Import DataStage assets
+
+Now import the overlaid assets into the target DataStage project.
+
+```bash
+mcix datastage import \
+  -url "$CP4D_URL" \
+  -project "$TARGET_PROJECT" \
+  -user "$CP4D_USERNAME" \
+  -api-key "$CP4D_API_KEY" \
+  -assets "$OVERLAY_DIR"
+```
+
+At this point, the transformed DataStage assets have been deployed into the target project.
+
+---
+
+
 {% if site.compliance == "Y" %}
-## 7. Run asset analysis tests
+## 9. Run asset analysis tests
 
 Next, run asset analysis tests to validate that the imported assets comply with your rules.
 
@@ -444,7 +466,7 @@ That file can later be consumed by a CI/CD system such as GitHub Actions, Azure 
 ---
 {% endif %}
 
-## 7. Run unit tests
+## 9. Run unit tests
 
 Now we'll execute the DataStage unit tests.
 
@@ -476,7 +498,7 @@ This produces another JUnit-style result file:
 ```
 
 Note that if you were to run this command again then MCIX would identify that 
-the test has already succeeded successfully and doesn't need to be re-executed:
+the test has already succeeded and doesn't need to be re-executed:
 
 ```bash
 MettleCI Command Line (build 1.0-99)
@@ -560,7 +582,7 @@ This does not permanently change your system-wide PowerShell policy - it only ap
 When the script completes successfully, it should have exported the DataStage assets, applied overlays, imported the overlaid assets into the target project, and produced the configured test result files.
 </details>
 
-You'll need to update the variables wit your environment-specific configuration items, like URL's, credentials, and project names.
+You'll need to update the variables with your environment-specific configuration items, like URLs, credentials, and project names.
 
 ### Expected results
 
@@ -586,37 +608,3 @@ The pipeline has:
 1. Executed (on DataStage) unit tests against the deployed assets **(C)**
 
 ---
-
-
-
-
-
-
-
-
-
-export from dev into local clone dir
-git add .
-git commit -m "Initial commit"
-git push origin master
-
-Take a look at your git repository
-*Note* this wold normally trigger a pipeline
-
-Change a source asset (simple) - compile and save
-export from dev into local clone dir
-*note* the incremental changes forthcoming
-(Currently bulk, change detection coming)
-
-git status
-(See that our changed file has been identified)
-Note: You'll also see a *zip* file changed.  Ask Drew for the best explanation of this.
-
-git add changed file
-git commit -m "Changed something"
-git push
-
-Take a look at your git repository
-Observe git history
-*Note again* this would normally trigger a pipeline
-
