@@ -1,5 +1,5 @@
 ---
-title: Pipeline Tutorial Prerequisites
+title: GitHub Pipeline Tutorial Prerequisites
 description: Establishing the conditions for a<br/>Pipeline using the MCIX CLI
 
 ---

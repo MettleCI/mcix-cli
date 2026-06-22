@@ -1,5 +1,5 @@
 ---
-title: Pipeline Tutorial Introduction
+title: CLI Pipeline Tutorial Introduction
 description: Emulating a simple CI/CD<br/>Pipeline using the MCIX CLI
 ---
 

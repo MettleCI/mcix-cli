@@ -1,5 +1,5 @@
 ---
-title: CLI Pipeline Tutorial Steps
+title: GitHub Pipeline Tutorial Steps
 description: Implementing a simple CI/CD<br/>Pipeline using the MCIX CLI
 ---
 
@@ -160,7 +160,7 @@ export OVERLAY_DIR="./overlaid-assets"      # Overlaid assets
 export REPORT_DIR="./reports"               # JUnit report outputs
 ```
 
-Adjust the variable names and values to match your environment.
+Adjust the variable names and values to match your environment. If you don't yet have one you should [generate an IBM Cloud Pak API key](https://www.ibm.com/docs/en/cloud-paks/cp-data/latest?topic=tutorials-generating-api-keys).
 
 ---
 
