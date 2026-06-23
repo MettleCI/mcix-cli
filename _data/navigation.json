@@ -129,4 +129,13 @@
       }
     ]
   },
+  {
+    "title": "Notes",
+    "submenu": [
+      {
+        "title": "DataStage Git interface",
+        "url": "/notes/git-interface"
+      }
+    ]
+  },
 ]

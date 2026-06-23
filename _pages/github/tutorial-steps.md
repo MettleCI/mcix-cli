@@ -1,633 +1,683 @@
 ---
 title: GitHub Pipeline Tutorial Steps
-description: Implementing a simple CI/CD<br/>Pipeline using the MCIX CLI
+description: Implementing a simple CI/CD pipeline using MCIX GitHub Actions
 ---
 
 ## Scenario
 
-This tutorial shows how to replicate the actions of your CI/CD tool manually by issuing 
-various `mcix` commands at the command line.  In the real world your pipeline would normally 
-be executed by your CI/CD tool's integrated pipeline orchestration engine.  
+This tutorial shows how to implement a simple CI/CD pipeline for DataStage NextGen using MCIX GitHub Actions.
 
-We'll break the tutorial into two steps:
+Unlike the command-line tutorial, you won’t manually run each `mcix` command from your local shell. Instead, you’ll define a GitHub Actions workflow that executes the relevant MCIX actions on a GitHub Actions runner.
 
-1. Establishing the  prerequisites, ensuring ...
-  - the necessary command line tools (`mcix` and `git`) are installed and configured on your local host
-  - you have access to a remote Git repository with the relevant configuration and permissions
-1. Manually replicating the steps involved in a typical CI/CD pipeline on your local command line.
+We’ll use GitHub Actions to:
+
+1. Check out your repository.
+2. Verify the MCIX runtime.
+3. Apply CI-specific overlays.
+4. Import the overlaid DataStage assets into your CI project.
+5. Compile the imported assets.
+6. Execute DataStage unit tests.
+7. Run asset analysis tests.
+8. Upload generated JUnit reports as workflow artefacts.
 
 It is assumed you already have:
 
-* a source DataStage NextGen project containing compiled and executing DataStage flows and associated assets
-* unit-test specifications and associated test data for at least some of those DataStage flows
-* a target DataStage NextGen project into which assets can be imported, compiled, and executed
-* environment-specific overlay files stored in your repository
-{% if site.compliance == "Y" %}
-* asset-analysis rules available
-{% endif %}
+- a GitHub repository containing exported DataStage assets
+- a target DataStage NextGen project into which assets can be imported, compiled, and tested
+- environment-specific overlay files stored in your repository
+- unit-test specifications and associated test data for at least some DataStage flows
+- asset-analysis rules available in your repository
+- a GitHub Environment called `ci`
+- GitHub variables and secrets configured for your DataStage connection details
 
-**Note:** If you don't have a source NextGen DataStage project available you can download a sample project 
-for tutorial purposes (below) and import it into your source project in your DataStage NextGen environment:
+## Constructing the pipeline
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[![Electromart Export]({{ site.url }}/assets/img/document--download.svg)](../../assets/files/electromart.zip)
-<br/>&nbsp;[Download<br/>ElectroMart](../../assets/files/electromart.zip)
+The pipeline we’ll build will run when changes are pushed to the `main` branch, or when you manually trigger it from the GitHub Actions user interface.
 
-<cds-inline-notification
-  kind="warning"
-  subtitle="Always review downloaded assets before running them"
-  low-contrast="true"
-  hide-close-button="true">
-</cds-inline-notification>
+The pipeline will perform the following operations:
 
-### Notes for real-world usage
-
-- Avoid hard-coding credentials directly in your commands. For local use you can use environment variables to provide consistent values across calls.
-- The same sequence can later be moved into a CI/CD platform. In that case each command becomes a pipeline step, and the JUnit XML files can be published as test results to the platform.
-- Do not store generated runtime output or reports in source control.
-
----
-
-## Constructing a pipeline
-
-The pipeline you'll simulate will:
-
-1. Export all assets from a source DataStage project.
-1. Commit and push them to a remote Git repository.
-1. Change an asset in the source DataStage project.
-1. Export the assets from the source project.
-1. Commit and push modified assets to a remote Git repository. 
-1. Apply environment-specific changes using overlays.
-1. Import the modified assets into a target project.
-{% if site.compliance == "Y" %}
-  1. Run asset analysis tests.
-{% endif %}
-1. Execute DataStage unit tests in the target project.
+1. Check out the repository.
+2. Create local output directories.
+3. Verify the MCIX action runtime.
+4. Deploy the DataStage assets to the CI project:
+   - apply overlays
+   - import assets
+   - compile assets
+5. Execute unit tests.
+6. Run asset analysis tests.
+7. Upload generated reports.
 
 ```mermaid
-%%{init: {'sequence': {'diagramMarginY': 50, 'mirrorActors': false}}}%%
+---
+title: MCIX GitHub Actions Pipeline
+---
 sequenceDiagram
-    %% ------------
-    %% PARTICIPANTS
-    %% ------------
-    box DataStage Projects<br/><br/><br/>
-      participant DSDEV as DataStage<br/>Dev<br/><br/><br/><br/>
-      participant DSCI as DataStage<br/>CI<br/><br/><br/><br/>
-    end
-    actor Laptop as Laptop
-    box Git<br/><br/><br/>
-      participant Git as Your Git<br/>Repository<br/><br/><br/><br/>
-      participant MCIX as MCIX<br/>Resources<br/><br/><br/><br/>
-    end
+    %%{init: {'sequence': {'diagramMarginY': 50, 'mirrorActors': false}}}%%
 
-    %% -----
-    %% SETUP
-    %% -----
-    MCIX->>Laptop: git clone
-    DSDEV->>Laptop: datastage export
-    Laptop->>Git: git push
+    actor Dev as Developer
+    participant GitHub as GitHub Repository
+    participant Actions as GitHub Actions
+    participant MCIX as MCIX Actions
+    participant DSCI as DataStage CI Project
 
-    %% --------
-    %% GIT PUSH
-    %% --------
-    DSDEV->>DSDEV: Code change
-    DSDEV->>Laptop: datastage export
-    Laptop<<-->>Laptop: Identify change
-    Laptop->>Laptop: git commit
-    Laptop->>Git: git push
-
-    %% ------------
-    %% OVERLAYS
-    %% ------------
-    Laptop->>Laptop: overlay apply
-
-    Laptop->>DSCI: datastage import
-    Laptop->>DSCI: datastage compile
-
-    Laptop->>DSCI: unit-test execute
-
-    %% ASSET ANALYSIS
-    %% Temporarily reemoved until supported by the tutorial
-    %% MCIX->>Laptop: Asset Analysis Rules
-    %% Activate Laptop
-    %% Laptop->>Laptop: Asseet Analysis
-    %% Deactivate Laptop
+    Dev->>GitHub: git push
+    GitHub->>Actions: Trigger workflow
+    Actions->>GitHub: Checkout repository
+    Actions->>MCIX: system version
+    Actions->>MCIX: datastage deploy
+    MCIX->>MCIX: overlay apply
+    MCIX->>DSCI: datastage import
+    MCIX->>DSCI: datastage compile
+    Actions->>MCIX: unit-test execute
+    MCIX->>DSCI: Execute unit tests
+    Actions->>MCIX: asset-analysis test
+    Actions->>GitHub: Upload JUnit reports
 ```
-
-The example assumes you are moving DataStage assets from a source project, applying environment-specific overlays, importing them into a target project, then validating and testing the result.
+The example assumes you are moving DataStage assets from source control into a CI project, applying environment-specific overlays, compiling the result, and then validating the deployed assets.
 
 ---
 
-## 1. Prepare your working directory
+## 1. Prepare your repository
 
-After you've followed the [prerequisite steps](/command-line/tutorial-prerequisites) to create your local Git repository you'll have established your directory to hold exported assets, overlay output, reports, and test results.  Your repository directory will look something like this:
+After completing the prerequisite steps, your repository should look something like this:
 
 ```text
-mcix-cli-demo/
-├── .git              # Tells the Git CLI this is a local Git repository
-├── .gitattributes    # Tells the Git CLI the repository properties
-├── .gitignore        # Tells the Git CLI which files to ignore
-├── datastage/        # Where DataStage assets will be stored
-│                     # (in asset type-specific sub-directories)
-├── filesystem/       # Where non-DataStage assets will be stored
-│                     # (scripts, reference files, etc.)
-├── overlays/         # Stores overlay configuration files 
-└── README.md         # The repository's homepage (in markdown)
+mcix-github-actions-demo/
+├── .github/
+│   └── workflows/
+├── datastage/
+│   └── exported DataStage assets
+├── filesystem/
+│   └── non-DataStage files
+├── overlays/
+│   └── ci/
+└── README.md
 ```
 
-Of particular note is the `datastage` directory.  This is where our DataStage asset will be placed, organised into subdirectories by their asset type.
+Of particular note are these directories:
+
+| Directory               | Purpose                                                |
+| :---------------------- | :----------------------------------------------------- |
+| `datastage/`            | Stores exported DataStage assets under version control |
+| `overlays/`             | Stores environment-specific overlay files              |
+| `.github/workflows/`    | Stores GitHub Actions workflow definitions             |
+
+The GitHub Actions workflow will run from the root of the repository, so all file paths in the workflow should be relative to the repository root.
 
 ---
 
-## 2. Define your connection details
+## 2. Confirm your GitHub Environment values
 
-For readability, define the values you will use throughout the pipeline as shell variables.
+This tutorial assumes you created a GitHub Environment called `ci`.
 
-```bash
-# The location of your DataStage instance
-# This tutorial uses the same instance for both source and target environments
-export CP4D_URL="https://cpd.myorg.com/"    # DataStage as-a-service on IBM Cloud 
-                                            # or your internal CPD instance
-export CP4D_USERNAME="MyUserName"           # DataStage username
-export CP4D_API_KEY="my-api-key"            # DataStage API key
+In your repository, navigate to:
 
-# Project names
-export SOURCE_PROJECT="mcix-cli-demo"       # The location of your development (source) project
-export TARGET_PROJECT="mcix-cli-demo_CI"    # Demo will deploy to a 'CI' environment
-
-# Local working folders
-export EXPORT_DIR="./datastage"             # Exported assets
-export OVERLAY_DIR="./overlaid-assets"      # Overlaid assets
-export REPORT_DIR="./reports"               # JUnit report outputs
-```
-
-Adjust the variable names and values to match your environment. If you don't yet have one you should [generate an IBM Cloud Pak API key](https://www.ibm.com/docs/en/cloud-paks/cp-data/latest?topic=tutorials-generating-api-keys).
-
----
-
-## 3. Export DataStage assets
-
-The first stage exports assets from the source DataStage project.
-
-```bash
-mcix datastage export \
-  -url "$CP4D_URL" \
-  -project "$SOURCE_PROJECT" \
-  -user "$CP4D_USERNAME" \
-  -api-key "$CP4D_API_KEY" \
-  -export-path "$EXPORT_DIR"
-```
-
-<details markdown="1">
-  <summary>Example output</summary>
-```bash
-MettleCI Command Line (build 1.0-123)
-(C) 2018-2026 Data Migrators Pty Ltd
-datastage export (1.0-123)
-Connecting to CP4D...
-Exporting project containing 108 assets
- * Write scRegionReference (data_intg_subflow) - SUCCESS
- * Write TxFctFinDs (data_intg_test_case) - SUCCESS
- * Write TxTransformedSales_container (data_intg_flow) - SUCCESS
- * Write LdDimDate (data_intg_flow) - SUCCESS
- * Write LdFactSales (data_intg_flow) - SUCCESS
- <<<REDACTED FOR BREVITY>>>
- * Write UpdateCustomerSurrogateKeys.DataStage job (job) - SUCCESS
- * Write UpdateSupplierSurrogateKeys.DataStage job (job) - SUCCESS
- * Write UpdateFinanceSurrogateKeys.DataStage job (job) - SUCCESS
- * Write Trial job - UpdDailySalesSummary (job) - SUCCESS
- * Write UpdDailySalesSummary.DataStage sequence (job) - SUCCESS
-SUCCESS: Completed 108 actions
-```
-</details>
-
-After this step, your exported DataStage assets should be available in your specified directory (`datastage`), organised by asset type:
 ```text
-$> ls -al datastage
-total 0
-drwxr-xr-x@  4 johnmckeever  staff   128B 17 Jun 16:43 connection
-drwxr-xr-x@ 38 johnmckeever  staff   1.2K 17 Jun 16:43 data_intg_flow
-drwxr-xr-x@  3 johnmckeever  staff    96B 17 Jun 16:43 data_intg_subflow
-drwxr-xr-x@  3 johnmckeever  staff    96B 17 Jun 16:43 data_intg_test_case
-drwxr-xr-x@ 58 johnmckeever  staff   1.8K 17 Jun 16:43 job
-drwxr-xr-x@ 12 johnmckeever  staff   384B 17 Jun 16:43 orchestration_flow
-drwxr-xr-x@  4 johnmckeever  staff   128B 17 Jun 16:43 parameter_set
+Settings → Environments → ci
 ```
 
-This directory of exported assets becomes the input to the next stage.
+Confirm the following variables exist:
+
+| Variable            | Example value             | Description                           |
+| :------------------ | :------------------------ | :------------------------------------ |
+| `CP4D_URL`          | `https://cpd.example.com` | Base URL of your DataStage service    |
+| `CP4D_USER`         | `my-user@example.com`     | Username used to connect to DataStage |
+| `DATASTAGE_PROJECT` | `mcix-demo_CI`        | Target CI DataStage project           |
+
+Confirm the following secret exists:
+
+| Secret         | Description                               |
+| :------------- | :---------------------------------------- |
+| `CP4D_API_KEY` | API key used to authenticate to DataStage |
+
+The workflow examples below use these values via GitHub’s `vars` and `secrets` contexts:
+
+```yaml
+{% raw %}${{ vars.CP4D_URL }}
+${{ vars.CP4D_USER }}
+${{ vars.DATASTAGE_PROJECT }}
+${{ secrets.CP4D_API_KEY }}
+{% endraw %}```
+
+Using GitHub Environment values keeps your workflow portable. The same workflow can later be reused for `qa`, `test`, or `prod` simply by changing the job’s target environment.
 
 ---
 
-## 4. Initial project commit
+## 3. Create the workflow file
 
-This section uses git commands.  If you're not familiar with git commands or 
-terminology you should start by reading [git concepts](/introduction/cicd-concepts#git-essentials).
+Create a workflow file called:
 
-We'll now commit and push the entire exported project to our remote Git 
-repository, giving us a  baseline against which we can manage future change.  
-Start by adding the  export files to the Git **staging area**:
-
-```shell
-git add .
-```
-Next, we'll commit them to the **local repository** and push it to the 
-**remote repository**:
-
-```shell
-git commit -m "Initial commit"
-git push origin main
+```text
+.github/workflows/mcix-ci.yml
 ```
 
-The commit message (`git commit -m "<message here>"`) can be anything you like, 
-but it's best practice to use a description other developers will understand.
+This workflow will run whenever changes are pushed to `main`, and can also be run manually from the GitHub Actions user interface.
 
-Now you can visit your Git repository's user interface and verify that the export assets have been pushed successfully.
+Start with this structure:
 
-## 5. Make a development change 
+```yaml
+name: MCIX CI Pipeline
 
-Next, you'll log in to your DataStage NextGen user interface and make a trivial change to one of your flows.
+on:
+  push:
+    branches:
+      - main
 
-1. Navigate to your dev project (e.g. `mcix-cli-demo`) and open a DataStage flow.  If you've imported the sample project references in the [prerequisites](/command-line/tutorial-prerequisites) then open flow `LdDailySalesSummary`.
+  workflow_dispatch:
 
-1. Select any stage on the canvas and at the bottom of the **Stage** tab enter/modify the long description field with any text you want.
+jobs:
+  deploy-ci:
+    name: Deploy to CI
+    runs-on: ubuntu-latest
+    environment: ci
 
-1. Click **Apply**, then save your flow (you don't need to compile it.)
+    permissions:
+      contents: read
 
-## 6. Identify and commit changes
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+```
 
-Now we'll re-export our assets to our local working directory and identify which of those assets are different to those stored in your local Git repository. Start by re-exporting your development assets:
+The `environment: ci` line binds the job to your `ci` GitHub Environment, making that environment’s variables and secrets available to the job.
+
+The `permissions` block grants the workflow read access to the repository contents. That is sufficient for most needs as the workflow reads files and runs actions but does not normally need to write to the repository.
+
+---
+
+## 5. Verify the MCIX runtime
+
+Before running a full deployment, add a simple MCIX System Version step.
+
+```yaml
+      - name: Verify MCIX runtime
+        uses: MettleCI/mcix-system-version@v0
+```
+
+This step confirms that the GitHub runner can execute the MCIX action successfully.
+
+At this point your workflow should look like this:
+
+```yaml
+name: MCIX CI Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+  workflow_dispatch:
+
+jobs:
+  deploy-ci:
+    name: Deploy to CI
+    runs-on: ubuntu-latest
+    environment: ci
+
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Prepare output directories
+        run: |
+          mkdir -p build
+          mkdir -p reports
+
+      - name: Verify MCIX runtime
+        uses: MettleCI/mcix-system-version@v0
+```
+
+Commit and push the workflow:
 
 ```bash
-mcix datastage export \
-  -url "$CP4D_URL" \
-  -project "$SOURCE_PROJECT" \
-  -user "$CP4D_USERNAME" \
-  -api-key "$CP4D_API_KEY" \
-  -export-path "$EXPORT_DIR"
-```
-
-<cds-inline-notification
-  kind="info"
-  title="Note"
-  low-contrast="true"
-  hide-close-button="true">
-  <div class="cds--inline-notification__subtitle">
-    <p>The <code>mcix datastage export</code> command in the current release of MCIX performs a bulk export of the entire DataStage project to your local directory.</p>
-    <p>A forthcoming release of IBM Cloud Pak will provide an API update which permits the <code>mcix datastage export</code> command to identify and export only
-    those DataStage assets which are different to those already in the specified export directory.</p>
-  </div>
-</cds-inline-notification>
-
-Next, we'll see what's changed:
-
-```bash
-git status
-```
-
-Which produces the following output (in this example we edited flow `LdDailySalesSummary`):
-
-```shell
-On branch main
-Your branch is up to date with 'origin/main'.
-
-Changes not staged for commit:
-  (use "git add <file>..." to update what will be committed)
-  (use "git restore <file>..." to discard changes in working directory)
-	modified:   datastage/data_intg_flow/LdDailySalesSummary.json
-	modified:   datastage/data_intg_test_case/TxFctFinDs.zip
-
-no changes added to commit (use "git add" and/or "git commit -a")
-```
-<cds-inline-notification
-  kind="info"
-  low-contrast="true"
-  hide-close-button="true">
-  <div class="cds--inline-notification__subtitle">
-    You'll notice that as well as the expected <code>LdDailySalesSummary</code> there
-    are also one or more 'modified' lines for ZIP files.  These files are (currently) regenerated as part of the export process. For this tutorial, we are only committing the deliberate flow change, so leave the regenerated test-case ZIP unstaged.
-    <br/><br/>
-    For this reason we'll ignore the <code>.zip</code> file.
-  </div>
-</cds-inline-notification>
-
-We can see, as expected, that we have new files (in the `datastage` directory) added to our local repository
-which are not present in the remote.  Let's tell Git we want to bring those files under version control by 
-**staging** them:
-
-Now let's stage, commit, and push our changes to the remote Git repository 
-(you may find it convenient to copy the path to the file from the `modified` line of your `git status` output):
-```bash
-git add datastage/data_intg_flow/LdDailySalesSummary.json
-```
-
-This command will not produce a response. Let's check what's changed:
- ```bash
-git status
-```
-
-We'll now see that the requested files are now **tracked** (under version control) but have yet to be committed or pushed to the remote repository.
-```shell
-On branch main
-Your branch is up to date with 'origin/main'.
-
-Changes to be committed:
-  (use "git restore --staged <file>..." to unstage)
-	modified:   datastage/data_intg_flow/LdDailySalesSummary.json
-
-Changes not staged for commit:
-  (use "git add <file>..." to update what will be committed)
-  (use "git restore <file>..." to discard changes in working directory)
-	modified:   datastage/data_intg_test_case/TxFctFinDs.zip
-```
-
-As described above, you can ignore the `Changes not staged for commit` part as that's related to the `.zip` file we're ignoring.
-
-Now let's commit these changes to the local repository and push them to the remote:
-
-```bash
-git commit -m "Initial tutorial commit"
+git add .github/workflows/mcix-ci.yml
+git commit -m "Add MCIX CI workflow"
 git push
 ```
-Now you can revisit your Git repository's user interface and verify you can see those commits.
+
+Then open your repository in GitHub and navigate to:<br/>
+**Actions** → **MCIX CI Pipeline**
+
+A successful run confirms that GitHub Actions can start the workflow and execute an MCIX action.
 
 ---
 
-## Notes for this tutorial
+## 6. Add the DataStage deployment step
 
-The operations from this point forward would normally be performed by a pipeline in your CI/CD platform which, in most cases, would be automatically triggered by the `git push` you've just performed.  For this CLI tutorial you'll be performing them manually.
-
-<cds-inline-notification
-  kind="info"
-  low-contrast="true"
-  hide-close-button="true">
-  <div class="cds--inline-notification__subtitle">
-    An important distinction between the CLI and the MCIX native operations for CI/CD platforms is that the following tutorial steps will take you theough the execution of the
-    following steps:
-    <br/><br/>
-    <code>overlay apply</code> → <code>datastage import</code> → <code>datastage compile</code>
-    <br/><br/>
-    Given that this combination of operations is very common, the MCIX native operators for CI/CD platforms provide a shortcut operation called <b>datastage deploy</b> which compopses all three operations, in the order described, into a single call. 
-    <br><br>
-    See the examples for 
-    <a href="/github/action-reference#datastage-deploy">GitHub</a> and 
-    <a href="/azure/azure-task-ref#datastage-deploy">Azure</a>.
-  </div>
-</cds-inline-notification>
-
-
----
-
-## 7. Apply environment overlays
-
-Next, we'll apply overlays to transform the exported assets for the target environment.  For example, overlays might change connection names, schema names, database endpoints, project parameters, or other environment-specific values.
-
-A common pattern is to keep overlays in source control, for example:
+Now you'll add the main deployment step.  This tutorial uses the [MCIX DataStage Deploy](/github/action-reference#datastage-deploy) action, 
+which performs the common deployment sequence:
 
 ```text
-overlays/
-├── ci/
-│   ├── connection
-│   ├── flows
-│   ├── job
-│   └── parameter_set
-│       ├── MyParameterSet1.json
-│       └── MyParameterSet2.json
-├── qa/
-│   └── etc. 
-└── prod/
-    └── etc.
+overlay apply → datastage import → datastage compile
 ```
 
-Start by creating an overlay file in your `overlays/ci` directory called `ci.overlay` and populating it with this overlay specification:
+Add this step after `Verify MCIX runtime`:
 
-```json
-{
-  DatasetDir:   "/px-storage/data/electromart/ci/dataset",
-  LandingDir:   "/px-storage/data/electromart/ci/file",
-  StateFileDir: "/px-storage/data/electromart/ci/file",
-  ReportDir:    "/px-storage/data/electromart/ci/report",
-  RejectDir:    "/px-storage/data/electromart/ci/reject",
-}
+```yaml
+{% raw %}      - name: Deploy DataStage assets
+        id: deploy
+        uses: MettleCI/mcix-composite-deploy@v0
+        with:
+          api-key: ${{ secrets.CP4D_API_KEY }}
+          url: ${{ vars.CP4D_URL }}
+          user: ${{ vars.CP4D_USER }}
+          project: ${{ vars.DATASTAGE_PROJECT }}
+
+          assets: datastage
+          overlays: overlays/ci
+          output: build/ci-assets.zip
+
+          import-report: reports/import-report.xml
+          compile-report: reports/compile-report.xml{% endraw %}
 ```
-Then apply the overlay to the recently exported assets to generate a new set of **overlaid** assets:
 
-```bash
-mcix overlay apply \
-  -assets "$EXPORT_DIR" \
-  -overlay "./overlays/ci" \
-  -output "$OVERLAY_DIR"
+This step:
+
+1. Reads the exported assets from `datastage`.
+2. Applies the overlays in `overlays/ci`.
+3. Writes the overlaid assets to `build/ci-assets.zip`.
+4. Imports the overlaid assets into the CI DataStage project.
+5. Compiles the imported assets.
+6. Writes import and compile reports to the `reports` directory.
+
+If you prefer to identify the DataStage project by ID rather than by name, replace:
+
+```yaml
+{% raw %}          project: ${{ vars.DATASTAGE_PROJECT }}{% endraw %}
 ```
 
-After this step, the transformed assets should be available in:
+with:
+
+```yaml
+{% raw %}          project-id: ${{ vars.DATASTAGE_PROJECT_ID }}{% endraw %}
+```
+
+Do not supply both `project` and `project-id`.
+
+---
+
+## 7. Run unit tests
+
+After deployment, execute the DataStage unit tests in the CI project.
+
+Add this step after the deployment step:
+
+```yaml
+{% raw %}      - name: Execute DataStage unit tests
+        id: unit-tests
+        uses: MettleCI/mcix-unit-test-execute@v0
+        with:
+          api-key: ${{ secrets.CP4D_API_KEY }}
+          url: ${{ vars.CP4D_URL }}
+          user: ${{ vars.CP4D_USER }}
+          project: ${{ vars.DATASTAGE_PROJECT }}
+          report: reports/unit-test-report.xml
+          test-suite: mcix ci tests
+          max-concurrency: 8{% endraw %}
+```
+
+This step runs unit tests against the deployed assets in your target CI project and writes a JUnit-style report file to:
 
 ```text
-./overlaid-assets
+reports/unit-test-report.xml
+```
+
+The `max-concurrency` value controls the number of unit test jobs that can be executed concurrently.
+
+For an introductory tutorial, `8` is a reasonable starting value. In a real environment, tune this value based on the capacity of your DataStage environment.
+
+---
+
+## 8. Run asset analysis tests
+
+Next, run asset analysis tests against the DataStage assets.
+
+Add this step after the unit test step:
+
+```yaml
+{% raw %}      - name: Run asset analysis tests
+        id: asset-analysis
+        uses: MettleCI/mcix-asset-analysis-test@v0
+        with:
+          api-key: ${{ secrets.CP4D_API_KEY }}
+          url: ${{ vars.CP4D_URL }}
+          user: ${{ vars.CP4D_USER }}
+          project: ${{ vars.DATASTAGE_PROJECT }}
+          path: datastage
+          rules: asset-analysis-rules
+          report: reports/asset-analysis-report.xml
+          test-suite: mcix asset analysis{% endraw %}
+```
+
+This step writes its JUnit-style report to:
+
+```text
+reports/asset-analysis-report.xml
+```
+
+The `path` input points to the assets being analysed. For this tutorial, we’ll analyse the source-controlled DataStage assets in the `datastage` directory.
+
+---
+
+## 9. Upload generated reports
+
+Finally, upload the generated reports as GitHub Actions artefacts.
+
+Add this step at the end of the job:
+
+```yaml
+      - name: Upload MCIX reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mcix-reports
+          path: reports/
+```
+
+The `if: always()` condition ensures that reports are uploaded even if an earlier validation or test step fails.
+
+This is useful because the report files often contain the details you need to diagnose the failure.
+
+---
+
+## 10. Review the completed workflow
+
+Your completed workflow should now look like this:
+
+```yaml
+{% raw %}name: MCIX CI Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+  workflow_dispatch:
+
+jobs:
+  deploy-ci:
+    name: Deploy to CI
+    runs-on: ubuntu-latest
+    environment: ci
+
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Prepare output directories
+        run: |
+          mkdir -p build
+          mkdir -p reports
+
+      - name: Verify MCIX runtime
+        uses: MettleCI/mcix-system-version@v0
+
+      - name: Deploy DataStage assets
+        id: deploy
+        uses: MettleCI/mcix-composite-deploy@v0
+        with:
+          api-key: ${{ secrets.CP4D_API_KEY }}
+          url: ${{ vars.CP4D_URL }}
+          user: ${{ vars.CP4D_USER }}
+          project: ${{ vars.DATASTAGE_PROJECT }}
+
+          assets: datastage
+          overlays: overlays/ci
+          output: build/ci-assets.zip
+
+          import-report: reports/import-report.xml
+          compile-report: reports/compile-report.xml
+
+      - name: Execute DataStage unit tests
+        id: unit-tests
+        uses: MettleCI/mcix-unit-test-execute@v0
+        with:
+          api-key: ${{ secrets.CP4D_API_KEY }}
+          url: ${{ vars.CP4D_URL }}
+          user: ${{ vars.CP4D_USER }}
+          project: ${{ vars.DATASTAGE_PROJECT }}
+          report: reports/unit-test-report.xml
+          test-suite: mcix ci tests
+          max-concurrency: 8
+
+      - name: Run asset analysis tests
+        id: asset-analysis
+        uses: MettleCI/mcix-asset-analysis-test@v0
+        with:
+          api-key: ${{ secrets.CP4D_API_KEY }}
+          url: ${{ vars.CP4D_URL }}
+          user: ${{ vars.CP4D_USER }}
+          project: ${{ vars.DATASTAGE_PROJECT }}
+          path: datastage
+          rules: asset-analysis-rules
+          report: reports/asset-analysis-report.xml
+          test-suite: mcix asset analysis
+
+      - name: Upload MCIX reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mcix-reports
+          path: reports/{% endraw %}
+```
+
+Commit and push the updated workflow:
+
+```bash
+git add .github/workflows/mcix-ci.yml
+git commit -m "Add MCIX deployment and test pipeline"
+git push
+```
+
+GitHub will automatically start the workflow because the workflow is configured to run on pushes to `main`.
+
+---
+
+## 11. Run the pipeline manually
+
+You can also run the workflow manually.
+
+In GitHub, navigate to:<br/>
+**Actions** → **MCIX CI Pipeline** → **Run workflow**
+
+Choose the `main` branch and click:<br/>
+**Run workflow**
+
+GitHub will create a new workflow run and execute the MCIX pipeline against the `ci` environment.
+
+---
+
+## 12. Review the workflow output
+
+When the workflow completes, open the workflow run in GitHub.
+
+Review each step:
+
+| Step                           | Expected result                                   |
+| :----------------------------- | :------------------------------------------------ |
+| `Checkout repository`          | Repository contents are available to the workflow |
+| `Verify MCIX runtime`          | MCIX runtime starts successfully                  |
+| `Deploy DataStage assets`      | Assets are overlaid, imported, and compiled       |
+| `Execute DataStage unit tests` | Unit tests are executed in the CI project         |
+| `Run asset analysis tests`     | Asset-analysis rules are applied                  |
+| `Upload MCIX reports`          | Generated XML reports are uploaded                |
+
+The workflow should produce a downloadable artefact called:
+
+```text
+mcix-reports
+```
+
+This artefact should contain files similar to:
+
+```text
+reports/
+├── import-report.xml
+├── compile-report.xml
+├── unit-test-report.xml
+└── asset-analysis-report.xml
 ```
 
 ---
 
-## 8. Import and Compile DataStage assets
+## 13. Make a development change
 
-Now import the overlaid assets into the target DataStage project.
+Next, make a trivial change to one of your DataStage flows in your source DataStage project.
+
+For example:
+
+1. Open your source DataStage project.
+2. Open a DataStage flow.
+3. Modify a description field or another non-functional property.
+4. Save the flow.
+
+Then export the updated assets into your local repository using your normal development process.
+
+This may be done using:
+
+* the MCIX CLI,
+* a MettleCI Workbench-based process,
+* an existing export process, or
+* another project-specific process used by your team.
+
+After the export, inspect the repository changes:
 
 ```bash
-mcix datastage import \
-  -url "$CP4D_URL" \
-  -project "$TARGET_PROJECT" \
-  -user "$CP4D_USERNAME" \
-  -api-key "$CP4D_API_KEY" \
-  -assets "$OVERLAY_DIR"
+git status
 ```
 
-And compile them:
+Stage the relevant changed asset files:
 
 ```bash
-mcix datastage compile \
-  -url "$CP4D_URL" \
-  -project "$TARGET_PROJECT" \
-  -user "$CP4D_USERNAME" \
-  -api-key "$CP4D_API_KEY" \
-  -assets "$OVERLAY_DIR" \
-  -report "$REPORT_DIR/compile-results.xml"
-  -include-asset-in-test-name
+git add datastage/data_intg_flow/<YourChangedFlow>.json
 ```
 
-At this point, the transformed DataStage assets have been deployed into the target project.
+Commit and push the change:
+
+```bash
+git commit -m "Update tutorial DataStage flow"
+git push
+```
+
+The push to `main` will trigger the GitHub Actions pipeline.
 
 ---
 
-## 9. Run unit tests
+## 14. Confirm the pipeline redeploys the change
 
-Now we'll execute the DataStage unit tests.
+Open the new workflow run in GitHub:<br/>
+**Actions** → **MCIX CI Pipeline**
 
-```bash
-mcix unit-test execute \
-  -url "$CP4D_URL" \
-  -project "$TARGET_PROJECT" \
-  -user "$CP4D_USERNAME" \
-  -api-key "$CP4D_API_KEY" \
-  -report "$REPORT_DIR/unit-test-results.xml"
-```
+Confirm that the pipeline has:
 
-You'll see the test being executed in the target environment:
+1. Checked out the updated repository contents.
+2. Applied CI overlays.
+3. Imported the updated DataStage assets into the CI project.
+4. Compiled the CI project.
+5. Executed unit tests.
+6. Run asset analysis tests.
+7. Uploaded reports.
 
-```bash
-MettleCI Command Line (build 1.0-99)
-(C) 2018-2026 Data Migrators Pty Ltd
-unit-test execute (1.0-123)
-Finding changes to flows and unit tests
-Executing 1 test cases with 8 concurrent jobs...
- * Test TxFctFinDs - PASSED (7s)
-SUCCESS: Executed 1 tests
-```
-
-This produces another JUnit-style result file:
-
-```text
-./reports/unit-test-results.xml
-```
-
-Note that if you were to run this command again then MCIX would identify that 
-the test has already succeeded and doesn't need to be re-executed:
-
-```bash
-MettleCI Command Line (build 1.0-99)
-(C) 2018-2026 Data Migrators Pty Ltd
-unit-test execute (1.0-123)
-Finding changes to flows and unit tests
- * Test TxFctFinDs no changes detected - SKIPPED
-Executing 0 test cases with 8 concurrent jobs...
-SUCCESS: Executed 0 tests
-```
+You can also open the target CI DataStage project and confirm that the changed flow has been updated there.
 
 ---
 
-{% if site.compliance == "Y" %}
-## 10. Run asset analysis tests
+## 15. Optional: Use individual actions instead of the deploy action
 
-Next, run asset analysis tests to validate that the imported assets comply with your rules.
-
-```bash
-mcix asset-analysis test \
-  -url "$CP4D_URL" \
-  -project "$TARGET_PROJECT" \
-  -user "$CP4D_USERNAME" \
-  -api-key "$CP4D_API_KEY" \
-  -rules "./asset-analysis-rules" \
-  -report "$REPORT_DIR/asset-analysis-results.xml"
-```
-
-This produces a JUnit-style test result file:
+The [MCIX DataStage Deploy](/github/action-reference#datastage-deploy) action is a convenient shortcut for this common sequence:
 
 ```text
-./reports/asset-analysis-results.xml
+overlay apply → datastage import → datastage compile
 ```
 
-That file can later be consumed by a CI/CD system such as GitHub Actions, Azure DevOps, Jenkins, or Tekton.
+If you prefer to show each stage individually in the tutorial, replace the single deployment step with these three explicit steps.
+
+```yaml
+{% raw %}      - name: Apply CI overlays
+        id: overlay
+        uses: MettleCI/mcix-overlay-apply@v0
+        with:
+          assets: datastage
+          overlays: overlays/ci
+          output: build/ci-assets.zip
+
+      - name: Import DataStage assets
+        id: import
+        uses: MettleCI/mcix-datastage-import@v0
+        with:
+          api-key: ${{ secrets.CP4D_API_KEY }}
+          url: ${{ vars.CP4D_URL }}
+          user: ${{ vars.CP4D_USER }}
+          project: ${{ vars.DATASTAGE_PROJECT }}
+          assets: build/ci-assets.zip
+          report: reports/import-report.xml
+
+      - name: Compile DataStage assets
+        id: compile
+        uses: MettleCI/mcix-datastage-compile@v0
+        with:
+          api-key: ${{ secrets.CP4D_API_KEY }}
+          url: ${{ vars.CP4D_URL }}
+          user: ${{ vars.CP4D_USER }}
+          project: ${{ vars.DATASTAGE_PROJECT }}
+          report: reports/compile-report.xml{% endraw %}
+```
+
+This is more verbose, but it makes the pipeline mechanics clearer for users who are learning how the MCIX operations relate to one another.
+
+For the main tutorial, however, the composite deployment action is simpler and closer to what most users will want in a real GitHub Actions pipeline.
 
 ---
-{% endif %}
 
-## Run the full pipeline as a script
+## Expected results
 
-Once you've run the individual commands you may wish to place them into a shell script to reproduce them easily. Templates of this script are available for **Linux/macOS** and **Windows** (below). For your selected platform you'll need to update the file's configuration values to suit your environment. For example:
-
-<details markdown="1">
-  <summary>Linux/macOS</summary>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[![mcix-pipeline.sh]({{ site.url }}/assets/img/document--download.svg)](mcix-pipeline.sh)
-<br/>[mcix-pipeline.sh](mcix-pipeline.sh)
-
-```bash
-export CP4D_URL="https://cpd.example.com"
-export CP4D_USERNAME="YourUsername"
-export CP4D_API_KEY="your-api-key"
-export SOURCE_PROJECT="mcix-cli-demo"
-export TARGET_PROJECT="mcix-cli-demo_CI"
-```
-
-<cds-inline-notification
-  kind="warning"
-  subtitle="Always review downloaded assets before running them"
-  low-contrast="true"
-  hide-close-button="true">
-</cds-inline-notification>
-
-Make the script executable:
-```bash
-chmod +x mcix-pipeline.sh
-```
-
-Run it:
-```bash
-./mcix-pipeline.sh
-```
-</details>
-
-<details markdown="1">
-  <summary>Windows</summary>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[![mcix-pipeline.ps1]({{ site.url }}/assets/img/document--download.svg)](mcix-pipeline.ps1)
-<br/>[mcix-pipeline.ps1](mcix-pipeline.ps1)
-
-```powershell
-$CP4D_URL="https://source-cpd.example.com"
-$CP4D_USERNAME = "YourUsername"
-$CP4D_API_KEY  = "your-api-key"
-$PROJECT  = "Development"
-$SOURCE_PROJECT  = "Test"
-$TARGET_PROJECT  = "Test_CI"
-```
-
-<cds-inline-notification
-  kind="warning"
-  subtitle="Always review downloaded assets before running them"
-  low-contrast="true"
-  hide-close-button="true">
-</cds-inline-notification>
-
-This script assumes **PowerShell 7.4 or later**. The combination of `$ErrorActionPreference = "Stop"` and `$PSNativeCommandUseErrorActionPreference = $true` causes the script to stop if an external command such as `mcix` returns a non-zero exit code. In older versions of PowerShell command failures do not automatically terminate the script, so scripts should check `$LASTEXITCODE` explicitly after each command.
-
-## Running the PowerShell pipeline script
-
-Open PowerShell, change to your repository directory, and run the script:
-
-```powershell
-cd path\to\mcix-cli-demo
-.\mcix-pipeline.ps1
-```
-
-If PowerShell blocks the script because of your local execution policy, you can allow the script to run for this session only:
-
-```powershell
-Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
-```
-
-This does not permanently change your system-wide PowerShell policy - it only applies to the current PowerShell session.
-
-When the script completes successfully, it should have exported the DataStage assets, applied overlays, imported the overlaid assets into the target project, and produced the configured test result files.
-</details>
-
-You'll need to update the variables with your environment-specific configuration items, like URLs, credentials, and project names.
-
-### Expected results
-
-After the script completes successfully, you should have a directory that looks like this:
+After the workflow completes successfully, you should have:
 
 ```text
-mcix-cli-demo/
-├── datastage/ (A)
-│   └── exported DataStage assets
-├── overlaid-assets/ (B)
-│   └── transformed assets ready for import
-└── reports/    (C)
-    └── unit-test-results.xml
+mcix-github-actions-demo/
+├── datastage/
+│   └── source-controlled DataStage assets
+├── overlays/
+│   └── ci/
+├── build/
+│   └── ci-assets.zip
+└── reports/
+    ├── import-report.xml
+    ├── compile-report.xml
+    ├── unit-test-report.xml
+    └── asset-analysis-report.xml
 ```
+
+The generated `build/` and `reports/` directories exist only inside the workflow run unless you create them locally or upload them as artefacts.
 
 The pipeline has:
-1. Exported assets from the source project **(A)**
-1. Applied target-environment configuration **(B)**
-1. Imported assets into the target project
-{% if site.compliance == "Y" %}
-1. Validated (locally) the assets using asset analysis rules **(C)**
-{% endif %}
-1. Executed (on DataStage) unit tests against the deployed assets **(C)**
+
+1. Retrieved DataStage assets from source control.
+2. Applied CI-specific overlays.
+3. Imported the transformed assets into the CI DataStage project.
+4. Compiled the deployed assets.
+5. Executed DataStage unit tests.
+6. Applied asset-analysis rules.
+7. Published generated reports as workflow artefacts.
 
 ---
+
+## Notes for real-world usage
+
+For a production-quality workflow, consider the following refinements:
+
+* Use separate GitHub Environments for `ci`, `qa`, and `prod`.
+* Add deployment approval rules to protected environments.
+* Pin MCIX actions to specific versions rather than broad major versions.
+* Run CI deployments from feature branches or pull requests before merging to `main`.
+* Keep secrets in GitHub Secrets, not in workflow YAML.
+* Keep environment-specific values in GitHub Environment variables.
+* Do not commit generated `build/` or `reports/` output to source control.
+* Use branch protection rules once the tutorial workflow is working.
+* Consider splitting validation and deployment into separate jobs if your real pipeline requires approvals or promotion gates.

@@ -6,12 +6,11 @@ The **MCIX asset analysis test** action provides an automated quality gate for D
 
 <cds-inline-notification
   kind="info"
-  title="Note"
   low-contrast
   hide-close-button="true"
   id="overlay-notification">
     <div class="cds--inline-notification__subtitle">
-    <p>This actio is for running MettleCI Asset Analysis <i>Rules</i>. If you're looking for the <b>asset analysis query</b> operation then please see the <a href="/command-line/command-reference#asset-analysis-query">asset-analysis query CLI command</a>. The <b>asset analysis query</b> operation is not available as a GitHub action.</p>
+    <p>This action is for running MettleCI Asset Analysis <i>Rules</i>. If you're looking for the <b>asset analysis query</b> operation then please see the <a href="/command-line/command-reference#asset-analysis-query">asset-analysis query CLI command</a>. The <b>asset analysis query</b> operation is not available as a GitHub action.</p>
   </div>
 </cds-inline-notification>
 

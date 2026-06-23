@@ -1,398 +1,326 @@
 ---
 title: GitHub Pipeline Tutorial Prerequisites
-description: Establishing the conditions for a<br/>Pipeline using the MCIX CLI
-
+description: Establishing the conditions for a pipeline using MCIX GitHub Actions
 ---
 
-## Install the MCIX command line
-
-You'll perform the CI/CD actions at the commad line of you local host. Start by ensuring you have a locally-installed MCIX command line interface:
-
-Download the MCIX CLI instalation media for your local host platform from [here]({{ site.mcix-cmd-url }}) then follow the installation instructions: 
-
-<details markdown="1">
-  <summary>Linux/macOS</summary>
-1. Unzip it
-1. Drag the `mcix.app` folder to your local host's `/Applications` folder
-1. Add `export PATH=$PATH:/Applications/mcix.app/Contents/MacOS` to your shell's profile file
-
-One way of permanently adding the command to your path is by entering a command liek of these in a command shell:
-
-```
-echo "export PATH=$PATH:/Applications/mcix.app/Contents/MacOS" >> ~/.profile
-```
-
-Note that you configuration may use `~/.bash_profile` or `~/.zprofile`, for example.  This approach ensures the application is located aongside your other applications, is easily discoverable from macOS Finder, and can be invoked from the command shell by typing `mcix`.
-</details>
-
-<details markdown="1">
-  <summary>Windows</summary>
-1. Unzip it
-1. Copy the contents into "C:\Program Files\mcix"
-1. Permanently add "C:\Program Files\mcix" to your system Path
-
-One way of permanently adding the command to your path is by entering the following in a command shell:
-
-```
-setx PATH "%PATH%;C:\Program\ Files\mcix" /M
-```
-</details>
-
-Next, verify your MCIX installation using the `mcix system version` command:
-
-```shell
-mcix system version
-```
-
-Which should produce something like the below. Note that your version number and list of bundled plugins may differ from this example.
-
-```
-MettleCI Command Line (build 1.0-123)
-(C) 2018-2026 Data Migrators Pty Ltd
-system version (1.0-123)
-Mac OS X 26.3 (aarch64)
-johnmckeever, English (Australia)
-
-Loaded plugins:
- * mcix-asset-analysis-2.1-123.jar
- * MettleCI CP4D Compile Plugin (1.0-123)
- * MettleCI CP4D Export Plugin (1.0-123)
- * MettleCI CP4D Import Plugin (1.0-123)
- * MettleCI CP4D Overlays Plugin (1.0-123)
- * MettleCI CP4D Unit Testing Plugin (1.0-123)
-```
-
-Check which namespaces are provided by your MCIX installation.
-
-```shell
-mcix help
-```
-
-Which should produce something like the below. Note that your list of namepsaces, and their ordering, may differ from this example.
-
-```
-MettleCI Command Line (build 1.0-123)
-(C) 2018-2026 Data Migrators Pty Ltd
-Usage: [namespace] [command] [command options]
-  Namespaces:
-    overlay
-    asset-analysis
-    datastage
-    unit-test
-    system
-```
-
-You can verify you have access to the commands required for this tutorial with the following commands:
-
-```shell
-mcix help 
-mcix help datastage export
-mcix help datastage import
-mcix help overlay apply
-mcix help unit-test execute
-# mcix help asset-analysis test is out of scope for the current tutorial      
-```
-
-Each command should produce a usage statement similar to this:
-
-```
-MettleCI Command Line (build 1.0-123)
-(C) 2018-2026 Data Migrators Pty Ltd
-Usage: overlay apply [options]
-  Options:
-  * -assets
-      Path to DataStage export zip file or directory
-  * -output
-      Zip file or directory to write updated assets
-  * -overlay
-      Directory containing asset overlays. Each overlay will be applied in
-      specified order when providing multiple (e.g: -overlay dir1 -overlay
-      dir2)
-    -properties
-      Properties file with replacement values
-```
-
-
----
-
-## Configuring your Git platform
-
-Before running through the CLI-based MCIX pipeline tutorial you need to  ensure you have access to your nominated Git platform, and that the platform hosts a Git repository suitably structured for the storage of IBM DataStage project assets. 
-
-We'll start by establishing a folder on your local host's filesystem which is a local clone of a remote Git repository into which we'll push our DataStage assets.
-
-<!--
-```mermaid
-  %%{init:{'flowchart':{'nodeSpacing': 50, 'rankSpacing': 100}}}%%
-  flowchart LR
-
-  %% Command
-  subgraph LOCAL_HOST["Local Host"]
-    subgraph FILESYSTEM["Filesystem"]
-       LOCAL_REPO1["Local Repository<br/>/project1"]
-    end
-    GIT_CLI["Git CLI"]
-  end
-
-  subgraph REMOTE_HOST1["Remote Host"]
-    subgraph REMOTE_SERVICE["Git Service"]
-      REMOTE_REPO1["Remote Repository<br/>Project1"]
-    end
-  end
-
-  LOCAL_REPO1 <-.-> GIT_CLI <-. Pull/Push .-> REMOTE_REPO1
-
-  BETTER["Better diagram here"]
-```
--->
-
-## Verify your local Git CLI instalation
-
-If Git is not installed, [install it](https://git-scm.com/install/) before continuing.
-
-Then, on your local host (Linux, macOS, or Windows), run:
-
-```bash
-git --version
-```
-
-You should see output similar to the below.  Your version number may well be different to that shown here.
-
-```text
-git version 2.54.0
-```
-
-## Create an empty project repository
-
-Your Git platform can be GitHub, GitLab, Bitbucket, Azure DevOps, your organisation’s internal Git platform, or any other Git-compatible service,
-
-Login to your Git platform and create a new repository.
-
-| Platform | URL | Links |
-| -------- | --- | ----- |
-| Azure DevOps | [https://dev.azure.com](https://dev.azure.com) | [Authentication](https://learn.microsoft.com/en-us/azure/devops/integrate/get-started/authentication/authentication-guidance?view=azure-devops),  [Create a repository](https://learn.microsoft.com/en-us/azure/devops/repos/git/create-new-repo?view=azure-devops) |
-| Bitbucket | [https://bitbucket.org](https://bitbucket.org) | [Authentication](https://confluence.atlassian.com/bitbucketserver/permanently-authenticating-with-git-repositories-776639846.html), [Create a repository](https://support.atlassian.com/bitbucket-cloud/docs/create-a-git-repository/) |
-| GitHub | [https://github.com](https://github.com) | [Authentication](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/about-authentication-to-github), [Create a repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-new-repository) |
-| GitLab | [https://gitlab.com](https://gitlab.com) | [Authentication](https://docs.gitlab.com/auth/user_authentication/), [Create a repository](https://docs.gitlab.com/user/project/repository/#create-a-repository) |
-
-Use a simple, purpose-based repository name, such as `mcix-cli-demo`.
-
-Avoid naming the repository after a specific environment, such as `myproject-prod` or `myproject-test`. The repository should represent the single source of truth for the DataStage initiative, not one particular deployment target.
-
-In this model, environments such as Dev, CI, QA, and Prod are separate DataStage projects. Each environment is populated from the repository at different points in the delivery lifecycle. For example, Dev may contain the latest working changes, QA may contain a tested candidate release, and Prod should contain only the approved production version.  Read more about our recommended projet naming scheme [here](/introduction/cicd-concepts#environments-and-datastage-project-naming).
-
-In other words, the repository stores the authoritative versioned source, while the DataStage projects represent environment-specific deployments of that source.
-
-You do not need to enable any provider-specific features such as build pipelines, actions, runners, wikis, discussions, boards, branch protection rules, or deployment features for this tutorial.
-
-Recommended settings for your repository:
-
-| Setting | Value |
-| ------- | ----- |
-| Repository name   | mcix-cli-demo |
-| Visibility        | Private  |
-| Default branch    | main     |
-| .gitignore        | Yes      |
-| README            | Yes      |
-| Licence           | Optional |
-| Issues:           | Disabled |
-| Wiki:             | Disabled |
-| Discussions:      | Disabled |
-| Projects/Boards:  | Disabled |
-| Branch protection | Disabled |
+Before you begin this tutorial you’ll need to prepare your DataStage projects, GitHub repository, GitHub Actions environment configuration, and the credentials required to connect GitHub Actions to your DataStage service.
 
 <cds-inline-notification
-  kind="info"
-  title="Note"
-  subtitle="Your Git platform will provide HTTPS and SSH references to you newly-created repository. HTTPS and SSH are the two primary secure transport protocols used to connect Git clients to remote repositories.  HTTPS uses port 443, relies on token-based or password authentication, and is generally easier to configure and more firewall-friendly.  SSH (Secure Shell) uses public/private key cryptography on port 22, and offers the convenience of eliminating the need for repetitive credential entry after initial setup."
+  kind="warning"
+  title="Important"
   low-contrast
   hide-close-button="true"
   id="overlay-notification">
-</cds-inline-notification>
-
-## Clone the template repository locally
-
-A MettleCI template repository is provided for convenience and as a recommended starting point. It is available to clone from [here](https://github.com/MettleCI/datastage-nextgen-repo-template). This repository is hosted on GitHub but is a generic Git repository which can be cloned to your local host and subsequently 
-deployed to any target Git paltform.
-
-You are not required to follow the template repository's structure. You can organise your repository in whatever way best suits your project, including where you store DataStage assets, scripts, configuration files, documentation, and other non-DataStage artefacts. The repository does, however, demonstrate a practical best-practice layout that is easy to understand, easy to deploy, and suitable for most delivery pipelines. Starting from the template helps you avoid unnecessary setup decisions and gives you a working structure that can be adapted later as your needs evolve.
-
-**Process**
-
-These commands work the same regardless of your host platform (macOS, Windows, or Linux)
-
-1. Configure your Git environment with your name and email:
-```bash
-git config --global user.name "Your Name"
-git config --global user.email "you@example.com"
-```
-
-1. Copy the repository clone URL:
-```
-https://github.com/MettleCI/datastage-nextgen-repo-template
-```
-
-1. Clone the to your local host:
-```shell
-git clone https://github.com/MettleCI/datastage-nextgen-repo-template
-```
-or, using SSH:
-```bash
-git clone git@github.com/MettleCI/datastage-nextgen-repo-template.git
-```
-If desired, you can test SSH access using:
-```bash
-ssh -T git@github.com
-ssh -T git@gitlab.com
-ssh -T git@bitbucket.org
-etc.
-```
-<cds-inline-notification
-  kind="info"
-  title="Note"
-  low-contrast="true"
-  hide-close-button="true">
-  <div class="cds--inline-notification__subtitle">
-    <p>If you want to use SSH with Azure Repos then copy the SSH host shown in the Azure DevOps 'clone' instructions of your repository in the Azure DevOps user interface. e.g.,<br/>
-    <code>git@ssh.dev.azure.com:v3/MyOrg/mcix-cli-demo</code>.</p>
+  <div>
+  Ideally, this tutorial would not require you to install the MCIX CLI on your local host as there would be a suitable direct interface between the DataStage user interface and your Git platform. However, due to the requirement for the <a href="/notes/git-interface">interim Git Interface</a>, you should start this tutorial by following the <a href="/command-line/tutorial-prerequisites#install-the-mcix-command-line">Install the MCIX command line</a> section of the Command Line tutorial.
   </div>
 </cds-inline-notification>
 
-A successful response usually confirms that you have authenticated, even if it says shell access is not provided.<br/><br/>
-Both of these approaches (HTTPS or SSH) will require you to authenticate yourself to your Git platform.  When using HTTPS, your Git platform may require a personal access token rather than your account password.  See you Git platform's documentation for more details.<br/><br/>
+---
 
-1. Inspect the contents of the cloned repository:
+## Configure your DataStage projects
+
+Ensure you have a DataStage NextGen project for each of the environments you use during the tutorial:
+
+1. Your source `Development` DataStage project, and
+2. Each environment to which you wish to deploy.
+
+For the purposes of this tutorial we’ll use a single CI target environment.
+
+| Environment | Project name |
+| :--- | :--- |
+| Development | `mcix-demo` |
+| CI | `mcix-demo_CI` |
+
+Ensure your DataStage NextGen projects are not configured as Git integrated projects.
+
+- Do not select **Git Integrated** when creating the project.
+- Do not select **Enable Git integration** in the settings of the created project.
+
+In this tutorial GitHub is the source of truth for your DataStage assets. DataStage projects represent environment-specific deployments of that source.
+
+## Generate an API key
+
+If you don’t yet have one, generate an API key for the user account that GitHub Actions will use to connect to DataStage.
+
+The type of key you need to generate depends on whether you are using DataStage NextGen on a self-hosted platform or IBM Cloud-hosted DataStage-as-a-Service.
+
+#### Self-hosted
+
+Create an API key using IBM’s guidance for your platform. Depending on your IBM Software Hub / Cloud Pak configuration, this may be either:
+
+- a platform API key, or
+- an instance API key.
+
+#### SaaS
+
+For IBM Cloud-hosted DataStage-as-a-Service, create an IBM Cloud API key, not a Cloud Pak API key.
+
+Note that the value of an IBM Cloud API key is only shown once, at creation time. The copy icon shown next to an existing key copies the key ID, not the secret key value.
+
+## Configure DataStage test data storage
+
+As part of this tutorial you may execute unit tests against one or more DataStage flows.  To support this, configure test data storage in the DataStage project where tests will be executed. For this tutorial, that will normally be your CI project.  
+
+If you want to use the sample project download then ensure that your test data storage connection is called `TestDataConnection`.
+
+## Prepare a GitHub repository
+
+Before running a GitHub Actions-based MCIX pipeline, you need a GitHub repository containing your DataStage assets, overlays, workflow definitions, and any supporting files.
+
+Use a simple, purpose-based repository name, such as:
+
+```text
+mcix-github-actions-demo
+```
+
+Avoid naming the repository after a specific environment, such as myproject-prod or myproject-test. The repository should represent the single source of truth for the DataStage initiative, not one particular deployment target.
+
+Recommended settings for your repository:
+
+| Setting           | Value                      |
+| :---------------- | :------------------------- |
+| Repository name   | `mcix-github-actions-demo` |
+| Visibility        | Private                    |
+| Default branch    | `main`                     |
+| `.gitignore`      | Yes                        |
+| README            | Yes                        |
+| Licence           | Optional                   |
+| Issues            | Disabled                   |
+| Wiki              | Disabled                   |
+| Discussions       | Disabled                   |
+| Projects/Boards   | Disabled                   |
+| Branch protection | Disabled for this tutorial |
+
+
+You can enable branch protection, pull request review rules, and deployment approvals later. For this introductory tutorial, keep the repository simple so you can focus on the pipeline mechanics.
+
+## Clone the MettleCI template repository
+
+A MettleCI template repository is provided for convenience and as a recommended starting point.
+
+You are not required to follow the template repository’s structure. You can organise your repository in whatever way best suits your project, including where you store DataStage assets, scripts, configuration files, documentation, and other non-DataStage artefacts.
+
+The template repository does, however, demonstrate a practical best-practice layout that is easy to understand, easy to deploy, and suitable for most delivery pipelines.
+
+Clone the template repository to your local host:
+
 ```shell
-cd mcix-cli-demo
+git clone https://github.com/MettleCI/datastage-nextgen-repo-template
+```
+
+Rename the local directory to match your new GitHub repository:
+
+```shell
+mv datastage-nextgen-repo-template mcix-github-actions-demo
+cd mcix-github-actions-demo
+```
+
+Inspect the repository contents:
+
+```shell
 ls -al
 ```
-Which should look like this:
-```text
-mcix-cli-demo/
+You should see a structure similar to this:
+
+```shell
+mcix-github-actions-demo/
 ├── .git
 ├── .gitattributes
 ├── .gitignore
 ├── datastage/
 ├── filesystem/
-├ ── overlays/
-├── pipelines/
-├── README.md
-└── unit-tests/
+├── overlays/
+└── README.md
 ```
-The `.git` and `.gitattributes` files tell your Git CLI that this is folder is a Git repository, and what its properties are.
-<br/><br/>
 
-1. Point your local Git clone to your new remote repository:
+Now point the local clone to your new GitHub repository:
+
 ```shell
-# Confirm your local repository currently points 
-# to the remote template repository
-git remote -v
-```
-This should show:
-```shell
-// For HTTPS:
-origin	https://github.com/MettleCI/datastage-nextgen-repo-template (fetch)
-origin	https://github.com/MettleCI/datastage-nextgen-repo-template (push)
-// For SSH:
-origin  git@github.com:MettleCI/datastage-nextgen-repo-template.git (fetch)
-origin  git@github.com:MettleCI/datastage-nextgen-repo-template.git (push)
-```
-1. Now change the remote to your recently-created repository:
-```shell
-git remote set-url origin <YOUR_NEW_REPOSITORY_URL>   
+git remote set-url origin <YOUR_NEW_GITHUB_REPOSITORY_URL>
 ```
 For example:
+
 ```shell
-https://myusername@dev.azure.com/MyOrg/MyProject/_git/mcix-cli-demo
+git remote set-url origin git@github.com:my-org/mcix-github-actions-demo.git
 ```
-Again, you can get the repository URL by clicking the **clone** button of your repository in the Azure DevOps user interface and selecting 'HTTPS'.
-<br/><br/>You can verify your `git remote set` has worked by re-issuing... 
-```
-git remote -v
-```
-This should now show your remote as the Git repository you specified.
+Push the template contents to your new repository:
 
----
-
-## Verify essential Git operations
-
-From inside the cloned repository, run:
-
-```bash
-git pull
-```
-
-If this completes successfully (usually with an `Already up to date` message) you have permission to retrieve the latest repository content.  
-
-Append a line to the `README.md` file:
-
-```bash
-echo "Git access check" >> README.md
-```
-
-<details markdown="1">
-  <summary>Verify this step</summary>
-Check the Git status to verify the change has been identified locally:
-
-```
-git status
-```
-
-This should show your change is not yet staged for commit:
-
-```
-On branch main
-Your branch is up to date with 'origin/main'.
-
-Changes not staged for commit:
-  (use "git add <file>..." to update what will be committed)
-  (use "git restore <file>..." to discard changes in working directory)
-	modified:   README.md
-
-no changes added to commit (use "git add" and/or "git commit -a")```
-```
-</details>
-
-Stage it for commit:
-
-```bash
-git add README.md
-```
-
-<details markdown="1">
-  <summary>Verify this step</summary>
-Check the change has been staged for commit:
-
-```
-git status
-```
-
-This should show:
-
-```
-On branch main
-Your branch is ahead of 'origin/main' by 1 commit.
-  (use "git push" to publish your local commits)
-
-Changes to be committed:
-  (use "git restore --staged <file>..." to unstage)
-	modified:   README.md
-```
-</details>
-
-
-Now Commit it:
-
-```
-git commit -m "Updated README to verify Git access"
-```
-
-If the commit succeeds, your local Git configuration is working. 
-
-Push the test change:
-
-```bash
+```shell
 git push -u origin main
 ```
+You can now open your GitHub repository in a browser and confirm that the template files are visible.
 
-If this succeeds, you have the necessary write access to the repository.
+## Enable GitHub Actions
+
+GitHub Actions must be enabled for your repository.
+
+In GitHub, navigate to: <br/>
+**Repository** → **Settings** → **Actions** → **General**
+
+For this tutorial, ensure that **Actions** are allowed to run in the repository.
+
+If your organisation restricts which actions can be used, confirm that your repository is allowed to use the MettleCI MCIX actions from GitHub Marketplace.
+
+The MCIX actions used in this tutorial are published by MettleCI and include:
+
+| Action                              | Purpose                                                             |
+| :---------------------------------- | :------------------------------------------------------------------ |
+| `MettleCI/mcix-system-version`      | Verifies the MCIX runtime available to the action                   |
+| `MettleCI/mcix-overlay-apply`       | Applies environment overlays to exported DataStage assets           |
+| `MettleCI/mcix-datastage-import`    | Imports DataStage assets into a target project                      |
+| `MettleCI/mcix-datastage-compile`   | Compiles DataStage assets in a target project                       |
+| `MettleCI/mcix-asset-analysis-test` | Runs asset analysis rules                                           |
+| `MettleCI/mcix-unit-test-execute`   | Executes MettleCI unit tests                                        |
+| `MettleCI/mcix-composite-deploy`    | Performs overlay, import, and compile as a single deployment action |
+
+## Confirm runner requirements
+
+The MCIX GitHub Actions are designed to run in GitHub Actions workflows using Linux runners.
+
+For this tutorial, use the GitHub-hosted Ubuntu runner:
+
+```yaml
+runs-on: ubuntu-latest
+```
+
+This avoids the need to configure your own self-hosted runner.
+
+If you use a self-hosted runner instead, it must be a Linux runner capable of executing container-based GitHub Actions. It must also have network access to:
+
+- your GitHub repository,
+- the MCIX action repositories,
+- the MCIX container image registry, and
+- your DataStage service URL.
+
+## Create GitHub environment configuration
+
+This tutorial uses GitHub Environments to keep environment-specific configuration separate from the workflow logic.
+
+Create a GitHub Environment for your CI deployment target: <br/>
+**Repository** → **Settings** → **Environments** → **New environment**
+
+Name the environment:
+
+```text
+ci
+```
+
+Then add the following environment variables:
+
+| Variable            | Example value             | Description                           |
+| :------------------ | :------------------------ | :------------------------------------ |
+| `CP4D_URL`          | `https://cpd.example.com` | Base URL of your DataStage service    |
+| `CP4D_USER`         | `my-user@example.com`     | Username used to connect to DataStage |
+| `DATASTAGE_PROJECT` | `mcix-demo_CI`            | Target CI DataStage project name      |
+
+Add the following environment secret:
+
+| Secret         | Description                               |
+| :------------- | :---------------------------------------- |
+| `CP4D_API_KEY` | API key used to authenticate to DataStage |
+
+Use variables for non-sensitive values such as URLs, usernames, and project names. Use secrets for sensitive values such as API keys.
+
+## Check repository workflow permissions
+
+In your repository, navigate to: <br/>
+**Repository** → **Settings → **Actions** → **General** → **Workflow permissions**
+
+For this tutorial, the default read permissions are usually sufficient because the workflow will read repository contents and execute MCIX actions.
+
+If you later extend the workflow to create releases, write pull request comments, publish packages, or update repository contents, you may need to grant additional permissions explicitly in your workflow.
+
+## Create the workflow directory
+
+GitHub Actions workflow files are stored in the .github/workflows directory at the root of your repository.
+
+Create that directory if it does not already exist:
+
+```bash
+mkdir -p .github/workflows
+```
+## Add a simple MCIX verification workflow
+
+Before building the full pipeline, create a simple workflow that verifies your repository can execute an MCIX action.
+
+Create this file which will create a simple workflow using the [MCIX system version](/github/action-reference#system-version) action:
+
+```
+.github/workflows/mcix-system-version.yml
+```
+
+Add the following content:
+
+```yaml
+name: MCIX System Version
+
+on:
+  workflow_dispatch:
+
+jobs:
+  mcix-system-version:
+    name: Verify MCIX runtime
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Run MCIX System Version
+        uses: MettleCI/mcix-system-version@v0
+```
+
+Commit and push the workflow:
+
+```shell
+git add .github/workflows/mcix-system-version.yml
+git commit -m "Add MCIX system version workflow"
+git push
+```
+
+Then run the workflow manually:<br/>
+**Repository** → **Actions** → **MCIX System Version** → **Run workflow**
+
+A successful run confirms that:
+
+- GitHub Actions is enabled for the repository,
+- the repository can use the MCIX action,
+- the selected runner can execute the action, and
+- the MCIX runtime can start successfully.
+
+You'll see in the logs the version of the MCIX System Version action you're using as well as some other diagnostic and informational messages.
+
+## Recommended repository layout
+
+For this tutorial, your repository should contain at least the following structure:
+
+```text
+mcix-github-actions-demo/
+├── .github/
+│   └── workflows/
+│       └── mcix-system-version.yml
+├── datastage/
+├── filesystem/
+├── overlays/
+└── README.md
+```
+
+As the tutorial progresses, you will add additional workflow files to export, overlay, import, compile, analyse, and test your DataStage assets.
+
+## Summary
+
+Before continuing, confirm that you have:
+
+- DataStage Development and CI projects
+- DataStage projects that are not Git integrated
+- an API key for DataStage authentication
+- test data storage configured where unit tests will run
+- a GitHub repository based on the MettleCI template
+- GitHub Actions enabled
+- a ci GitHub Environment
+- environment variables for your DataStage URL, username, and project
+- an environment secret containing your API key
+- a successful MCIX System Version workflow run
+
+Once these prerequisites are complete, you are ready to build a GitHub Actions workflow using the MCIX custom actions.

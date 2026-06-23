@@ -272,12 +272,29 @@ Command failed.
 So using `(ID f2c386bfa8f17574)` we can retrieve detailed logs about the error. For example:
 
 ```bash
-$> ls -al ~/Library/Logs/MettleCI/
+{% raw %}$> ls -al ~/Library/Logs/MettleCI/
 -rw-r--r--@ 1 johnmckeever  staff   5.6K 15 Jun 14:25 cli.2026-06-15.log
 -rw-r--r--@ 1 johnmckeever  staff   921B 16 Jun 14:20 cli.2026-06-16.log
 -rw-r--r--@ 1 johnmckeever  staff    20K 17 Jun 13:50 cli.2026-06-17.log
 -rw-r--r--@ 1 johnmckeever  staff    34K 17 Jun 12:55 exception.f2c386bfa8f17574.log
-```
+
+$> $cat ~/Library/Logs/MettleCI/exception.f2c386bfa8f17574.log
+14:21:21  INFO STDOUT 1f00f7a2654e1b0e: datastage export (1.0-123)
+14:21:21  INFO STDOUT 1f00f7a2654e1b0e: Connecting to CP4D...
+<<REDACTED FOR BREVITY>>
+14:21:21 ERROR c.d.m.c.s.Shell 1f00f7a2654e1b0e: Caught exception (ID f2c386bfa8f17574): com.datamigrators.mettle.nextgen.repository.cams.HttpException: HTTP 401 {"id":"WSCPA0000E","code":401,"error":"Unauthorized","reason":"Bearer token is either missing or invalid: undefined.","message":"Access denied"}
+	at /Users/myusername/bin/mcix.app/Contents/app/plugins/mcix-export-1.0-123.jar//com.datamigrators.mettle.nextgen.repository.cams.Cp4dInstance.getProjects(Cp4dInstance.java:62)
+	at /Users/johnmckeever/bin/mcix.app/Contents/app/plugins/mcix-export-1.0-SNAPSHOT.jar//com.datamigrators.mettle.nextgen.repository.cams.Cp4dInstance.getProjects(Cp4dInstance.java:62)
+	at /Users/johnmckeever/bin/mcix.app/Contents/app/plugins/mcix-export-1.0-SNAPSHOT.jar//com.datamigrators.mettle.command.utils.AbstractRepositoryRef.getRepositories(AbstractRepositoryRef.java:199)
+	at /Users/johnmckeever/bin/mcix.app/Contents/app/plugins/mcix-export-1.0-SNAPSHOT.jar//com.datamigrators.mettle.command.utils.AbstractRepositoryRef.resolveReferences(AbstractRepositoryRef.java:144)
+	at /Users/johnmckeever/bin/mcix.app/Contents/app/plugins/mcix-export-1.0-SNAPSHOT.jar//com.datamigrators.mettle.command.utils.AbstractRepositoryRef.getId(AbstractRepositoryRef.java:86)
+	at /Users/johnmckeever/bin/mcix.app/Contents/app/plugins/mcix-export-1.0-SNAPSHOT.jar//com.datamigrators.mettle.command.utils.ProjectOrSpaceRef.readRepository(ProjectOrSpaceRef.java:52)
+	at /Users/johnmckeever/bin/mcix.app/Contents/app/plugins/mcix-export-1.0-SNAPSHOT.jar//com.datamigrators.mettle.command.utils.ProjectOrSpaceRef.readRepository(ProjectOrSpaceRef.java:47)
+	at /Users/johnmckeever/bin/mcix.app/Contents/app/plugins/mcix-export-1.0-SNAPSHOT.jar//com.mettleci.export.command.BulkExportCommand.execute(BulkExportCommand.java:72)
+	at com.datamigrators.mettle.command.shell.Shell.executeCommand(Shell.java:271)
+	at com.datamigrators.mettle.command.shell.Shell.run(Shell.java:68)
+	at com.datamigrators.mettle.command.shell.MainClass.main(MainClass.java:113)...
+{% endraw %}```
 
 If you ever need to raise a support request related to MCIX you should supply both the relevant **cli** and **exception** 
 files with your support request.

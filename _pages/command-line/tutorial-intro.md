@@ -20,6 +20,9 @@ Before running the pipeline steps, you will prepare a working environment contai
 1. access to a target DataStage project
 1. access to a remote Git repository
 1. a local clone of that repository
+{% if site.compliance == "Y" %}
+1. asset-analysis rules, if you want to include static validation
+{% endif %}
 1. at least one [overlay file](/introduction/overlays) for the target environment
 
 The [prerequisite page](/command-line/tutorial-prerequisites) walks through establishing 

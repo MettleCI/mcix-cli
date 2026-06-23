@@ -4,6 +4,8 @@ description: Establishing the conditions for a<br/>Pipeline using the MCIX CLI
 
 ---
 
+Before you begin this tutorial you’ll need to prepare your local execution environment and verify access to your DataStage projects and remote Git repository.
+
 ## Configure your DataStage projects
 
 Ensure you have a DataStage NextGen project existing for each of the [environments](/introduction/cicd-concepts#environments-and-datastage-project-naming) you use during the tutorial:
@@ -22,24 +24,22 @@ Ensure your DataStage NextGen projects are not configured as **Git Integrated** 
 
 ## Generate an API key
 
-If you don't yet have one you should generate an API key. 
-
-The type of key you need to generate and the process for creating it is different for DataStage NextGen on self-hosted platforms and IBM Cloud-hosted DataStage-as-a-Service:
+If you don't yet have one you should generate an API key. The type of key you need to generate and the process for creating it is different for DataStage NextGen on self-hosted platforms and IBM Cloud-hosted DataStage-as-a-Service:
 
 #### Self-hosted
 
-Create an API key ([documentation](https://www.ibm.com/docs/en/cloud-paks/cp-data/latest?topic=tutorials-generating-api-keys)). Use IBM's guidance on whether you should create ...
+Create an API key by following the steps in IBM's [documentation](https://www.ibm.com/docs/en/cloud-paks/cp-data/latest?topic=tutorials-generating-api-keys). Follow IBM's guidance on whether you should create ...
   - a **platform API key** or 
   - an **instance API key**.
 
 #### SaaS
 
-You need to create an IBM Cloud API key ([documentation](https://cloud.ibm.com/docs/iam?topic=iam-manapikey)), and **not** a Cloud Pak API key.  Note that the value of a key is only provided once - at creation time.  The copy icon alongside a key copies the *ID*, not the key value.
+Create an IBM Cloud API key (not a Cloud **Pak** API key) by following the steps in IBM's [documentation](https://cloud.ibm.com/docs/iam?topic=iam-manapikey). Note that this is a different tyope of key to gthat created for the self-hosted DataStage NextGen.  The value of a key is only provided once - at creation time.  The copy icon alongside each key on the page listing all keys will copy the key's ***ID***, not the actual key value.
 
 ## Configuring DataStage test data storage
 
 As part of the tutorial you'll execute unit tests against one of the DataStage flows.
-To support this you'll need to configure test data storage in your CI project as this is where tests will be executed. Instructions for doing this in your project are provided [here](https://dataplatform.cloud.ibm.com/docs/content/dstage/dsnav/topics/configuring_test_data_storage.html?context=cpdaas&audience=wdp&locale=en) 
+To support this you'll need to configure test data storage in your CI project as this is where tests will be executed. Instructions for doing this in your project are provided [here](https://dataplatform.cloud.ibm.com/docs/content/dstage/dsnav/topics/configuring_test_data_storage.html) 
 
 ## Install the MCIX command line
 

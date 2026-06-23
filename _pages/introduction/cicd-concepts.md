@@ -4,16 +4,9 @@ description: The generic concepts behind effective CI/CD for DataStage NextGen
 # banner_src: ../../assets/img/banner.jpeg
 ---
 
-<c4d-link-list type="default" slot="complementary">
-  <c4d-link-list-heading>Resources</c4d-link-list-heading>
-  <c4d-link-list-item
-    href="https://marketplace.visualstudio.com/items?itemName=MettleCI.mcix"
-    target="mcix-azure"
-    cta-type="external"
-  >
-    MCIX for Azure DevOps on Visual Studio Marketplace
-  </c4d-link-list-item>
-</c4d-link-list>
+## Introduction
+
+This page introduces the CI/CD concepts used throughout the MCIX documentation and tutorials. It starts with the Git repository as the source of truth, then explains how DataStage assets are promoted through environments using pipelines, overlays, validation, testing, approvals, and audit trails.
 
 ## Source control
 
@@ -23,9 +16,58 @@ This distinction is important because CI/CD pipelines should work from source-co
 
 ---
 
+## Git essentials
+
+Git is a command-line tool used to track changes to files over time, making it easier to manage source code, documentation, and other project assets. Most Git operations are performed using the git command in a terminal, where you explicitly tell Git which changes to prepare, record, and share. Although graphical tools and web interfaces can simplify some tasks, understanding the Git CLI is valuable because it exposes the core workflow directly and works consistently across platforms, automation tools, and CI/CD pipelines.
+
+```mermaid
+---
+title: Basic Git Operations
+---
+stateDiagram-v2
+  direction LR
+  state LocalWorkingDirectory {
+      [*] --> StagingArea: git add
+      StagingArea --> LocalRepository: git commit
+      [*] --> LocalRepository: git commit -a
+  }
+  LocalRepository --> RemoteRepository: git push
+  state RemoteGitPlatform {
+    RemoteRepository --> Pipeline: Trigger
+   }
+```
+
+This diagram shows the basic flow of changes (represented by **•**) in Git using the basic Git commands. You start with modified files in your working directory. 
+- `git add` moves selected changes into the **staging area** where they are prepared for the next commit. 
+- `git commit` then records those staged changes into your **local repository**. 
+- `git commit -a` is a shortcut which commits changes to already-tracked files directly from the working directory, bypassing a separate `git add` step. 
+- `git push` sends the commits from your **local repository** to a **remote repository**, such as one hosted on Azure DevOps or GitHub. A git push is commonly (but not always) configured as the [trigger](/introduction/cicd-concepts#triggers) for the start of a CI/CD pipeline.  
+
+### Special Git files
+
+A Git repository contains a number of hidden filesystem objects, i.e., files beginning with a `.` character which hides them from a terminal file listing. The most important objects are :
+- A `.git` directory containing Git’s internal data, such as commit history, branches, tags, configuration, and the staging area.
+- A `.gitignore` file tells Git which files or directories it should deliberately ignore when tracking changes in a repository. It is commonly used to exclude files that are generated locally, specific to a developer’s machine, or not suitable for source control, such as temporary files, build outputs, logs, downloaded dependencies, credentials, and environment-specific configuration. 
+
+---
+
 ## Source of truth
 
 A CI/CD process needs one trusted place from which deployments are performed.  For this tutorial, the Git repository acts as the source of truth. Assets may originate in a development DataStage project, but once exported and committed, the repository becomes the controlled version of those assets.  Downstream environments such as CI, QA, and Production should be populated from that controlled source, rather than being updated manually.
+
+---
+
+## Pipeline as code
+
+Modern CI/CD systems usually define pipelines in files stored in source control. For example:
+
+* **Azure:** `azure-pipelines.yml`
+* **Bitbucket:** `bitbucket_pipeline.yml`
+* **GitHub:** `.github/workflows/deploy.yml`
+* **GitLab:** `.gitlab-ci.yml`
+* **Jenkins:** `Jenkinsfile`
+
+This is referred to as 'pipeline as code'. This approach means the pipeline definition can be reviewed, versioned, branched, and changed using the same source-control practices as the assets it tests and deploys.
 
 ---
 
@@ -33,8 +75,13 @@ A CI/CD process needs one trusted place from which deployments are performed.  F
 
 CI/CD is based on the idea of promoting the same logical change through a series of environments. For example:
 
-```text
-Development → CI → QA → Production
+```mermaid
+flowchart LR
+  DEV["<b>[DEV]</b><br/>Development<br/><br/>"]
+  CI["<b>[CI]</b><br/>Continuous<br/>Integration"]
+  QA["<b>[QA]</b><br/>Quality<br/>Assurance"]
+  PROD["<b>[PROD]</b><br/>Production<br/><br/>"]
+  DEV --> CI --> QA --> PROD
 ```
 
 Each environment has a different purpose. Development is where changes are created, CI is where changes are automatically validated, QA is where release candidates are tested, and Production is where approved changes are made available to users.  The important principle is that the same versioned change is promoted forward, rather than being recreated separately in each environment.  
@@ -94,6 +141,20 @@ This keeps pipeline configuration simple and reduces the number of project-speci
 
 ---
 
+## Separation of configuration from assets
+
+The same DataStage assets often need different configuration in different environments.  For example, Dev, QA, and Production may use different:
+
+* database connections
+* schema names
+* file paths
+* credentials
+* runtime parameters
+
+The [overlay](/command-line/tutorial-steps#4-apply-environment-overlays) step in the tutorials included in this documentation demonstrates this principle. The core assets are versioned once, while environment-specific configuration is applied during deployment.
+
+---
+
 ## Build, deploy, and test stages
 
 A pipeline is usually made up of **stages**. A stage is a logical part of the delivery process, such as:
@@ -135,6 +196,8 @@ A trigger defines when a pipeline should run. Common triggers include:
 | Scheduled trigger    | Run the pipeline overnight or at a fixed time.      |
 | Release trigger      | Run deployment when a version tag is created.       |
 
+Other trigger types and conditions exist (such as pull request triggers and quiet periods) but these are either irrelevant to DataStage development or beyond the scope of this documentation.
+
 ---
 
 ## Agents and runners
@@ -152,7 +215,7 @@ A pipeline needs somewhere to run.  Different platforms use different terms:
 
 The important idea is that the CI/CD system schedules work onto an execution host (virtual or physical) and it's that host which runs the commands in the pipeline.
 
-For MCIX Azure DevOps tasks, users do not usually need a dedicated MCIX-specific self-hosted agent. The platform provides the execution environment and the MCIX task provides the functional behaviour in a compatible form (command line, container, or native task).
+Users do not usually need a dedicated MCIX-specific self-hosted agent when using MCIX native tasks. The platform provides the execution environment and the MCIX task provides the functional behaviour.
 
 ---
 
@@ -232,6 +295,14 @@ Approvals and gates allow a CI/CD platform to pause a pipeline before a sensitiv
 
 ---
 
+## Rollback
+
+A good CI/CD design should not only be capable of promoting a change forward, but should also consider how to stop safely, report failures clearly, and support recovery to a previous known-good version. In practice, this means keeping deployed assets versioned, preserving deployment outputs and logs, and ensuring that an earlier approved version can be redeployed if the current change proves unsuccessful.
+
+Rollback is the ability to return an environment to a previous known-good version.  In a DataStage context, this may involve redeploying a previous version of the exported assets from Git.
+
+---
+
 ## Idempotency
 
 An idempotent operation can be run more than once and still produce the same intended result.  This is important in CI/CD because it enables pipeline steps to be retried after a failure.  For example, a project setup script should ideally be able to check whether a repository, variable group, service connection, or environment already exists before creating it again.  This makes automation safer and easier to rerun.
@@ -251,68 +322,3 @@ A CI/CD platform creates a record of what happened.  It can show:
 * when the deployment occurred
 
 This audit trail is one of the major advantages of using a proper CI/CD platform instead of relying on manual command execution, or simple scripted solutions operating outside a CI/CD tool.
-
----
-
-## Separation of configuration from assets
-
-The same DataStage assets often need different configuration in different environments.  For example, Dev, QA, and Production may use different:
-
-* database connections
-* schema names
-* file paths
-* credentials
-* runtime parameters
-
-The [overlay](/command-line/tutorial-steps#4-apply-environment-overlays) step in the tutorials included in this documentation demonstrates this principle. The core assets are versioned once, while environment-specific configuration is applied during deployment.
-
----
-
-## Git essentials
-
-Git is a command-line tool used to track changes to files over time, making it easier to manage source code, documentation, and other project assets. Most Git operations are performed using the git command in a terminal, where you explicitly tell Git which changes to prepare, record, and share. Although graphical tools and web interfaces can simplify some tasks, understanding the Git CLI is valuable because it exposes the core workflow directly and works consistently across platforms, automation tools, and CI/CD pipelines.
-
-```mermaid
----
-title: Basic Git Operations
----
-stateDiagram-v2
-  direction LR
-  state WorkingDirectory {
-      [*] --> StagingArea: git add
-      StagingArea --> LocalRepository: git commit
-      [*] --> LocalRepository: git commit -a
-  }
-  LocalRepository --> RemoteRepository: git push
-  state RemoteService {
-    RemoteRepository --> Pipeline: Trigger
-   }
-```
-
-This diagram shows the basic flow of changes in Git using only the simplest of the git commands. You start with modified files in your working directory. 
-- `git add` moves selected changes into the **staging area** where they are prepared for the next commit. 
-- `git commit` then records those staged changes into your **local repository**. 
-- `git commit -a` is a shortcut which commits changes to already-tracked files directly from the working directory, bypassing a separate `git add` step. 
-- `git push` sends the commits from your **local repository** to a **remote repository**, such as one hosted on Azure DevOps or GitHub. A git push is commonly (but not always) configured as the [trigger](/introduction/cicd-concepts#triggers) for the start of a CI/CD pipeline.  
-
----
-
-## Rollback
-
-A good CI/CD design should not only be capable of promoting a change forward, but should also consider how to stop safely, report failures clearly, and support recovery to a previous known-good version. In practice, this means keeping deployed assets versioned, preserving deployment outputs and logs, and ensuring that an earlier approved version can be redeployed if the current change proves unsuccessful.
-
-Rollback is the ability to return an environment to a previous known-good version.  In a DataStage context, this may involve redeploying a previous version of the exported assets from Git.
-
----
-
-## Pipeline as code
-
-Modern CI/CD systems usually define pipelines in files stored in source control. For example:
-
-* **Azure:** `azure-pipelines.yml`
-* **Bitbucket:** `bitbucket_pipeline.yml`
-* **GitHub:** `.github/workflows/deploy.yml`
-* **GitLab:** `.gitlab-ci.yml`
-* **Jenkins:** `Jenkinsfile`
-
-This is referred to as 'pipeline as code'. This approach means the pipeline definition can be reviewed, versioned, branched, and changed using the same source-control practices as the assets it tests and deploys.
