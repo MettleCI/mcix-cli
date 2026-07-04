@@ -61,10 +61,10 @@ A CI/CD process needs one trusted place from which deployments are performed.  F
 
 Modern CI/CD systems usually define pipelines in files stored in source control. For example:
 
-* **Azure:** `azure-pipelines.yml`
-* **Bitbucket:** `bitbucket_pipeline.yml`
-* **GitHub:** `.github/workflows/deploy.yml`
-* **GitLab:** `.gitlab-ci.yml`
+* **Azure:** `azure-pipelines.yaml`
+* **Bitbucket:** `bitbucket_pipeline.yaml`
+* **GitHub:** `.github/workflows/deploy.yaml`
+* **GitLab:** `.gitlab-ci.yaml`
 * **Jenkins:** `Jenkinsfile`
 
 This is referred to as 'pipeline as code'. This approach means the pipeline definition can be reviewed, versioned, branched, and changed using the same source-control practices as the assets it tests and deploys.
@@ -106,19 +106,19 @@ the functional role of each project:
 | Environment | Project name       | Role                                                                           |
 | ----------- | ------------------ | ------------------------------------------------------------------------------ |
 | Development | `ElectroMart`      | Where changes are initially created                                            |
-| CI          | `ElectroMart_CI`   | Where exported and overlaid assets are imported and (automatically) unit tested |
-| QA          | `ElectroMart_QA`   | Where a tested candidate release may be validated further                      |
-| Production  | `ElectroMart_PROD` | Where only approved versions should be deployed                                |
+| CI          | `ElectroMart-ci`   | Where exported and overlaid assets are imported and (automatically) unit tested |
+| QA          | `ElectroMart-qa`   | Where a tested candidate release may be validated further                      |
+| Production  | `ElectroMart-prod` | Where only approved versions should be deployed                                |
 
-In this model, the project name without a suffix represents the development project. Environment-specific projects are then created by appending a standard suffix such as `_CI`, `_QA`, or `_PROD`.
+In this model, the project name without a suffix represents the development project. Environment-specific projects are then created by appending a standard suffix such as `-ci`, `-qa`, or `-prod`.
 
 This convention is used consistently for all DataStage projects, regardless of the chosen base name. For example:
 
 | Base name           | Development         | CI                     | QA                     | Production               |
 | ------------------- | ------------------- | ---------------------- | ---------------------- | ------------------------ |
-| `ElectroMart`       | `ElectroMart`       | `ElectroMart_CI`       | `ElectroMart_QA`       | `ElectroMart_PROD`       |
-| `CustomerAnalytics` | `CustomerAnalytics` | `CustomerAnalytics_CI` | `CustomerAnalytics_QA` | `CustomerAnalytics_PROD` |
-| `FinanceReporting`  | `FinanceReporting`  | `FinanceReporting_CI`  | `FinanceReporting_QA`  | `FinanceReporting_PROD`  |
+| `ElectroMart`       | `ElectroMart`       | `ElectroMart-ci`       | `ElectroMart-qa`       | `ElectroMart-prod`       |
+| `CustomerAnalytics` | `CustomerAnalytics` | `CustomerAnalytics-ci` | `CustomerAnalytics-qa` | `CustomerAnalytics-prod` |
+| `FinanceReporting`  | `FinanceReporting`  | `FinanceReporting-ci`  | `FinanceReporting-qa`  | `FinanceReporting-prod`  |
 
 Using a predictable naming convention makes it easier to automate project creation, configure pipelines, generate variable values, and apply the same deployment pattern across multiple DataStage initiatives.
 
@@ -132,9 +132,9 @@ From that value it can derive the related environment project names:
 
 ```text
 ElectroMart
-ElectroMart_CI
+ElectroMart-ci
 ElectroMart_QA
-ElectroMart_PROD
+ElectroMart-prod
 ```
 
 This keeps pipeline configuration simple and reduces the number of project-specific values that users need to enter manually.

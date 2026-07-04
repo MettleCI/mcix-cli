@@ -66,7 +66,7 @@ my-datastage-project/
 │   └── unit-tests/
 │       └── unit-test-suite.yaml
 └── pipeline/
-    └── ci-cd.yml
+    └── ci-cd.yaml
 ```
 
 The pipeline will create temporary working folders during execution:

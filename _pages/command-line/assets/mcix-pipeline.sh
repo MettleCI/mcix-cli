@@ -13,7 +13,7 @@ export CP4D_API_KEY="my-api-key"                       # DataStage credentials
 ``
 # Project names (see 'Environments and DataStage project naming')
 export SOURCE_PROJECT="mcix-cli-demo"                  # The location of your development (source) project
-export TARGET_PROJECT="mcix-cli-demo_CI"               # Demo will deploy to a 'CI' environment
+export TARGET_PROJECT="mcix-cli-demo-ci"               # Demo will deploy to a 'CI' environment
 
 # Local working folders
 export EXPORT_DIR="./exported-assets"                  # Exported assets

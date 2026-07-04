@@ -159,6 +159,16 @@ Once the basic workflow is working, you can extend it to match your organisation
 
 The tutorial walks through the following stages.
 
+{% if site.compliance == "Y" %} 
+| Stage           | Purpose                                                         |
+| --------------- | --------------------------------------------------------------- |
+| Prerequisites   | Establish resources and permissions required to follow the tutorial |
+| Export          | Export the DataStage contents into a local Git repository (an [interim solution](/notes/git-interface)) |
+| Overlay         | Apply environment-specific configuration changes ([overlays](/introduction/overlays))                |
+| Import          | Deploy the modified assets into a target DataStage project      |
+| Asset Analysis  | Identify anti-patterns in your DataStage flow, some of which will cause CI to fail | 
+| Test            | Execute DataStage unit tests and produce test results           |
+{% else %}
 | Stage           | Purpose                                                         |
 | --------------- | --------------------------------------------------------------- |
 | Prerequisites   | Establish resources and permissions required to follow the tutorial |
@@ -166,7 +176,9 @@ The tutorial walks through the following stages.
 | Overlay         | Apply environment-specific configuration changes ([overlays](/introduction/overlays))                |
 | Import          | Deploy the modified assets into a target DataStage project      |
 | Test            | Execute DataStage unit tests and produce test results           |
-       
+{% endif %} 
+
+
 Some stages are optional. For example, {% if site.compliance == "Y" %} asset analysis only applies where asset-analysis rules are available, and {% endif %} unit testing only applies where suitable test specifications and test data have been configured.
 
 ---

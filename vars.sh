@@ -6,10 +6,10 @@ export CP4D_API_KEY="Jyfb66orQ37TziwInhhnZvHuqJaKwqUUZIGgVAhh"                  
 ``
 # Project names (see 'Environments and DataStage project naming')
 export SOURCE_PROJECT="electromart"                  # The location of your development (source) project
-export TARGET_PROJECT="mcix-cli-demo_CI"               # Demo will deploy to a 'CI' environment
+export TARGET_PROJECT="mcix-cli-demo-ci"             # Demo will deploy to a 'CI' environment
 
 # Local working folders
-export EXPORT_DIR="./datastage"                  # Exported assets
-export OVERLAY_DIR="./overlaid-assets"                 # Overlaid assets
+export EXPORT_DIR="./datastage"                      # Exported assets
+export OVERLAY_DIR="./overlaid-assets"                # Overlaid assets
 export REPORT_DIR="./reports"                          # JUnit report outputs
 

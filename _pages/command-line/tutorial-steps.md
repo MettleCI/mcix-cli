@@ -152,7 +152,7 @@ export CP4D_API_KEY="my-api-key"            # DataStage API key
 
 # Project names
 export SOURCE_PROJECT="mcix-cli-demo"       # The location of your development (source) project
-export TARGET_PROJECT="mcix-cli-demo_CI"    # Demo will deploy to a 'CI' environment
+export TARGET_PROJECT="mcix-cli-demo-ci"    # Demo will deploy to a 'CI' environment
 
 # Local working folders
 export EXPORT_DIR="./datastage"             # Exported assets
@@ -541,7 +541,7 @@ export CP4D_URL="https://cpd.example.com"
 export CP4D_USERNAME="YourUsername"
 export CP4D_API_KEY="your-api-key"
 export SOURCE_PROJECT="mcix-cli-demo"
-export TARGET_PROJECT="mcix-cli-demo_CI"
+export TARGET_PROJECT="mcix-cli-demo-ci"
 ```
 
 <cds-inline-notification
@@ -573,7 +573,7 @@ $CP4D_USERNAME = "YourUsername"
 $CP4D_API_KEY  = "your-api-key"
 $PROJECT  = "Development"
 $SOURCE_PROJECT  = "Test"
-$TARGET_PROJECT  = "Test_CI"
+$TARGET_PROJECT  = "Test-ci"
 ```
 
 <cds-inline-notification

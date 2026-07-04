@@ -50,7 +50,7 @@ serve the page locally at [localhost:4000](http://localhost:4000):
 jekyll serve --livereload
 ```
 
-**Please note:** After any modification to `_config.yml`, you must stop the dev
+**Please note:** After any modification to `_config.yaml`, you must stop the dev
 server and run above command again.
 
 ## Build locally

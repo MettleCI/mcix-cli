@@ -9,7 +9,7 @@ This tutorial shows how to implement a simple CI/CD pipeline for DataStage NextG
 
 Unlike the command-line tutorial, you won’t manually run each `mcix` command from your local shell. Instead, you’ll define a GitHub Actions workflow that executes the relevant MCIX actions on a GitHub Actions runner.
 
-We’ll use GitHub Actions to:
+We’ll use GitHub Actions to create a pipeline ('workflow') which respond to a `git push` trigger. It will:
 
 1. Check out your repository.
 2. Verify the MCIX runtime.
@@ -48,21 +48,18 @@ The pipeline will perform the following operations:
 7. Upload generated reports.
 
 ```mermaid
----
-title: MCIX GitHub Actions Pipeline
----
 sequenceDiagram
     %%{init: {'sequence': {'diagramMarginY': 50, 'mirrorActors': false}}}%%
 
     actor Dev as Developer
-    participant GitHub as GitHub Repository
-    participant Actions as GitHub Actions
-    participant MCIX as MCIX Actions
-    participant DSCI as DataStage CI Project
+    participant GitHub as GitHub<br/>Repository<br/><br/><br/><br/>
+    participant Actions as GitHub Actions<br/>Runner<br/><br/><br/><br/>
+    participant MCIX as MCIX<br/>Actions<br/><br/><br/><br/>
+    participant DSCI as DataStage<br/>CI Project<br/><br/><br/><br/>
 
     Dev->>GitHub: git push
     GitHub->>Actions: Trigger workflow
-    Actions->>GitHub: Checkout repository
+    GitHub->>Actions: Checkout repository
     Actions->>MCIX: system version
     Actions->>MCIX: datastage deploy
     MCIX->>MCIX: overlay apply
@@ -70,7 +67,9 @@ sequenceDiagram
     MCIX->>DSCI: datastage compile
     Actions->>MCIX: unit-test execute
     MCIX->>DSCI: Execute unit tests
+{% if site.compliance == "Y" %}
     Actions->>MCIX: asset-analysis test
+{% endif %}
     Actions->>GitHub: Upload JUnit reports
 ```
 The example assumes you are moving DataStage assets from source control into a CI project, applying environment-specific overlays, compiling the result, and then validating the deployed assets.
@@ -110,11 +109,8 @@ The GitHub Actions workflow will run from the root of the repository, so all fil
 
 This tutorial assumes you created a GitHub Environment called `ci`.
 
-In your repository, navigate to:
-
-```text
-Settings → Environments → ci
-```
+In your repository, navigate to:<br/>
+**Settings** → **Environments** → **ci**
 
 Confirm the following variables exist:
 
@@ -122,7 +118,7 @@ Confirm the following variables exist:
 | :------------------ | :------------------------ | :------------------------------------ |
 | `CP4D_URL`          | `https://cpd.example.com` | Base URL of your DataStage service    |
 | `CP4D_USER`         | `my-user@example.com`     | Username used to connect to DataStage |
-| `DATASTAGE_PROJECT` | `mcix-demo_CI`        | Target CI DataStage project           |
+| `DATASTAGE_PROJECT` | `mcix-demo-ci`            | Target CI DataStage project           |
 
 Confirm the following secret exists:
 
@@ -136,19 +132,20 @@ The workflow examples below use these values via GitHub’s `vars` and `secrets`
 {% raw %}${{ vars.CP4D_URL }}
 ${{ vars.CP4D_USER }}
 ${{ vars.DATASTAGE_PROJECT }}
-${{ secrets.CP4D_API_KEY }}
-{% endraw %}```
+${{ secrets.CP4D_API_KEY }}{% endraw %}
+```
 
-Using GitHub Environment values keeps your workflow portable. The same workflow can later be reused for `qa`, `test`, or `prod` simply by changing the job’s target environment.
+Using GitHub Environment values keeps your workflow portable. The same workflow can later be reused 
+for `qa` or `prod`, simply by changing the job’s target environment.
 
 ---
 
-## 3. Create the workflow file
+## 3. Create the initial workflow file
 
-Create a workflow file called:
+We'll augment the simple validation workflow you created during tge prerequisites step. Open the `.yaml` file you created:
 
 ```text
-.github/workflows/mcix-ci.yml
+.github/workflows/mcix-ci.yaml
 ```
 
 This workflow will run whenever changes are pushed to `main`, and can also be run manually from the GitHub Actions user interface.
@@ -156,36 +153,37 @@ This workflow will run whenever changes are pushed to `main`, and can also be ru
 Start with this structure:
 
 ```yaml
-name: MCIX CI Pipeline
+name: MCIX CI Pipeline                # The name of the workflow
 
-on:
-  push:
-    branches:
-      - main
+on:                                   # Tell GitHub to trigger this pipeline whenever
+  push:                               # a push is made to the repository's `main` branch
+    branches:                         #
+      - main                          #
 
-  workflow_dispatch:
+  workflow_dispatch:                  # Allows this workflow to be run manually with
+                                      # a Run workflow button in the GitHub Actions tab
 
-jobs:
-  deploy-ci:
-    name: Deploy to CI
-    runs-on: ubuntu-latest
-    environment: ci
+jobs:                                 # Define a job with 
+  deploy-ci:                          # a reference, and 
+    name: Deploy to CI                # a name.
 
-    permissions:
-      contents: read
+    runs-on: ubuntu-latest            # Run this Job on the latest Ubuntu image on GitHub infrastrcuture.
 
-    steps:
+    environment: ci                   # Bind the Job to your `ci` GitHub Environment, making 
+                                      # that environment’s variables and secrets available to the job. 
+
+    permissions:                      # Grants the workflow read access to the repository contents. 
+      contents: read                  # That is sufficient for most needs as the workflow reads files and 
+                                      # runs actions but does not normally need to write to the repository.
+
+    steps:                            # The operations perfomed by this Job.
       - name: Checkout repository
         uses: actions/checkout@v6
 ```
 
-The `environment: ci` line binds the job to your `ci` GitHub Environment, making that environment’s variables and secrets available to the job.
-
-The `permissions` block grants the workflow read access to the repository contents. That is sufficient for most needs as the workflow reads files and runs actions but does not normally need to write to the repository.
-
 ---
 
-## 5. Verify the MCIX runtime
+## 4. Verify the MCIX runtime
 
 Before running a full deployment, add a simple MCIX System Version step.
 
@@ -199,7 +197,7 @@ This step confirms that the GitHub runner can execute the MCIX action successful
 At this point your workflow should look like this:
 
 ```yaml
-name: MCIX CI Pipeline
+name: MCIX CI Workflow
 
 on:
   push:
@@ -218,13 +216,8 @@ jobs:
       contents: read
 
     steps:
-      - name: Checkout repository
+      - name: Checkout repository         
         uses: actions/checkout@v6
-
-      - name: Prepare output directories
-        run: |
-          mkdir -p build
-          mkdir -p reports
 
       - name: Verify MCIX runtime
         uses: MettleCI/mcix-system-version@v0
@@ -233,7 +226,7 @@ jobs:
 Commit and push the workflow:
 
 ```bash
-git add .github/workflows/mcix-ci.yml
+git add .github/workflows/mcix-ci.yaml
 git commit -m "Add MCIX CI workflow"
 git push
 ```
@@ -470,7 +463,7 @@ jobs:
 Commit and push the updated workflow:
 
 ```bash
-git add .github/workflows/mcix-ci.yml
+git add .github/workflows/mcix-ci.yaml
 git commit -m "Add MCIX deployment and test pipeline"
 git push
 ```

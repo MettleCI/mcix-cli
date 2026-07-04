@@ -22,15 +22,15 @@ Before you begin this tutorial you’ll need to prepare your DataStage projects,
 
 Ensure you have a DataStage NextGen project for each of the environments you use during the tutorial:
 
-1. Your source `Development` DataStage project, and
+1. Your source `Development` environment, and
 2. Each environment to which you wish to deploy.
 
 For the purposes of this tutorial we’ll use a single CI target environment.
 
 | Environment | Project name |
-| :--- | :--- |
+| :---        | :--- |
 | Development | `mcix-demo` |
-| CI | `mcix-demo_CI` |
+| CI          | `mcix-demo_ci` |
 
 Ensure your DataStage NextGen projects are not configured as Git integrated projects.
 
@@ -54,15 +54,15 @@ Create an API key using IBM’s guidance for your platform. Depending on your IB
 
 #### SaaS
 
-For IBM Cloud-hosted DataStage-as-a-Service, create an IBM Cloud API key, not a Cloud Pak API key.
+For IBM Cloud-hosted DataStage-as-a-Service, create an **IBM Cloud API key**, not a Cloud Pak API key.
 
-Note that the value of an IBM Cloud API key is only shown once, at creation time. The copy icon shown next to an existing key copies the key ID, not the secret key value.
+Note that the value of an IBM Cloud API key is only available for download/copy at creation time. The copy icon shown next to an existing key copies the key ID, not the secret key value.
 
 ## Configure DataStage test data storage
 
 As part of this tutorial you may execute unit tests against one or more DataStage flows.  To support this, configure test data storage in the DataStage project where tests will be executed. For this tutorial, that will normally be your CI project.  
 
-If you want to use the sample project download then ensure that your test data storage connection is called `TestDataConnection`.
+If you want to use the sample project provided with this tutorial then ensure that your test data storage connection is called `TestDataConnection`.
 
 ## Prepare a GitHub repository
 
@@ -92,16 +92,19 @@ Recommended settings for your repository:
 | Projects/Boards   | Disabled                   |
 | Branch protection | Disabled for this tutorial |
 
-
-You can enable branch protection, pull request review rules, and deployment approvals later. For this introductory tutorial, keep the repository simple so you can focus on the pipeline mechanics.
+You can enable branch protection, pull request review rules, and deployment approvals later. 
+For this introductory tutorial, keep the repository simple so you can focus on the pipeline mechanics.
 
 ## Clone the MettleCI template repository
 
 A MettleCI template repository is provided for convenience and as a recommended starting point.
 
-You are not required to follow the template repository’s structure. You can organise your repository in whatever way best suits your project, including where you store DataStage assets, scripts, configuration files, documentation, and other non-DataStage artefacts.
+You are not required to follow the template repository’s structure. You can organise your repository in 
+whatever way best suits your project, including where you store DataStage assets, scripts, configuration 
+files, documentation, and other non-DataStage artefacts.
 
-The template repository does, however, demonstrate a practical best-practice layout that is easy to understand, easy to deploy, and suitable for most delivery pipelines.
+The template repository does, however, demonstrate a practical best-practice layout that is easy to understand, 
+easy to deploy, and suitable for most delivery pipelines.
 
 Clone the template repository to your local host:
 
@@ -160,7 +163,8 @@ In GitHub, navigate to: <br/>
 
 For this tutorial, ensure that **Actions** are allowed to run in the repository.
 
-If your organisation restricts which actions can be used, confirm that your repository is allowed to use the MettleCI MCIX actions from GitHub Marketplace.
+If your organisation restricts which actions can be used, confirm that your repository is allowed to 
+use the MettleCI MCIX actions from GitHub Marketplace.
 
 The MCIX actions used in this tutorial are published by MettleCI and include:
 
@@ -186,7 +190,8 @@ runs-on: ubuntu-latest
 
 This avoids the need to configure your own self-hosted runner.
 
-If you use a self-hosted runner instead, it must be a Linux runner capable of executing container-based GitHub Actions. It must also have network access to:
+If you use a self-hosted runner instead, it must be a Linux runner capable of executing container-based 
+GitHub Actions. It must also have network access to:
 
 - your GitHub repository,
 - the MCIX action repositories,
@@ -212,7 +217,7 @@ Then add the following environment variables:
 | :------------------ | :------------------------ | :------------------------------------ |
 | `CP4D_URL`          | `https://cpd.example.com` | Base URL of your DataStage service    |
 | `CP4D_USER`         | `my-user@example.com`     | Username used to connect to DataStage |
-| `DATASTAGE_PROJECT` | `mcix-demo_CI`            | Target CI DataStage project name      |
+| `DATASTAGE_PROJECT` | `mcix-demo-ci`            | Target CI DataStage project name      |
 
 Add the following environment secret:
 
@@ -220,16 +225,19 @@ Add the following environment secret:
 | :------------- | :---------------------------------------- |
 | `CP4D_API_KEY` | API key used to authenticate to DataStage |
 
-Use variables for non-sensitive values such as URLs, usernames, and project names. Use secrets for sensitive values such as API keys.
+Use variables for non-sensitive values such as URLs, usernames, and project names. Use secrets for 
+sensitive values such as API keys.
 
 ## Check repository workflow permissions
 
 In your repository, navigate to: <br/>
 **Repository** → **Settings → **Actions** → **General** → **Workflow permissions**
 
-For this tutorial, the default read permissions are usually sufficient because the workflow will read repository contents and execute MCIX actions.
+For this tutorial, the default read permissions are usually sufficient because the workflow will read 
+repository contents and execute MCIX actions.
 
-If you later extend the workflow to create releases, write pull request comments, publish packages, or update repository contents, you may need to grant additional permissions explicitly in your workflow.
+If you later extend the workflow to create releases, write pull request comments, publish packages, or 
+update repository contents, you may need to grant additional permissions explicitly in your workflow.
 
 ## Create the workflow directory
 
@@ -247,13 +255,13 @@ Before building the full pipeline, create a simple workflow that verifies your r
 Create this file which will create a simple workflow using the [MCIX system version](/github/action-reference#system-version) action:
 
 ```
-.github/workflows/mcix-system-version.yml
+.github/workflows/mcix-ci.yaml
 ```
 
 Add the following content:
 
 ```yaml
-name: MCIX System Version
+name: MCIX CI Workflow
 
 on:
   workflow_dispatch:
@@ -268,13 +276,13 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Run MCIX System Version
-        uses: MettleCI/mcix-system-version@v0
+        uses: MettleCI/mcix-system-version@v1
 ```
 
-Commit and push the workflow:
+We'll run through the role of this file and meaning of each line in the [tutorial steps](tutorial-steps). For now, commit and push the workflow:
 
 ```shell
-git add .github/workflows/mcix-system-version.yml
+git add .github/workflows/mcix-ci.yaml
 git commit -m "Add MCIX system version workflow"
 git push
 ```
@@ -286,7 +294,7 @@ A successful run confirms that:
 
 - GitHub Actions is enabled for the repository,
 - the repository can use the MCIX action,
-- the selected runner can execute the action, and
+- the speicfied runner (an `ubuntu-latest` instance dynamically provisioned by GitHub, in this instance) can execute the action, and
 - the MCIX runtime can start successfully.
 
 You'll see in the logs the version of the MCIX System Version action you're using as well as some other diagnostic and informational messages.
@@ -299,14 +307,14 @@ For this tutorial, your repository should contain at least the following structu
 mcix-github-actions-demo/
 ├── .github/
 │   └── workflows/
-│       └── mcix-system-version.yml
+│       └── mcix-system-version.yaml
 ├── datastage/
 ├── filesystem/
 ├── overlays/
 └── README.md
 ```
 
-As the tutorial progresses, you will add additional workflow files to export, overlay, import, compile, analyse, and test your DataStage assets.
+As the tutorial progresses, you will add an additional workflow file to export, overlay, import, compile, analyse, and test your DataStage assets.
 
 ## Summary
 

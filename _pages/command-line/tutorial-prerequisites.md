@@ -16,7 +16,7 @@ Ensure you have a DataStage NextGen project existing for each of the [environmen
 | Environment | Project name         |
 | ----------- | -------------------- |
 | Development | `mcix-cli-demo`      | 
-| CI          | `mcix-cli-demo_CI`   | 
+| CI          | `mcix-cli-demo-ci`   | 
 
 Ensure your DataStage NextGen projects are not configured as **Git Integrated** project.
 - **Do not** select **Git Integrated** when creating the project

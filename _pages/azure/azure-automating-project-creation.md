@@ -194,9 +194,9 @@ The example repository includes the following pipeline definitions.
 
 | Pipeline            | Purpose                                                                                                                                                                                                                                                       |
 | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `devops-ci.yml`     | A standard CI pipeline triggered by commits to the DataStage asset repository. It demonstrates compliance testing, unit testing, and deployment to downstream environments.                                                                                   |
-| `hotfix-ci.yml`     | Performs compliance and unit testing against a hotfix-specific branch.                                                                                                                                                                                        |
-| `hotfix-deploy.yml` | Deploys a hotfix branch directly to the production DataStage environment.                                                                                                                                                                                     |
+| `devops-ci.yaml`     | A standard CI pipeline triggered by commits to the DataStage asset repository. It demonstrates compliance testing, unit testing, and deployment to downstream environments.                                                                                   |
+| `hotfix-ci.yaml`     | Performs compliance and unit testing against a hotfix-specific branch.                                                                                                                                                                                        |
+| `hotfix-deploy.yaml` | Deploys a hotfix branch directly to the production DataStage environment.                                                                                                                                                                                     |
 
 ## Creating an approvers group
 

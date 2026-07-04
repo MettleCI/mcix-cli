@@ -10,3 +10,5 @@ vendor/
 # They can be developed locally, and viewed by running this directory in
 # a container, but we don't want to publish them until they're ready.
 _pages/flow-analysis/
+**/.DS_Store
+.DS_Store
