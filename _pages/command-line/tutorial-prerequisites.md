@@ -34,7 +34,7 @@ Create an API key by following the steps in IBM's [documentation](https://www.ib
 
 #### SaaS
 
-Create an IBM Cloud API key (not a Cloud **Pak** API key) by following the steps in IBM's [documentation](https://cloud.ibm.com/docs/iam?topic=iam-manapikey). Note that this is a different tyope of key to gthat created for the self-hosted DataStage NextGen.  The value of a key is only provided once - at creation time.  The copy icon alongside each key on the page listing all keys will copy the key's ***ID***, not the actual key value.
+Create an IBM Cloud API key (not a Cloud **Pak** API key) by following the steps in IBM's [documentation](https://cloud.ibm.com/docs/iam?topic=iam-manapikey). Note that this is a different type of key to that created for the self-hosted DataStage NextGen.  The value of a key is only provided once - at creation time.  The copy icon alongside each key on the page listing all keys will copy the key's ***ID***, not the actual key value.
 
 ## Configuring DataStage test data storage
 

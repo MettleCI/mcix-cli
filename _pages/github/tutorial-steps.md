@@ -12,8 +12,8 @@ Unlike the command-line tutorial, you won’t manually run each `mcix` command f
 We’ll use GitHub Actions to create a pipeline ('workflow') which respond to a `git push` trigger. It will:
 
 1. Check out your repository.
-2. Verify the MCIX runtime.
-3. Apply CI-specific overlays.
+2. Verify the MCIX action version and capabilities.
+3. Apply CI environment-specific [overlays](/introduction/overlays).
 4. Import the overlaid DataStage assets into your CI project.
 5. Compile the imported assets.
 6. Execute DataStage unit tests.
@@ -57,20 +57,29 @@ sequenceDiagram
     participant MCIX as MCIX<br/>Actions<br/><br/><br/><br/>
     participant DSCI as DataStage<br/>CI Project<br/><br/><br/><br/>
 
-    Dev->>GitHub: git push
+    Dev->>()GitHub: git push
     GitHub->>Actions: Trigger workflow
-    GitHub->>Actions: Checkout repository
-    Actions->>MCIX: system version
-    Actions->>MCIX: datastage deploy
-    MCIX->>MCIX: overlay apply
-    MCIX->>DSCI: datastage import
-    MCIX->>DSCI: datastage compile
-    Actions->>MCIX: unit-test execute
-    MCIX->>DSCI: Execute unit tests
-{% if site.compliance == "Y" %}
-    Actions->>MCIX: asset-analysis test
-{% endif %}
-    Actions->>GitHub: Upload JUnit reports
+    activate Actions
+      GitHub()->>Actions: Checkout repository
+      Actions->>MCIX: system version
+      activate MCIX
+      MCIX->>Actions: MCIX information
+      deactivate MCIX
+      Actions->>MCIX: datastage deploy
+      activate MCIX
+        MCIX->>MCIX: overlay apply
+        MCIX->>()DSCI: datastage import
+        MCIX->>DSCI: datastage compile
+      deactivate MCIX
+      Actions->>MCIX: unit-test execute
+      activate MCIX
+        MCIX->>DSCI: Execute unit tests
+      deactivate MCIX
+      {% if site.compliance == "Y" %}
+      Actions->>MCIX: asset-analysis test
+      {% endif %}
+      Actions->>GitHub: Upload JUnit reports
+    deactivate Actions
 ```
 The example assumes you are moving DataStage assets from source control into a CI project, applying environment-specific overlays, compiling the result, and then validating the deployed assets.
 
@@ -84,10 +93,11 @@ After completing the prerequisite steps, your repository should look something l
 mcix-github-actions-demo/
 ├── .github/
 │   └── workflows/
+│       └── mcix-ci.yaml
 ├── datastage/
-│   └── exported DataStage assets
+│   └── <exported DataStage assets>
 ├── filesystem/
-│   └── non-DataStage files
+│   └── <non-DataStage files>
 ├── overlays/
 │   └── ci/
 └── README.md
@@ -142,7 +152,7 @@ for `qa` or `prod`, simply by changing the job’s target environment.
 
 ## 3. Create the initial workflow file
 
-We'll augment the simple validation workflow you created during tge prerequisites step. Open the `.yaml` file you created:
+We'll augment the simple validation workflow you created during the [prerequisites](/github/tutorial-prerequisites) step. Open the `.yaml` file you created:
 
 ```text
 .github/workflows/mcix-ci.yaml

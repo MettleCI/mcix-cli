@@ -103,22 +103,22 @@ ElectroMart
 then the related DataStage projects are named by adding an **environment** suffix to that base name which relates to 
 the functional role of each project:
 
-| Environment | Project name       | Role                                                                           |
-| ----------- | ------------------ | ------------------------------------------------------------------------------ |
-| Development | `ElectroMart`      | Where changes are initially created                                            |
-| CI          | `ElectroMart-ci`   | Where exported and overlaid assets are imported and (automatically) unit tested |
-| QA          | `ElectroMart-qa`   | Where a tested candidate release may be validated further                      |
-| Production  | `ElectroMart-prod` | Where only approved versions should be deployed                                |
+| Environment | Project name     | Role                                                                            |
+| ----------- | ---------------- | ------------------------------------------------------------------------------- |
+| Development | ElectroMart      | Where changes are initially created                                             |
+| CI          | ElectroMart-ci   | Where exported and overlaid assets are imported and (automatically) unit tested |
+| QA          | ElectroMart-qa   | Where a tested candidate release may be validated further                       |
+| Production  | ElectroMart-prod | Where only approved versions should be deployed                                 |
 
 In this model, the project name without a suffix represents the development project. Environment-specific projects are then created by appending a standard suffix such as `-ci`, `-qa`, or `-prod`.
 
 This convention is used consistently for all DataStage projects, regardless of the chosen base name. For example:
 
-| Base name           | Development         | CI                     | QA                     | Production               |
-| ------------------- | ------------------- | ---------------------- | ---------------------- | ------------------------ |
-| `ElectroMart`       | `ElectroMart`       | `ElectroMart-ci`       | `ElectroMart-qa`       | `ElectroMart-prod`       |
-| `CustomerAnalytics` | `CustomerAnalytics` | `CustomerAnalytics-ci` | `CustomerAnalytics-qa` | `CustomerAnalytics-prod` |
-| `FinanceReporting`  | `FinanceReporting`  | `FinanceReporting-ci`  | `FinanceReporting-qa`  | `FinanceReporting-prod`  |
+| Base name         | Development       | CI                   | QA                   | Production             |
+| ----------------- | ----------------- | -------------------- | -------------------- | ---------------------- |
+| ElectroMart       | ElectroMart       | ElectroMart-ci       | ElectroMart-qa       | ElectroMart-prod       |
+| CustomerAnalytics | CustomerAnalytics | CustomerAnalytics-ci | CustomerAnalytics-qa | CustomerAnalytics-prod |
+| FinanceReporting  | FinanceReporting  | FinanceReporting-ci  | FinanceReporting-qa  | FinanceReporting-prod  |
 
 Using a predictable naming convention makes it easier to automate project creation, configure pipelines, generate variable values, and apply the same deployment pattern across multiple DataStage initiatives.
 

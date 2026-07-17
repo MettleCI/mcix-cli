@@ -30,7 +30,7 @@ It is assumed you already have:
 for tutorial purposes (below) and import it into your source project in your DataStage NextGen environment:
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[![Electromart Export]({{ site.url }}/assets/img/document--download.svg)](../../assets/files/electromart.zip)
-<br/>&nbsp;[Download<br/>ElectroMart](../../assets/files/electromart.zip)
+<br/>&nbsp;[Download<br/>ElectroMart](/assets/files/electromart.zip)
 
 <cds-inline-notification
   kind="warning"
