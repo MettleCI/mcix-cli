@@ -198,7 +198,7 @@ Then use the variables in your pipeline steps:
 {% raw %}steps:
 - script: |
     echo "Using MCIX container image: $(containerImage)"
-  displayName: Show container image
+    displayName: Show container image
 {% endraw %}```
 
 For example, if you want to use the same container image across multiple custom tasks:

@@ -231,17 +231,18 @@ sensitive values such as API keys.
 ## Check repository workflow permissions
 
 In your repository, navigate to: <br/>
-**Repository** → **Settings → **Actions** → **General** → **Workflow permissions**
+**Repository** → **Settings** → **Actions** → **General** → **Workflow permissions**
 
 For this tutorial, the default read permissions are usually sufficient because the workflow will read 
 repository contents and execute MCIX actions.
 
-If you later extend the workflow to create releases, write pull request comments, publish packages, or 
-update repository contents, you may need to grant additional permissions explicitly in your workflow.
+If you later extend the workflow to create releases, write comments, publish packages, or 
+update repository contents in any way, you may need to grant additional relevant permissions explicitly 
+in your workflow.
 
 ## Create the workflow directory
 
-GitHub Actions workflow files are stored in the .github/workflows directory at the root of your repository.
+GitHub Actions workflow files are stored in the `.github/workflows` directory at the root of your repository.
 
 Create that directory if it does not already exist:
 
@@ -294,10 +295,11 @@ A successful run confirms that:
 
 - GitHub Actions is enabled for the repository,
 - the repository can use the MCIX action,
-- the speicfied runner (an `ubuntu-latest` instance dynamically provisioned by GitHub, in this instance) can execute the action, and
-- the MCIX runtime can start successfully.
+- the specified runner (in thius case an `ubuntu-latest` instance dynamically provisioned by GitHub) can execute the action, and
+- the MCIX action runtime can start successfully.
 
-You'll see in the logs the version of the MCIX System Version action you're using as well as some other diagnostic and informational messages.
+In the logs you'll see the version of the MCIX System Version action you're using as well as some other useful diagnostic 
+and informational messages.
 
 ## Recommended repository layout
 

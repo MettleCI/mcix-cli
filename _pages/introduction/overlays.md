@@ -43,10 +43,10 @@ We'll look at a practical example focussing on two directories a DataStage proje
 │       └── common_parameters.json
 ├── filesystem
 ├── pipelines
-├── overlays/
-┆   ├── ci/
-┆   ├── qa/
-┆   └── prod/
+└── overlays/
+    ├── ci/
+    ├── qa/
+    └── prod/
 ```
 
 The important directories are:
