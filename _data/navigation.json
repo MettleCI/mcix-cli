@@ -71,7 +71,7 @@
     ]
   },
   {
-    "title": "Azure DevOps",
+    "title": "⚠️ Azure DevOps",
     "submenu": [
       {
         "title": "ADO Tutorial Introduction",
@@ -121,14 +121,26 @@
     ]
   },
   {
-    "title": "⚠️Jenkins",
+    "title": "⚠️ Jenkins",
     "submenu": [
       {
-        "title": "Jenkins Tasks",
-        "url": "/container/jenkins/"
+        "title": "Jenkins Tutorial Introduction",
+        "url": "/jenkins/tutorial-intro"
+      },
+      {
+        "title": "Jenkins Tutorial Prerequisites",
+        "url": "/jenkins/tutorial-prereqs"
+      },
+      {
+        "title": "Jenkins Tutorial Steps",
+        "url": "/jenkins/tutorial-steps"
+      },
+      {
+        "title": "Jenkins Task Reference",
+        "url": "/jenkins/task-reference"
       }
     ]
-  },
+    },
   {
     "title": "Notes",
     "submenu": [
