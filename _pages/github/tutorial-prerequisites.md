@@ -62,7 +62,7 @@ Note that the value of an IBM Cloud API key is only available for download/copy 
 
 As part of this tutorial you may execute unit tests against one or more DataStage flows.  To support this, configure test data storage in the DataStage project where tests will be executed. For this tutorial, that will normally be your CI project.  
 
-If you want to use the sample project provided with this tutorial then ensure that your test data storage connection is called `TestDataConnection`.
+If you want to use the sample project provided with this tutorial then ensure that your test data storage connection is called `S3Datastorage`.
 
 ## Prepare a GitHub repository
 
@@ -217,7 +217,7 @@ Then add the following environment variables:
 | :------------------ | :------------------------ | :------------------------------------ |
 | `CP4D_URL`          | `https://cpd.example.com` | Base URL of your DataStage service    |
 | `CP4D_USER`         | `my-user@example.com`     | Username used to connect to DataStage |
-| `DATASTAGE_PROJECT` | `mcix-demo-ci`            | Target CI DataStage project name      |
+| `DATASTAGE_PROJECT` | `mcix-demo_ci`            | Target CI DataStage project name      |
 
 Add the following environment secret:
 
