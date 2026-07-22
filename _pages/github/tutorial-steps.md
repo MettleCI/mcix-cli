@@ -128,7 +128,7 @@ Confirm the following variables exist:
 | :------------------ | :------------------------ | :------------------------------------ |
 | `CP4D_URL`          | `https://cpd.example.com` | Base URL of your DataStage service    |
 | `CP4D_USER`         | `my-user@example.com`     | Username used to connect to DataStage |
-| `DATASTAGE_PROJECT` | `mcix-demo-ci`            | Target CI DataStage project           |
+| `DATASTAGE_PROJECT` | `mcix-demo_ci`            | Target CI DataStage project           |
 
 Confirm the following secret exists:
 
