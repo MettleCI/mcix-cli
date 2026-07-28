@@ -1,6 +1,9 @@
 ---
 title: Azure DevOps Pipeline Tutorial 
 description: Building an Azure DevOps Pipeline using native MCIX tasks 
+type: none
+tech: azure
+order: 5
 # banner_src: ../../assets/img/banner.jpeg
 ---
 

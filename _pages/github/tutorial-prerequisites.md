@@ -1,6 +1,8 @@
 ---
 title: GitHub Pipeline Tutorial Prerequisites
 description: Establishing the conditions for a pipeline using MCIX GitHub Actions
+tech: github
+order: 3
 ---
 
 Before you begin this tutorial you’ll need to prepare your DataStage projects, GitHub repository, GitHub Actions environment configuration, and the credentials required to connect GitHub Actions to your DataStage service.

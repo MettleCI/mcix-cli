@@ -1,6 +1,9 @@
 ---
 title: Automating your Azure DevOps<br/>Project Setup 
 description: Prepare your environment for your<br/>MCIX-powered CI/CD Pipeline 
+type: none
+tech: github
+order: 3
 # banner_src: ../../assets/img/banner.jpeg
 ---
 

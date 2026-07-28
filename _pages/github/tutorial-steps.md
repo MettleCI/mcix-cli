@@ -1,6 +1,8 @@
 ---
 title: GitHub Pipeline Tutorial Steps
 description: Implementing a simple CI/CD pipeline using MCIX GitHub Actions
+tech: github
+order: 4
 ---
 
 ## Scenario

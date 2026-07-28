@@ -1,6 +1,9 @@
 ---
 title: Azure DevOps MCIX Task Reference 
 description: MCIX tasks for your<br/>Azure DevOps Pipelines
+type: none
+tech: azure
+order: 6
 # banner_src: ../../assets/img/banner.jpeg
 ---
 

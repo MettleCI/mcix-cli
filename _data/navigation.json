@@ -71,11 +71,11 @@
     ]
   },
   {
-    "title": "⚠️ Azure DevOps",
+    "title": "Azure DevOps",
     "submenu": [
       {
         "title": "ADO Tutorial Introduction",
-        "url": "/azure/tutorial-intro"
+        "url": "/azure/azure-tutorial-intro"
       },
       {
         "title": "ADO Tutorial Prerequisites",
@@ -103,6 +103,10 @@
     "title": "GitHub",
     "submenu": [
       {
+        "title": "Using GitHub Actions",
+        "url": "/github/using-github-actions"
+      },
+      {
         "title": "GitHub Tutorial Introduction",
         "url": "/github/tutorial-intro"
       },
@@ -121,18 +125,18 @@
     ]
   },
   {
-    "title": "⚠️ Jenkins",
+    "title": "Jenkins",
     "submenu": [
       {
-        "title": "Jenkins Tutorial Introduction",
+        "title": "Jenkins Tutorial Introduction 🛠️",
         "url": "/jenkins/tutorial-intro"
       },
       {
-        "title": "Jenkins Tutorial Prerequisites",
+        "title": "Jenkins Tutorial Prerequisites 🛠️",
         "url": "/jenkins/tutorial-prereqs"
       },
       {
-        "title": "Jenkins Tutorial Steps",
+        "title": "Jenkins Tutorial Steps 🛠️",
         "url": "/jenkins/tutorial-steps"
       },
       {

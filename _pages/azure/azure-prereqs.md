@@ -1,6 +1,9 @@
 ---
 title: Azure DevOps<br/>Environment Setup 
 description: Prepare your environment for your<br/>MCIX-powered CI/CD Pipeline 
+type: none
+tech: azure
+order: 2
 # banner_src: ../../assets/img/banner.jpeg
 ---
 

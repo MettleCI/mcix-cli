@@ -1,6 +1,9 @@
 ---
 title: MCIX Tasks for Azure DevOps 
 description: Native MCIX tasks for Azure DevOps
+type: none
+tech: azure
+order: 1
 # banner_src: ../../assets/img/banner.jpeg
 ---
 

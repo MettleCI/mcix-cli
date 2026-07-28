@@ -21,9 +21,17 @@ banner_src: ../../assets/img/banner.jpeg
   <c4d-link-list-item
     href="http://nextgen.mettleci.io/"
     target="mcix-docs"
-    cta-type="local"
+    cta-type="external"
   >
     MettleCI Documentation
+  </c4d-link-list-item>
+
+  <c4d-link-list-item
+    href="https://dev.azure.com/mettleci/mcix"
+    target="mcix-azure"
+    cta-type="external"
+  >
+    MCIX Azure DevOps Tasks
   </c4d-link-list-item>
 
   <c4d-link-list-item
@@ -35,12 +43,13 @@ banner_src: ../../assets/img/banner.jpeg
   </c4d-link-list-item>
 
   <c4d-link-list-item
-    href="https://dev.azure.com/mettleci/mcix"
-    target="mcix-azure"
+    href="https://github.com/mettleci/mcix"
+    target="mcix-jenkins"
     cta-type="external"
   >
-    MCIX Azure DevOps Tasks
+    MCIX Jenkins Tasks
   </c4d-link-list-item>
+
 </c4d-link-list>
 
 ## Welcome to MCIX

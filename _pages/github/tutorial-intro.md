@@ -1,6 +1,8 @@
 ---
 title: GitHub Pipeline Tutorial Introduction
 description: Emulating a simple Pipeline<br/>using MCIX GitHub Actions
+tech: github
+order: 2
 # banner_src: ../../assets/img/banner.jpeg
 ---
 
