@@ -201,7 +201,7 @@ MCIX template functions run inside a Docker container running a custom image bas
 that contains the MCIX cli.
 Therefore, the Jenkins agent should be running a flavour of Linux and have a working Docker engine.
 
-For instructions on how to install the Docker angine and configure it to work with Jwnkins, lease refer to
+For instructions on how to install the Docker angine and configure it to work with Jenkins, lease refer to
  - [Install Docker Engine](https://docs.docker.com/engine/install/)
  - Also follow the post-installation step to add the jenkins user to the docker group.
 
@@ -224,9 +224,9 @@ In the top right-hand corner, click **Add Credentials**
 
 | Setting             | Value             | Description                                       |
 | :------------------ | :---------------- | :------------------------------------------------ |
-| `Kind`              | `Secret text`     | Select from the dropdown                          |
-| `Secret`            | CPD User API Key  | API Key for the User used to connect to DataStage |
-| `ID`                | `CP4D_APIKey`     | Referred to in the agent environment variable     |
+| Kind                | `Secret text`     | Select from the dropdown                          |
+| Secret              | CPD User API Key  | API Key for the User used to connect to DataStage |
+| ID                  | `CP4D_APIKey`     | Referred to in the agent environment variable     |
 
 You will also need to add the Git Credentials that allow you to connect to the newly-created global library repository and pipeline repository. 
 
@@ -256,15 +256,15 @@ Scroll down the page to **Global Trusted Pipeline Libraries**, and at the bottom
 
 | Setting                                          | Value                                      | Description                                   |
 | :----------------------------------------------- | :----------------------------------------- | :-------------------------------------------- |
-| `Name`                                           | `mcix-global-lib`                          | The alias referred to in pipelines            |
-| `Default version`                                | `main`                                     | Repository branch                             |
-| `Load implicitly`                                | false                                      |                                               |
-| `Include @Library changes in job recent changes` | false                                      |                                               |
-| `Retrieval method`                               | `Modern SCM`                               |                                               |
-| `Source Code Management`                         | `Git`                                      |                                               |
-| `Project Repository`                             | `<YOUR_NEW_GLOBAL_LIBRARY_REPOSITORY_URL>` | The URL of the Global Library Repository      |
-| `Credentials`                                    | Select the repository access credential    |                                               |
-| `Library path`                                   | `./`                                       |                                               |
+| Name                                             | `mcix-global-lib`                          | The alias referred to in pipelines            |
+| Default version                                  | `main`                                     | Repository branch                             |
+| Load implicitly                                  | `false`                                    |                                               |
+| Include @Library changes in job recent changes   | `false`                                    |                                               |
+| Retrieval method                                 | `Modern SCM`                               |                                               |
+| Source Code Management                           | `Git`                                      |                                               |
+| Project Repository                               | <YOUR_NEW_GLOBAL_LIBRARY_REPOSITORY_URL>   | The URL of the Global Library Repository      |
+| Credentials                                      | Select the repository access credential    |                                               |
+| Library path                                     | `./`                                       |                                               |
 
 ## Create the Jenkins Pipeline
 
@@ -283,15 +283,15 @@ On the next Page, select the following settings:
 
 | Section          | Setting                                          | Value                                      | Description                                   |
 | :--------------- | :----------------------------------------------- | :----------------------------------------- | :-------------------------------------------- |
-| `General`        | `Do not allow concurrent builds`                 | true                                       | Only run one of this pipeline at a time       |
-| `Triggers`       | `Poll SCM`                                       | true                                       | Poll the repository                           |
-|                  | `Schedule`                                       | `* * * * *`                                | Poll once per minute                          |
-| `Pipeline`       | `Definition`                                     | `Pipeline script from SCM`                 |                                               |
-|                  | `SCM`                                            | `Git`                                      |                                               |
-|                  | `Repository URL`                                 | `<YOUR_NEW_PIPELINE_REPOSITORY_URL>`       | The URL of the Global Library Repository      |
-|                  | `Credentials`                                    | Select the repository access credential    |                                               |
-|                  | `Branch Specifier (blank for 'any')`             | `*/main`                                   |                                               |
-|                  | `Script Path`                                    | `pipelines/mcix-ci-jenkinsfile`            |                                               |
+| General          | Do not allow concurrent builds                   | `true`                                     | Only run one of this pipeline at a time       |
+| Triggers         | Poll SCM                                         | `true`                                     | Poll the repository                           |
+|                  | Schedule                                         | `* * * * *`                                | Poll once per minute                          |
+| Pipeline         | Definition                                       | `Pipeline script from SCM`                 |                                               |
+|                  | SCM                                              | `Git`                                      |                                               |
+|                  | Repository URL                                   | <YOUR_NEW_PIPELINE_REPOSITORY_URL>         | The URL of the Global Library Repository      |
+|                  | Credentials                                      | Select the repository access credential    |                                               |
+|                  | Branch Specifier (blank for 'any')               | `*/main`                                   |                                               |
+|                  | Script Path                                      | `pipelines/mcix-ci-jenkinsfile`            |                                               |
 
 
 ## Create the pipelines directory
@@ -303,9 +303,9 @@ mkdir -p pipelines
 ```
 ## Add a simple MCIX verification workflow
 
-Before building the full pipeline, create a simple workflow that verifies your repository can execute an MCIX action.
+Before building the full pipeline, create a simple workflow that verifies your repository can execute an MCIX custom step.
 
-Create this file which will create a simple workflow using the [MCIX system version](/github/action-reference#system-version) action:
+Create this file which will create a simple workflow using the [MCIX system version](/jenkins/task-reference#system-version) custom step:
 
 ```
 pipelines/mcix-ci-jenkinsfile
@@ -317,7 +317,7 @@ Add the following content:
 @Library('mcix-jenkins-lib') _
 
 pipeline {
-    // Specify an agent that runs a Docker server where the MCIX cons=tainer image can be hosted
+    // Specify an agent that runs a Docker server where the MCIX container image can be hosted
     agent none
 
     // Sets up the environment for the build
@@ -365,7 +365,7 @@ git push
 For this tutorial, your repository should contain at least the following structure:
 
 ```text
-mcix-jenkins-pipwline-demo/
+mcix-jenkins-pipeline-demo/
 ├── pipelines/
 │   └── mcix-ci-jenkinsfile
 ├── datastage/
@@ -374,7 +374,7 @@ mcix-jenkins-pipwline-demo/
 └── README.md
 ```
 
-As the tutorial progresses, you will add an additional workflow file to export, overlay, import, compile, analyse, and test your DataStage assets.
+As the tutorial progresses, you will add an additional Jenkinsfile to export, overlay, import, compile, analyse, and test your DataStage assets.
 
 ## Summary
 
@@ -391,7 +391,7 @@ Before continuing, confirm that you have:
     - access credentials to the Git repositories
 - Jenkins agent capable of running Linux-based Docker containers
     - With environment variables configured
-- Global Library repository added to Jenkind system configuration
+- Global Library repository added to Jenkins system configuration
 - Jenkins Pipeline for the MCIX template Jenkinsfile
 - a successful MCIX System Version pipeline run
 
