@@ -41,7 +41,7 @@ In this tutorial your Git repository is the source of truth for your DataStage a
 
 ## Generate an API key
 
-If you don’t yet have one, generate an API key for the user account that GitHub Actions will use to connect to DataStage.
+If you don’t yet have one, generate an API key for the user account that the Jenkins pipeline will use to connect to DataStage.
 
 The type of key you need to generate depends on whether you are using DataStage NextGen on a self-hosted platform or IBM Cloud-hosted DataStage-as-a-Service.
 
@@ -105,7 +105,7 @@ Clone the global library repository to your local host:
 git clone https://github.com/MettleCI/datastage-nextgen-jenkins-libs
 ```
 
-Rename the local directory to match your new GitHub repository:
+Rename the local directory to match your new Git repository:
 
 ```shell
 mv datastage-nextgen-repo-template mcix-global-lib
@@ -143,7 +143,7 @@ Clone the template repository to your local host:
 git clone https://github.com/MettleCI/datastage-nextgen-repo-template
 ```
 
-Rename the local directory to match your new GitHub repository:
+Rename the local directory to match your new Git repository:
 
 ```shell
 mv datastage-nextgen-repo-template mcix-jenkins-pipeline-demo
@@ -168,7 +168,7 @@ mcix-jenkins-pipeline-demo/
 └── README.md
 ```
 
-Now point the local clone to your new GitHub repository:
+Now point the local clone to your new Git repository:
 
 ```shell
 git remote set-url origin <YOUR_NEW_PIPELINE_REPOSITORY_URL>
@@ -176,7 +176,7 @@ git remote set-url origin <YOUR_NEW_PIPELINE_REPOSITORY_URL>
 For example:
 
 ```shell
-git remote set-url origin git@github.com:my-org/mcix-jenkins-pipeline-demo.git
+git remote set-url origin git@my-git-host.com:my-org/mcix-jenkins-pipeline-demo.git
 ```
 Push the template contents to your new repository:
 
@@ -201,7 +201,7 @@ MCIX template functions run inside a Docker container running a custom image bas
 that contains the MCIX cli.
 Therefore, the Jenkins agent should be running a flavour of Linux and have a working Docker engine.
 
-For instructions on how to install the Docker angine and configure it to work with Jenkins, lease refer to
+For instructions on how to install the Docker angine and configure it to work with Jenkins, please refer to
  - [Install Docker Engine](https://docs.docker.com/engine/install/)
  - Also follow the post-installation step to add the jenkins user to the docker group.
 
@@ -250,7 +250,7 @@ Then add the following environment variables:
 
 ## Configure Jenkins Server to Recognise the MCIX Global Library Repository
 
-Configure the Jenkins agent: <br/>
+Configure the Jenkins server: <br/>
 **Jenkins** → **Manage Jenkins** → **System**
 Scroll down the page to **Global Trusted Pipeline Libraries**, and at the bottom of that section, click **Add**
 
@@ -303,9 +303,9 @@ mkdir -p pipelines
 ```
 ## Add a simple MCIX verification workflow
 
-Before building the full pipeline, create a simple workflow that verifies your repository can execute an MCIX custom step.
+Before building the full pipeline, create a simple pipeline that verifies your repository can execute an MCIX custom step.
 
-Create this file which will create a simple workflow using the [MCIX system version](/jenkins/task-reference#system-version) custom step:
+Create this file which will create a simple pipeline using the [MCIX system version](/jenkins/task-reference#system-version) custom step:
 
 ```
 pipelines/mcix-ci-jenkinsfile
@@ -314,7 +314,7 @@ pipelines/mcix-ci-jenkinsfile
 Add the following content:
 
 ```
-@Library('mcix-jenkins-lib') _
+@Library('mcix-global-lib') _
 
 pipeline {
     // Specify an agent that runs a Docker server where the MCIX container image can be hosted
@@ -355,7 +355,7 @@ We'll run through the role of this file and meaning of each line in the [tutoria
 
 ```shell
 git add pipelines/mcix-ci-jenkinsfile
-git commit -m "Add MCIX system version workflow"
+git commit -m "Add MCIX system version pipeline"
 git push
 ```
 
@@ -395,4 +395,4 @@ Before continuing, confirm that you have:
 - Jenkins Pipeline for the MCIX template Jenkinsfile
 - a successful MCIX System Version pipeline run
 
-Once these prerequisites are complete, you are ready to build a Jenkins Pipeline using the MCIX Jenkins tasks.
+Once these prerequisites are complete, you are ready to build a Jenkins Pipeline using the MCIX Jenkins steps.
