@@ -166,7 +166,7 @@ Adjust the variable names and values to match your environment.
 
 ## 3. Export DataStage assets
 
-The first stage exports assets from the source DataStage project.
+The first stage [exports](/command-line/command-reference#datastage-export) assets from the source DataStage project.
 
 ```bash
 mcix datastage export \
@@ -351,9 +351,16 @@ Now you can revisit your Git repository's user interface and verify you can see 
 
 ---
 
-## Notes for this tutorial
-
+<cds-inline-notification
+  kind="info"
+  low-contrast="true"
+  hide-close-button="true">
+  <div class="cds--inline-notification__subtitle">
 The operations from this point forward would normally be performed by a pipeline in your CI/CD platform which, in most cases, would be automatically triggered by the `git push` you've just performed.  For this CLI tutorial you'll be performing them manually.
+  </div>
+</cds-inline-notification>
+
+&nbsp;
 
 <cds-inline-notification
   kind="info"
@@ -408,7 +415,7 @@ Start by creating an overlay file in your `overlays/ci` directory called `ci.ove
   RejectDir:    "/px-storage/data/electromart/ci/reject",
 }
 ```
-Then apply the overlay to the recently exported assets to generate a new set of **overlaid** assets:
+Then [apply the overlay](/command-line/command-reference#overlay-apply) to the recently exported assets to generate a new set of **overlaid** assets:
 
 ```bash
 mcix overlay apply \
@@ -427,7 +434,7 @@ After this step, the transformed assets should be available in:
 
 ## 8. Import and Compile DataStage assets
 
-Now import the overlaid assets into the target DataStage project.
+Now [import](/command-line/command-reference#datastage-import) the overlaid assets into the target DataStage project.
 
 ```bash
 mcix datastage import \
@@ -438,7 +445,7 @@ mcix datastage import \
   -assets "$OVERLAY_DIR"
 ```
 
-And compile them:
+And [compile](/command-line/command-reference#datastage-compile) them:
 
 ```bash
 mcix datastage compile \
@@ -446,7 +453,6 @@ mcix datastage compile \
   -project "$TARGET_PROJECT" \
   -user "$CP4D_USERNAME" \
   -api-key "$CP4D_API_KEY" \
-  -assets "$OVERLAY_DIR" \
   -report "$REPORT_DIR/compile-results.xml"
   -include-asset-in-test-name
 ```
@@ -527,7 +533,7 @@ That file can later be consumed by a CI/CD system such as GitHub Actions, Azure 
 ---
 {% endif %}
 
-## Run the full pipeline as a script
+## 11. Run the full pipeline as a script (optional)
 
 Once you've run the individual commands you may wish to place them into a shell script to reproduce them easily. Templates of this script are available for **Linux/macOS** and **Windows** (below). For your selected platform you'll need to update the file's configuration values to suit your environment. For example:
 

@@ -151,7 +151,7 @@ The same DataStage assets often need different configuration in different enviro
 * credentials
 * runtime parameters
 
-The [overlay](/command-line/tutorial-steps#4-apply-environment-overlays) step in the tutorials included in this documentation demonstrates this principle. The core assets are versioned once, while environment-specific configuration is applied during deployment.
+The [overlay](/introduction/overlays) step in the tutorials included in this documentation demonstrates this principle. The core assets are versioned once, while environment-specific configuration is applied during deployment.
 
 ---
 
@@ -228,7 +228,8 @@ Pipelines need configuration values, but not all values should be handled the sa
 | Variable | Project name, environment name, registry URL | Stored as normal pipeline configuration.     |
 | Secret   | API key, password, access token              | Stored in the CI/CD platform’s secret store. |
 
-This is an important concept to grasp as it will help you avoid hard-coding usernames, passwords, and API keys directly into your CI/CD pipelines.
+This is an important concept to grasp as it will help you avoid hard-coding usernames, passwords, and API keys directly into your CI/CD pipelines. 
+It's also important that secrets are not exposed in pipeline log entries or any other output channels.
 
 ---
 
@@ -237,11 +238,11 @@ This is an important concept to grasp as it will help you avoid hard-coding user
 A service connection, used by some CI/CD platforms, is a stored, reusable connection from the CI/CD platform to an external system. For 
 example, Azure DevOps service connections can be used to connect to:
 
-* an external deployment platform
-* a container registry (This is how you tell MCIX Azure DevOps Tasks where the MCIX container can be found. More details [here](/azure/azure-prereqs).)
-* a Git repository (This is how you use Azure DevOps backed by a different Git provider, such as GitHub.)
+* **an external deployment platform**
+* **a container registry** - This is how you tell MCIX Azure DevOps Tasks where the MCIX container can be found. More details [here](/azure/azure-prereqs).
+* **a Git repository**  - This is how you use Azure DevOps backed by a different Git provider, such as GitHub.
 
-In the MCIX Azure DevOps tutorial, a Docker Registry service connection allows the pipeline to seamlessly authenticate to the registry that hosts the MCIX container image. This avoids placing registry credentials directly into every pipeline definition.
+In the MCIX Azure DevOps tutorial, a **Docker Registry** service connection allows your pipeline to seamlessly authenticate to the registry that hosts the MCIX container image. This avoids placing registry credentials directly into every pipeline definition.
 
 ---
 
@@ -274,13 +275,14 @@ A pipeline normally stops when an important step fails. For example:
 
 ```mermaid
 flowchart LR
-  EXPORT["Export<br/>Assets"]
+  EXPORT["Export<br/><b>DEV</b> Assets"]
   OVERLAY["Apply<br/>Overlays"]
-  IMPORT["Import<br/>Assets"]
+  IMPORT["Import<br/>Assets to <b>CI</b>"]
   TEST1["Run<br/>Static Tests"]
   TEST2["Run<br/>Execution Tests"]
+  DEPLOY["Depoy<br/>to <b>QA</b>"]
 
-  EXPORT --> OVERLAY --> IMPORT --> TEST1 --> TEST2
+  EXPORT --> OVERLAY --> IMPORT --> TEST1 --> TEST2 --> DEPLOY
 ```
 
 If the overlay step fails, the import step should not run. If the import step fails, the tests should not (or cannot) run.  This is known as fail-fast behaviour and it prevents later stages from running against incomplete, invalid, or incorrectly deployed assets.

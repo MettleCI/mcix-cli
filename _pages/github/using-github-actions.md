@@ -15,13 +15,13 @@ MCIX actions are compatible with GitHub Enterprise Cloud and GitHub Enterprise S
 
 ## GitHub Enterprise Cloud (SaaS)
 
-Enterprise Cloud runs on [github.com](https://github.com), so public actions normally work directly. However, your enterprise or organisation policy may restrict theuse of third-party actions.
+Enterprise Cloud runs on [github.com](https://github.com), so public actions normally work directly. However, your enterprise or organisation policy may restrict the use of third-party actions.
 
-To resovle this, an enterprise administrator should navigate to:
+To resolve this, an enterprise administrator should navigate to:
 
 **Enterprise settings** → **Policies → Actions**
 
-Alternatively, an organisation owner can use:
+Alternatively, an organisation owner can navigate to:
 
 **Organisation settings** → **Actions** → **General**
 
