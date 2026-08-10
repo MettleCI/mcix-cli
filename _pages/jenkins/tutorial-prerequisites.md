@@ -37,11 +37,11 @@ Ensure your DataStage NextGen projects are not configured as Git integrated proj
 - Do not select **Git Integrated** when creating the project.
 - Do not select **Enable Git integration** in the settings of the created project.
 
-In this tutorial GitHub is the source of truth for your DataStage assets. DataStage projects represent environment-specific deployments of that source.
+In this tutorial your Git repository is the source of truth for your DataStage assets. DataStage projects represent environment-specific deployments of that source.
 
 ## Generate an API key
 
-If you don’t yet have one, generate an API key for the user account that GitHub Actions will use to connect to DataStage.
+If you don’t yet have one, generate an API key for the user account that the Jenkins pipeline will use to connect to DataStage.
 
 The type of key you need to generate depends on whether you are using DataStage NextGen on a self-hosted platform or IBM Cloud-hosted DataStage-as-a-Service.
 
@@ -64,40 +64,71 @@ As part of this tutorial you may execute unit tests against one or more DataStag
 
 If you want to use the sample project provided with this tutorial then ensure that your test data storage connection is called `TestDataConnection`.
 
-## Prepare a GitHub repository
+## Prepare Git repositories
 
-Before running a GitHub Actions-based MCIX pipeline, you need a GitHub repository containing your DataStage assets, overlays, workflow definitions, and any supporting files.
+Before running a Jenkins-based MCIX pipeline, you need two Git repositories:
+ - a global library repository containing the MCIX custom steps
+ - a repository containing the pipeline Jenkinsfiles, your DataStage assets, overlays, and any supporting files.
 
-Use a simple, purpose-based repository name, such as:
+Use simple, purpose-based repository names, such as:
 
 ```text
-mcix-github-actions-demo
+mcix-global-lib
+mcix-jenkins-pipeline-demo
 ```
 
-Avoid naming the repository after a specific environment, such as myproject-prod or myproject-test. The repository should represent the single source of truth for the DataStage initiative, not one particular deployment target.
+Avoid naming the template repository after a specific environment, such as myproject-prod or myproject-test. The repository should represent the single source of truth for the DataStage initiative, not one particular deployment target.
 
-Recommended settings for your repository:
+Recommended settings for your repositories:
 
-| Setting           | Value                      |
-| :---------------- | :------------------------- |
-| Repository name   | `mcix-github-actions-demo` |
-| Visibility        | Private                    |
-| Default branch    | `main`                     |
-| `.gitignore`      | Yes                        |
-| README            | Yes                        |
-| Licence           | Optional                   |
-| Issues            | Disabled                   |
-| Wiki              | Disabled                   |
-| Discussions       | Disabled                   |
-| Projects/Boards   | Disabled                   |
-| Branch protection | Disabled for this tutorial |
+| Setting           | Value                        |
+| :---------------- | :-------------------------   |
+| Repository name   | `mcix-shared-lib`<br>`mcix-jenkins-pipeline-demo` |
+| Visibility        | Private                      |
+| Default branch    | `main`                       |
+| `.gitignore`      | Yes                          |
+| README            | Yes                          |
 
-You can enable branch protection, pull request review rules, and deployment approvals later. 
+
+You may be presented with additional options when creating the repositories, depending on your choice of Git repositiory hosting platform.
 For this introductory tutorial, keep the repository simple so you can focus on the pipeline mechanics.
 
-## Clone the MettleCI template repository
+## Clone the MettleCI template repositories
 
-A MettleCI template repository is provided for convenience and as a recommended starting point.
+MettleCI template repositories are provided for both the global library and template repository, for convenience and as a recommended starting point.
+
+#### MCIX Global Library Repository
+
+Clone the global library repository to your local host:
+
+```shell
+git clone https://github.com/MettleCI/datastage-nextgen-jenkins-libs
+```
+
+Rename the local directory to match your new Git repository:
+
+```shell
+mv datastage-nextgen-repo-template mcix-global-lib
+```
+The contents of this repository do not need to be modified, but contain the MCIX custom commands that the template pipeline uses.
+Now point the local clone to your new Git repository:
+
+```shell
+git remote set-url origin <YOUR_NEW_GLOBAL_LIBRARY_REPOSITORY_URL>
+```
+For example:
+
+```shell
+git remote set-url origin git@my-git-host.com:my-org/mcix-global-lib.git
+```
+Push the template contents to your new repository:
+
+```shell
+git push -u origin main
+```
+
+
+#### MCIX Template Repository
 
 You are not required to follow the template repository’s structure. You can organise your repository in 
 whatever way best suits your project, including where you store DataStage assets, scripts, configuration 
@@ -112,11 +143,11 @@ Clone the template repository to your local host:
 git clone https://github.com/MettleCI/datastage-nextgen-repo-template
 ```
 
-Rename the local directory to match your new GitHub repository:
+Rename the local directory to match your new Git repository:
 
 ```shell
-mv datastage-nextgen-repo-template mcix-github-actions-demo
-cd mcix-github-actions-demo
+mv datastage-nextgen-repo-template mcix-jenkins-pipeline-demo
+cd mcix-jenkins-pipeline-demo
 ```
 
 Inspect the repository contents:
@@ -127,7 +158,7 @@ ls -al
 You should see a structure similar to this:
 
 ```shell
-mcix-github-actions-demo/
+mcix-jenkins-pipeline-demo/
 ├── .git
 ├── .gitattributes
 ├── .gitignore
@@ -137,55 +168,213 @@ mcix-github-actions-demo/
 └── README.md
 ```
 
-Now point the local clone to your new GitHub repository:
+Now point the local clone to your new Git repository:
 
 ```shell
-git remote set-url origin <YOUR_NEW_GITHUB_REPOSITORY_URL>
+git remote set-url origin <YOUR_NEW_PIPELINE_REPOSITORY_URL>
 ```
 For example:
 
 ```shell
-git remote set-url origin git@github.com:my-org/mcix-github-actions-demo.git
+git remote set-url origin git@my-git-host.com:my-org/mcix-jenkins-pipeline-demo.git
 ```
 Push the template contents to your new repository:
 
 ```shell
 git push -u origin main
 ```
-You can now open your GitHub repository in a browser and confirm that the template files are visible.
+You can now open your Git repository in a browser and confirm that the template files are visible.
 
-## Enable GitHub Actions
+## Add Plugins to the Jenkins Server
 
-Jenkins equivalent ?
+In your Jenkins server, navigate to: <br/>
+**Jenkins** → **Manage Jenkins** → **Plugins** → **Available Plugins**
 
-## Create GitHub environment configuration
+For this tutorial, you will need to install some additional plugins:
+ - Docker Pipeline (this will also install a number of pre-requisite Docker plugins)
+ - JUnit
+ - Pipeline: Basic Steps
 
-Jenkins equivalent ?
+## Jenkins Agent Requirements
 
-## Check repository workflow permissions
+MCIX template functions run inside a Docker container running a custom image based on Debian Linux 
+that contains the MCIX cli.
+Therefore, the Jenkins agent should be running a flavour of Linux and have a working Docker engine.
 
-Jenkins equivalent ?
+For instructions on how to install the Docker angine and configure it to work with Jenkins, please refer to
+ - [Install Docker Engine](https://docs.docker.com/engine/install/)
+ - Also follow the post-installation step to add the jenkins user to the docker group.
 
-## Create the workflow directory
+It must also have network access to:
+- your Git repository,
+- the MCIX hared library repository,
+- the MCIX container image registry, and
+- your DataStage service URL.
 
-Jenkins equivalent ?
+## Create Jenkins Credentials
+
+Create a Jenkins credential to store the API Key of the Cloud Pak DataStage user
+In your Jenkins server, navigate to: <br/>
+**Jenkins** → **Manage Jenkins** → **Credentials**
+
+At the end of the page, the is a section **Stores scoped to Jenkins**
+Click on the link for **Global**
+
+In the top right-hand corner, click **Add Credentials**
+
+| Setting             | Value             | Description                                       |
+| :------------------ | :---------------- | :------------------------------------------------ |
+| Kind                | `Secret text`     | Select from the dropdown                          |
+| Secret              | CPD User API Key  | API Key for the User used to connect to DataStage |
+| ID                  | `CP4D_APIKey`     | Referred to in the agent environment variable     |
+
+You will also need to add the Git Credentials that allow you to connect to the newly-created global library repository and pipeline repository. 
+
+
+## Configure Jenkins Agent
+
+Configure the Jenkins agent: <br/>
+**Jenkins** → **Manage Jenkins** → **Nodes**
+
+Select the node that contains the Docker engine
+On the left-hand side, select **Configure**
+
+Then add the following environment variables:
+
+| Variable            | Example value             | Description                                   |
+| :------------------ | :------------------------ | :-------------------------------------------- |
+| `CP4D_URL`          | `https://cpd.example.com` | Base URL of your DataStage service            |
+| `CP4D_USER`         | `my-user@example.com`     | Username used to connect to DataStage         |
+| `CP4DAPIKEY`        | `CP4D_APIKey`             | Name of the credential containing the API Key |
+
+
+## Configure Jenkins Server to Recognise the MCIX Global Library Repository
+
+Configure the Jenkins server: <br/>
+**Jenkins** → **Manage Jenkins** → **System**
+Scroll down the page to **Global Trusted Pipeline Libraries**, and at the bottom of that section, click **Add**
+
+| Setting                                          | Value                                      | Description                                   |
+| :----------------------------------------------- | :----------------------------------------- | :-------------------------------------------- |
+| Name                                             | `mcix-global-lib`                          | The alias referred to in pipelines            |
+| Default version                                  | `main`                                     | Repository branch                             |
+| Load implicitly                                  | `false`                                    |                                               |
+| Include @Library changes in job recent changes   | `false`                                    |                                               |
+| Retrieval method                                 | `Modern SCM`                               |                                               |
+| Source Code Management                           | `Git`                                      |                                               |
+| Project Repository                               | <YOUR_NEW_GLOBAL_LIBRARY_REPOSITORY_URL>   | The URL of the Global Library Repository      |
+| Credentials                                      | Select the repository access credential    |                                               |
+| Library path                                     | `./`                                       |                                               |
+
+## Create the Jenkins Pipeline
+
+To create the pipeline: <br/>
+On the **Jenkins** homepage, select **New Item**. 
+Enter a name for the pipeline, for example: 
+
+```
+mcix-ci
+```
+
+Under **Select an item type**, click on **Pipeline**
+Click on **Ok**
+
+On the next Page, select the following settings:
+
+| Section          | Setting                                          | Value                                      | Description                                   |
+| :--------------- | :----------------------------------------------- | :----------------------------------------- | :-------------------------------------------- |
+| General          | Do not allow concurrent builds                   | `true`                                     | Only run one of this pipeline at a time       |
+| Triggers         | Poll SCM                                         | `true`                                     | Poll the repository                           |
+|                  | Schedule                                         | `* * * * *`                                | Poll once per minute                          |
+| Pipeline         | Definition                                       | `Pipeline script from SCM`                 |                                               |
+|                  | SCM                                              | `Git`                                      |                                               |
+|                  | Repository URL                                   | <YOUR_NEW_PIPELINE_REPOSITORY_URL>         | The URL of the Global Library Repository      |
+|                  | Credentials                                      | Select the repository access credential    |                                               |
+|                  | Branch Specifier (blank for 'any')               | `*/main`                                   |                                               |
+|                  | Script Path                                      | `pipelines/mcix-ci-jenkinsfile`            |                                               |
+
+
+## Create the pipelines directory
+
+Create a directory for pipeline files:
+
+```bash
+mkdir -p pipelines
+```
+## Add a simple MCIX verification workflow
+
+Before building the full pipeline, create a simple pipeline that verifies your repository can execute an MCIX custom step.
+
+Create this file which will create a simple pipeline using the [MCIX system version](/jenkins/task-reference#system-version) custom step:
+
+```
+pipelines/mcix-ci-jenkinsfile
+```
+
+Add the following content:
+
+```
+@Library('mcix-global-lib') _
+
+pipeline {
+    // Specify an agent that runs a Docker server where the MCIX container image can be hosted
+    agent none
+
+    // Sets up the environment for the build
+    environment {
+        IIS_BASE_PROJECT_NAME = 'mcix-demo'
+    }
+
+    stages {
+
+        // Dumps diagnostic values to the execution log (optional)
+        stage("Diagnostics") {
+            agent {
+                docker {
+                    registryUrl 'https://docker.io'
+                    image 'docker.io/mettleci/mcix:latest'
+                    args "-u root --entrypoint=''"
+                    alwaysPull true
+                }
+            }
+            environment {
+                ENVID = "ci"
+                DATASTAGE_PROJECT = "${env.IIS_BASE_PROJECT_NAME}_${env.ENVID}"
+            }
+
+            steps {
+                // Call the MCIX system version command to verify the MCIX command in the image is available
+                mcixSystemVersion()
+            }
+        }
+    }
+}
+```
+
+We'll run through the role of this file and meaning of each line in the [tutorial steps](tutorial-steps). For now, commit and push the workflow:
+
+```shell
+git add pipelines/mcix-ci-jenkinsfile
+git commit -m "Add MCIX system version pipeline"
+git push
+```
+
 
 ## Recommended repository layout
 
 For this tutorial, your repository should contain at least the following structure:
 
 ```text
-mcix-github-actions-demo/
-├── .github/
-│   └── workflows/
-│       └── mcix-system-version.yaml
+mcix-jenkins-pipeline-demo/
+├── pipelines/
+│   └── mcix-ci-jenkinsfile
 ├── datastage/
 ├── filesystem/
 ├── overlays/
 └── README.md
 ```
 
-As the tutorial progresses, you will add an additional workflow file to export, overlay, import, compile, analyse, and test your DataStage assets.
+As the tutorial progresses, you will add an additional Jenkinsfile to export, overlay, import, compile, analyse, and test your DataStage assets.
 
 ## Summary
 
@@ -195,11 +384,15 @@ Before continuing, confirm that you have:
 - DataStage projects that are not Git integrated
 - an API key for DataStage authentication
 - test data storage configured where unit tests will run
-- a GitHub repository based on the MettleCI template (Jenkins equivalent ?)
-- GitHub Actions enabled (Jenkins equivalent ?)
-- a ci GitHub Environment (Jenkins equivalent ?)
-- environment variables for your DataStage URL, username, and project
-- an environment secret containing your API key (Jenkins equivalent ?)
-- a successful MCIX System Version workflow run (Jenkins equivalent ?)
+- a Git repository based on the MCIX Global Library repository
+- a Git repository based on the MCIX template
+- Jenkins Credentials
+    - CPD API Key
+    - access credentials to the Git repositories
+- Jenkins agent capable of running Linux-based Docker containers
+    - With environment variables configured
+- Global Library repository added to Jenkins system configuration
+- Jenkins Pipeline for the MCIX template Jenkinsfile
+- a successful MCIX System Version pipeline run
 
-Once these prerequisites are complete, you are ready to build a GitHub Actions workflow using the MCIX Jenkins tasks.
+Once these prerequisites are complete, you are ready to build a Jenkins Pipeline using the MCIX Jenkins steps.
